@@ -18,11 +18,6 @@ class ConsoleController extends MigrateController
      * @var string the default command action.
      */
     public $defaultAction = 'start';
-    /**
-     * @var string the directory storing the migration classes. This can be either
-     * a path alias or a directory.
-     */
-    public $migrationPath = __DIR__.'/../migrations';
 
     /**
      * @inheritdoc
@@ -33,6 +28,7 @@ class ConsoleController extends MigrateController
             if ($action->id == 'create') {
                 throw new \yii\base\NotSupportedException();
             }else{
+                $this->migrationPath = __DIR__.'/../migrations';
                 $this->module->db->tablePrefix = $this->module->id.'_';
             }
             return true;

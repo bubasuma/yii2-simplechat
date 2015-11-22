@@ -6,13 +6,14 @@ use bubasuma\simplechat\DemoAsset;
 /**
  *@var $user User
  *@var $contact User
+ *@var array $users
  *@var $messageDataProvider \yii\data\ActiveDataProvider
  *@var $conversationDataProvider \yii\data\ActiveDataProvider
  *@var $this \yii\web\View
  */
-
-
- $asset = DemoAsset::register($this);
+$asset = DemoAsset::register($this);
+$this->params['user'] = $user;
+$this->params['users'] = $users;
 
 ?>
 <div class="row">

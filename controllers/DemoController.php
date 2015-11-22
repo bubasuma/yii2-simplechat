@@ -48,7 +48,17 @@ class DemoController extends DefaultController
         $messageDataProvider = call_user_func([$this->modelClass, 'loadMessages'],
             $user->id, $contact->id, [$this, 'formatMessage'], 10);
 
-        return $this->render('index',compact('conversationDataProvider','messageDataProvider','user','contact'));
+        $users = [];
+
+        foreach(User::find()->all() as $userItem){
+            $users[] = [
+                'label' => $userItem->fullName,
+                'url' =>'/messages/' . $contact->id . '?userId='.$userItem->id,
+                'options' => ['class' => $userItem->id == $contact->id || $userItem->id == $user->id ? 'disabled' : '']
+            ];
+        }
+
+        return $this->render('index',compact('conversationDataProvider','messageDataProvider', 'users','user','contact'));
 
     }
 
