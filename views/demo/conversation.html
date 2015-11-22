@@ -1,0 +1,14 @@
+<script id="conv-tmpl" type="text/plain">
+    <div class="media conversation <%= model.is_new != 0 ? options.settings.unreadCssClass : '' %> <%= is_current ? options.settings.currentCssClass : '' %>" data-key="<%= key %>"
+        data-contact-info = '<%= JSON.stringify(model.contact) %>'
+        data-contact="<%= model.contact_id %>" data-load-url="<%= model.load_url %>" data-send-url="<%= model.send_url %>">
+        <a class="pull-left" href="#">
+            <img class="media-object" data-src="holder.js/64x64" alt="64x64" style="width: 50px; height: 50px;" src="<%= options.settings.baseUrl + '/img/' + model.contact.profile.avatar %>">
+        </a>
+        <div class="media-body">
+            <small class="pull-right time"><%= model.date %></small>
+            <h5 class="media-heading"><%= model.contact.profile.full_name %></h5>
+            <small><%= options.user.id == model.sender_id ? '<i class="fa fa-reply"></i>' : '' %> <%= model.text %></small>
+        </div>
+    </div>
+</script>
