@@ -22,7 +22,7 @@ class ConsoleController extends MigrateController
      * @var string the directory storing the migration classes. This can be either
      * a path alias or a directory.
      */
-    public $migrationPath = '@frontend/modules/simplechat/migrations';
+    public $migrationPath = '@vendor/bubasuma/simplechat/migrations';
 
     /**
      * @inheritdoc

@@ -13,7 +13,7 @@ use yii\web\AssetBundle;
 class MessageAsset extends AssetBundle
 {
     public static $live = false;
-    public $sourcePath = '@frontend/modules/simplechat/assets';
+    public $sourcePath = '@vendor/bubasuma/simplechat/assets';
     public $js = [
         'js/messages.js',
     ];

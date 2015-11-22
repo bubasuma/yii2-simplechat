@@ -12,7 +12,7 @@ use yii\db\ActiveQuery;
 
 /**
  * Class Message
- * @package frontend\models
+ * @package bubasuma\simplechat\db\demo
  *
  * @property User $contact
  */
