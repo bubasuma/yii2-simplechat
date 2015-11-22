@@ -12,17 +12,13 @@ use yii\web\AssetBundle;
  */
 class MessageAsset extends AssetBundle
 {
-    public static $live = false;
-    public $sourcePath = '@vendor/bubasuma/simplechat/assets';
     public $js = [
         'js/messages.js',
     ];
 
-    public function init()
-    {
+    public function init(){
         parent::init();
-        if(self::$live){
-            array_unshift($this->js,'//cdn.socket.io/socket.io-1.3.5.js');
-        }
+        $this->sourcePath = __DIR__ . '/assets';
     }
+
 }

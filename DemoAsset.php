@@ -15,7 +15,6 @@ use yii\web\AssetBundle;
  */
 class DemoAsset extends AssetBundle
 {
-    public $sourcePath = '@vendor/bubasuma/simplechat/assets';
     public $css = [
         '//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css',
         'css/chat.css',
@@ -27,4 +26,9 @@ class DemoAsset extends AssetBundle
         'yii\web\YiiAsset',
         'yii\bootstrap\BootstrapAsset',
     ];
+
+    public function init(){
+        parent::init();
+        $this->sourcePath = __DIR__ . '/assets';
+    }
 }
