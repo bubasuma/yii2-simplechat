@@ -26,6 +26,3 @@ Usage
 -----
 
 Once the extension is installed, simply use it in your code by  :
-
-```php
-<?= \bubasuma\simplechat\AutoloadExample::widget(); ?>```
