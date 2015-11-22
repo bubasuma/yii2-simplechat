@@ -1,0 +1,4 @@
+# phpstorm project files
+.idea
+# temp files
+temp*.*
