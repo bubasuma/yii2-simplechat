@@ -1,15 +1,15 @@
 <?php
 
-namespace frontend\modules\simplechat\db;
-use frontend\modules\simplechat\DataProvider;
-use frontend\modules\simplechat\migrations\Migration;
+namespace bubasuma\simplechat\db;
+use bubasuma\simplechat\DataProvider;
+use bubasuma\simplechat\migrations\Migration;
 use yii\db\ActiveRecord;
 use yii\db\Expression;
 use yii\helpers\Html;
 
 /**
  * Class Model
- * @package frontend\modules\simplechat\db
+ * @package bubasuma\simplechat\db
  *
  * @property string id
  * @property string sender_id

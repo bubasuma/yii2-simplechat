@@ -1,10 +1,10 @@
 <?php
 
-namespace frontend\modules\simplechat\controllers;
+namespace bubasuma\simplechat\controllers;
 
-use frontend\modules\simplechat\db\demo\User;
-use frontend\modules\simplechat\helpers\DateHelper;
-use frontend\modules\simplechat\Module;
+use bubasuma\simplechat\db\demo\User;
+use bubasuma\simplechat\helpers\DateHelper;
+use bubasuma\simplechat\Module;
 use yii\web\NotFoundHttpException;
 
 class DemoController extends DefaultController
@@ -15,7 +15,7 @@ class DemoController extends DefaultController
     public $module;
 
     public $layout = 'main';
-    public $modelClass = 'frontend\modules\simplechat\db\demo\Message';
+    public $modelClass = 'bubasuma\simplechat\db\demo\Message';
 
     /**
      * @inheritDoc

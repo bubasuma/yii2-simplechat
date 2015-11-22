@@ -6,7 +6,7 @@
  * Time: 12:43
  */
 
-namespace frontend\modules\simplechat\db;
+namespace bubasuma\simplechat\db;
 
 
 use yii\db\ActiveQuery;

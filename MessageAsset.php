@@ -1,6 +1,6 @@
 <?php
 
-namespace frontend\modules\simplechat;
+namespace bubasuma\simplechat;
 
 use yii\web\AssetBundle;
 

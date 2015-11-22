@@ -6,10 +6,10 @@
  * Time: 12:36
  */
 
-namespace frontend\modules\simplechat\db\demo;
+namespace bubasuma\simplechat\db\demo;
 
 
-use frontend\modules\simplechat\migrations\Migration;
+use bubasuma\simplechat\migrations\Migration;
 use yii\db\ActiveRecord;
 use yii\db\Expression;
 

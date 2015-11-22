@@ -1,5 +1,5 @@
 <?php
-use frontend\modules\simplechat\migrations\Migration;
+use bubasuma\simplechat\migrations\Migration;
 
 class m151121_105223_user_table extends Migration
 {

@@ -1,11 +1,11 @@
 <?php
 
-namespace frontend\modules\simplechat\controllers;
+namespace bubasuma\simplechat\controllers;
 
-use frontend\modules\simplechat\DataProvider;
-use frontend\modules\simplechat\db\Model;
-use frontend\modules\simplechat\db\ConversationQuery;
-use frontend\modules\simplechat\db\MessageQuery;
+use bubasuma\simplechat\DataProvider;
+use bubasuma\simplechat\db\Model;
+use bubasuma\simplechat\db\ConversationQuery;
+use bubasuma\simplechat\db\MessageQuery;
 use yii\base\NotSupportedException;
 use yii\db\ActiveQuery;
 use yii\helpers\Inflector;
@@ -14,7 +14,7 @@ use yii\web\Response;
 
 class DefaultController extends Controller
 {
-    public $modelClass = 'frontend\modules\simplechat\db\ChatModel';
+    public $modelClass = 'bubasuma\simplechat\db\ChatModel';
     public $user;
 
     /**

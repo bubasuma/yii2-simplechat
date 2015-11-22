@@ -1,6 +1,6 @@
 <?php
 
-namespace frontend\modules\simplechat;
+namespace bubasuma\simplechat;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
 use yii\helpers\Json;

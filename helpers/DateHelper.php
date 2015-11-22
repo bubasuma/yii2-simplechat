@@ -1,10 +1,8 @@
 <?php
-namespace frontend\modules\simplechat\helpers;
+namespace bubasuma\simplechat\helpers;
 /**
- * Created by PhpStorm.
- * User: buba
- * Date: 25.10.15
- * Time: 11:31
+ * Class DateHelper
+ * @package bubasuma\simplechat\helpers
  */
 class DateHelper
 {

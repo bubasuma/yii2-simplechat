@@ -1,7 +1,7 @@
 <?php
-namespace frontend\modules\simplechat\controllers;
+namespace bubasuma\simplechat\controllers;
 
-use frontend\modules\simplechat\Module;
+use bubasuma\simplechat\Module;
 use yii\console\controllers\MigrateController;
 use yii\db\Query;
 use yii\helpers\Console;

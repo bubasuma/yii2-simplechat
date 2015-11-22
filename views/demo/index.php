@@ -1,7 +1,7 @@
 <?php
 
-use frontend\modules\simplechat\db\demo\User;
-use frontend\modules\simplechat\DemoAsset;
+use bubasuma\simplechat\db\demo\User;
+use bubasuma\simplechat\DemoAsset;
 
 /**
  *@var $user User
@@ -19,7 +19,7 @@ use frontend\modules\simplechat\DemoAsset;
     <div class="loading" style="display: none">Loading&#8230;</div>
     <?php
 
-    $conversation = \frontend\modules\simplechat\ConversationWidget::begin([
+    $conversation = \bubasuma\simplechat\ConversationWidget::begin([
         'dataProvider' => $conversationDataProvider,
         'options' => ['class'=>'conversation-wrap col-lg-3', 'id'=>'conv-wrap'],
         'itemOptions' => ['class'=>'media conversation'],
@@ -44,11 +44,11 @@ use frontend\modules\simplechat\DemoAsset;
         <img alt="Loading..." src="<?=$asset->baseUrl?>/img/inf-square-loader.gif" />
     </div>
     <?php
-    frontend\modules\simplechat\ConversationWidget::end();
+    bubasuma\simplechat\ConversationWidget::end();
     ?>
 
     <?php
-    $message = \frontend\modules\simplechat\MessageWidget::begin([
+    $message = \bubasuma\simplechat\MessageWidget::begin([
         'dataProvider' => $messageDataProvider,
         'user' => [
             'id' => $user->id,
@@ -102,7 +102,7 @@ use frontend\modules\simplechat\DemoAsset;
         <a id="msg-send" href="" class=" col-lg-4 text-right btn   send-message-btn pull-right" role="button"><i class="fa fa-location-arrow"></i> Send Message</a>
     </div>
     <?php
-    frontend\modules\simplechat\MessageWidget::end();
+    bubasuma\simplechat\MessageWidget::end();
     ?>
 </div>
 <?php require 'conversation.html' ?>

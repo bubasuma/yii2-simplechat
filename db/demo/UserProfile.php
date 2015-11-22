@@ -6,15 +6,15 @@
  * Time: 12:36
  */
 
-namespace frontend\modules\simplechat\db\demo;
+namespace bubasuma\simplechat\db\demo;
 
 
-use frontend\modules\simplechat\migrations\Migration;
+use bubasuma\simplechat\migrations\Migration;
 use yii\db\ActiveRecord;
 
 /**
  * Class UserProfile
- * @package frontend\modules\simplechat\db\demo
+ * @package bubasuma\simplechat\db\demo
  *
  * @property string id
  * @property string first_name

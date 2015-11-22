@@ -1,5 +1,5 @@
 <?php
-use frontend\modules\simplechat\ConversationWidget;
+use bubasuma\simplechat\ConversationWidget;
 /**
  * @var $user frontend\models\User
  * @var $model array

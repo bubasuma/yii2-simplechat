@@ -1,6 +1,6 @@
 <?php
 
-namespace frontend\modules\simplechat;
+namespace bubasuma\simplechat;
 use yii\base\BootstrapInterface;
 use yii\base\InvalidConfigException;
 use yii\db\Connection;
@@ -50,7 +50,7 @@ class Module extends \yii\base\Module implements BootstrapInterface
      */
     public $db = 'db';
 
-    public $controllerNamespace = 'frontend\modules\simplechat\controllers';
+    public $controllerNamespace = 'bubasuma\simplechat\controllers';
     /**
      * Initializes simplechat module.
      * This method will initialize the [[db]] property to make sure it refers to a valid DB connection.
@@ -80,7 +80,7 @@ class Module extends \yii\base\Module implements BootstrapInterface
             ], false);
         }elseif ($app instanceof \yii\console\Application) {
             $app->controllerMap[$this->id] = [
-                'class' => 'frontend\modules\simplechat\controllers\ConsoleController',
+                'class' => 'bubasuma\simplechat\controllers\ConsoleController',
                 'module' => $this,
             ];
         }

@@ -6,7 +6,7 @@
  * Time: 10:19
  */
 
-namespace frontend\modules\simplechat\db\demo;
+namespace bubasuma\simplechat\db\demo;
 use yii\db\ActiveQuery;
 
 
@@ -16,7 +16,7 @@ use yii\db\ActiveQuery;
  *
  * @property User $contact
  */
-class Message extends \frontend\modules\simplechat\db\Model
+class Message extends \bubasuma\simplechat\db\Model
 {
     public function getContact()
     {

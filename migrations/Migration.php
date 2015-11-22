@@ -1,9 +1,9 @@
 <?php
-namespace frontend\modules\simplechat\migrations;
+namespace bubasuma\simplechat\migrations;
 /**
  * Class Migration
  *
- * @package frontend\modules\simplechat\migrations;
+ * @package bubasuma\simplechat\migrations;
  * @property string $tableOptions
  *
  */

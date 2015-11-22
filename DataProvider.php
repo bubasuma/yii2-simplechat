@@ -6,7 +6,7 @@
  * Time: 10:30
  */
 
-namespace frontend\modules\simplechat;
+namespace bubasuma\simplechat;
 
 
 use yii\base\Arrayable;

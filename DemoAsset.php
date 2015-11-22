@@ -5,7 +5,7 @@
  * @license http://www.yiiframework.com/license/
  */
 
-namespace frontend\modules\simplechat;
+namespace bubasuma\simplechat;
 
 use yii\web\AssetBundle;
 

@@ -1,11 +1,13 @@
 <?php
+use bubasuma\simplechat\db\demo\User;
+use bubasuma\simplechat\MessageWidget;
+
 /**
  * @var $model array
- * @var $user frontend\models\User
- * @var $contact frontend\models\User
+ * @var $user User
+ * @var $contact User
  * @var $widget MessageWidget
  */
-use frontend\modules\simplechat\MessageWidget;
 
 $sender = $model['sender_id'] == $user['id'] ? $user : $contact;
 ?>

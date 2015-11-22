@@ -1,7 +1,7 @@
 <?php
 
 
-use frontend\modules\simplechat\migrations\Migration;
+use bubasuma\simplechat\migrations\Migration;
 
 class m151121_105654_user_data extends Migration
 {
@@ -10,10 +10,10 @@ class m151121_105654_user_data extends Migration
         $data = require(__DIR__.'/data/users.php');
         try{
             foreach($data as $item){
-                $user = new \frontend\modules\simplechat\db\demo\User();
+                $user = new \bubasuma\simplechat\db\demo\User();
                 $user->setAttributes($item);
                 if($user->save()){
-                    $profile = new \frontend\modules\simplechat\db\demo\UserProfile();
+                    $profile = new \bubasuma\simplechat\db\demo\UserProfile();
                     $profile->setAttributes($item);
                     $profile->id = $user->id;
                     if(!$profile->save()){
