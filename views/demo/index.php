@@ -67,6 +67,10 @@ $this->params['users'] = $users;
         ],
         'options' => ['class'=>'message-wrap col-lg-8', 'id'=>'messages'],
         'itemOptions' => ['class'=>'media msg'],
+        'formOptions' => [
+            'action' => '/message/' . $contact->id . '?userId=' . $user->id,
+            'method'=>'post'
+        ],
         'clientOptions' => [
             'container' => '#msg-wrap',
             'template' => '#msg-tmpl',

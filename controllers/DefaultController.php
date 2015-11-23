@@ -2,19 +2,17 @@
 
 namespace bubasuma\simplechat\controllers;
 
-use bubasuma\simplechat\DataProvider;
 use bubasuma\simplechat\db\Model;
-use bubasuma\simplechat\db\ConversationQuery;
-use bubasuma\simplechat\db\MessageQuery;
 use yii\base\NotSupportedException;
 use yii\db\ActiveQuery;
 use yii\helpers\Inflector;
 use yii\web\Controller;
 use yii\web\Response;
+use yii\web\ForbiddenHttpException;
 
 class DefaultController extends Controller
 {
-    public $modelClass = 'bubasuma\simplechat\db\ChatModel';
+    public $modelClass = 'bubasuma\simplechat\db\Model';
     public $user;
 
     /**
@@ -84,6 +82,9 @@ class DefaultController extends Controller
     public function actionCreateMessage(){
         $userId = $this->user->id;
         $contactId = \Yii::$app->request->get('contactId');
+        if($userId == $contactId){
+            throw new ForbiddenHttpException('You attempt to send message to yourself');
+        }
         $text = \Yii::$app->request->post('text');
         return call_user_func([$this->modelClass,'create'], $userId, $contactId, $text);
     }
