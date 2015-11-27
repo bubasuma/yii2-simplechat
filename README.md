@@ -61,12 +61,12 @@ You can  Simple Chat via command line as follows,
 cd path/to/AppBasePath
 
 # show help information about Simple Chat
-yii help simplechat
-
-# Apply migration for demo chat by running the following command:
 yii simplechat
 
-# You can clear your database from demo tables and data by running the following command:
+# Apply migration for demo chat by running the following command:
+yii simplechat/start
+
+# You can clear your database from demo data and tables by running the following command:
 yii simplechat/stop
 ```
 

@@ -2,12 +2,15 @@
 namespace bubasuma\simplechat\controllers;
 
 use bubasuma\simplechat\Module;
-use yii\console\controllers\MigrateController;
-use yii\db\Query;
+use yii\console\Controller;
 use yii\helpers\Console;
 
-
-class ConsoleController extends MigrateController
+/**
+ * Yii2 SimpleChat Demo
+ * Creates or clears demo data and tables
+ * @package bubasuma\simplechat\controllers
+ */
+class ConsoleController extends Controller
 {
     /**
      * @var Module
@@ -17,7 +20,13 @@ class ConsoleController extends MigrateController
     /**
      * @var string the default command action.
      */
-    public $defaultAction = 'start';
+    public $defaultAction = 'index';
+
+    /**
+     * @var string the directory storing the migration classes. This can be either
+     * a path alias or a directory.
+     */
+    public $migrationPath = '@bubasuma/simplechat/migrations';
 
     /**
      * @inheritdoc
@@ -25,42 +34,45 @@ class ConsoleController extends MigrateController
     public function beforeAction($action)
     {
         if (parent::beforeAction($action)) {
-            if ($action->id == 'create') {
-                throw new \yii\base\NotSupportedException();
-            }else{
-                $this->migrationPath = __DIR__.'/../migrations';
-                $this->module->db->tablePrefix = $this->module->id.'_';
-            }
+            $path = \Yii::getAlias($this->migrationPath);
+            $this->migrationPath = $path;
+            $this->module->db->tablePrefix = $this->module->id.'_';
+            $this->stdout("Yii2 SimpleChat Demo\n\n", Console::BOLD);
             return true;
         } else {
             return false;
         }
     }
 
-    public function actionStart()
+    /**
+     * Shows help
+     */
+    public function actionIndex()
     {
-        $this->actionUp();
-    }
-
-    public function actionStop()
-    {
-        $this->actionDown('all');
-        $query = new Query;
-        $query->from($this->migrationTable);
-        if(1 == $query->count()){
-            $this->deleteMigrationHistoryTable();
-        }
-
+        $this->run('/help', ['simplechat']);
     }
 
     /**
-     * Creates the migration history table.
+     * Apply migration for demo chat by creating tables and data
      */
-    protected function deleteMigrationHistoryTable()
+    public function actionStart()
     {
-        $tableName = $this->db->schema->getRawTableName($this->migrationTable);
-        $this->stdout("Deleting migration history table \"$tableName\"...", Console::FG_YELLOW);
-        $this->db->createCommand()->dropTable($this->migrationTable)->execute();
-        $this->stdout("Done.\n", Console::FG_GREEN);
+        $this->module->runAction("migrate",['migrationPath' => $this->migrationPath]);
+    }
+
+    /**
+     * Clear database from demo data and tables
+     */
+    public function actionStop()
+    {
+        $this->module->runAction("migrate/down",['migrationPath' => $this->migrationPath]);
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function getUniqueID()
+    {
+        return $this->id;
     }
 }
