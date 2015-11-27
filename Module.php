@@ -6,7 +6,6 @@ use yii\base\InvalidConfigException;
 use yii\db\Connection;
 use yii\di\Instance;
 
-
 /**
  * Module extends [[\yii\base\Module]] and represents a message system that stores
  * messages in database.
@@ -37,8 +36,6 @@ use yii\di\Instance;
  * ~~~
  *
  * The `user` table stores users, and the `message` table stores messages
- * The name of these two tables can be customized by setting [[userTable]]
- * and [[messageTable]], respectively.
  *
  * @author Buba <buba@bigdropinc.com>
  * @since 1.0

@@ -10,13 +10,13 @@ The preferred way to install this extension is through [composer](http://getcomp
 Either run
 
 ```
-php composer.phar require --prefer-dist bubasuma/yii2-simplechat "*"
+php composer.phar require --prefer-dist bubasuma/yii2-simplechat "dev-master"
 ```
 
 or add
 
 ```
-"bubasuma/yii2-simplechat": "*"
+"bubasuma/yii2-simplechat": "dev-master"
 ```
 
 to the require section of your `composer.json` file.
@@ -25,4 +25,61 @@ to the require section of your `composer.json` file.
 Usage
 -----
 
-Once the extension is installed, simply use it in your code by  :
+Once the extension is installed, simply modify your application configuration as follows:
+
+```php
+return [
+    'bootstrap' => ['simplechat'],
+    'modules' => [
+        'simplechat' => [
+            'class' => 'bubasuma\simplechat\Module',
+            'controllerMap' => [
+                'default' => 'bubasuma\simplechat\controllers\DemoController'
+            ]
+        ],
+        // ...
+    ],
+    // ...
+];
+```
+Use this configuration for your console application:
+```php
+return [
+    'bootstrap' => ['simplechat'],
+    'modules' => [
+        'simplechat' => 'bubasuma\simplechat\Module',
+        // ...
+    ],
+    // ...
+];
+```
+
+You can  Simple Chat via command line as follows,
+
+```
+# change path to your application's base path
+cd path/to/AppBasePath
+
+# show help information about Simple Chat
+yii help simplechat
+
+# Apply migration for demo chat by running the following command:
+yii simplechat
+
+# You can clear your database from demo tables and data by running the following command:
+yii simplechat/stop
+```
+
+You can then access Simple Chat through the following URL:
+
+```
+http://localhost/path/to/index.php?r=messages/2?userId=1
+```
+
+or if you have enabled pretty URLs, you may use the following URL:
+
+```
+http://localhost/path/to/index.php/messages/2?userId=1
+```
+
+
