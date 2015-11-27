@@ -1,5 +1,5 @@
 <?php
-namespace bubasuma\simplechat\controllers;
+namespace bubasuma\simplechat\console;
 
 use bubasuma\simplechat\Module;
 use yii\console\Controller;

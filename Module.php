@@ -77,7 +77,7 @@ class Module extends \yii\base\Module implements BootstrapInterface
             ], false);
         }elseif ($app instanceof \yii\console\Application) {
             $app->controllerMap[$this->id] = [
-                'class' => 'bubasuma\simplechat\controllers\ConsoleController',
+                'class' => 'bubasuma\simplechat\console\ConsoleController',
                 'module' => $this,
             ];
         }

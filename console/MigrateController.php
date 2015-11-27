@@ -6,7 +6,7 @@
  * Time: 12:20
  */
 
-namespace bubasuma\simplechat\controllers;
+namespace bubasuma\simplechat\console;
 
 use bubasuma\simplechat\Module;
 use yii\db\Query;
