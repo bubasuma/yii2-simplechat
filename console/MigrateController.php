@@ -47,7 +47,6 @@ class MigrateController extends \yii\console\controllers\MigrateController
      */
     public function actionDown($limit = 'all')
     {
-        $this->stdout("My migrateController.\n");
         $ret =  parent::actionDown('all');
         $query = new Query;
         $query->from($this->migrationTable);
