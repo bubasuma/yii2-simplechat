@@ -36,6 +36,20 @@ body {
     font-style: italic;
 }
 
+.list-inline {
+    opacity: 0;
+}
+
+.list-inline > li {
+    display: inline-block;
+    padding-left: 2px;
+    padding-right: 2px;
+}
+
+.small-icon {
+    font-size: 50%;
+}
+
 /* chat css */
 
 .conversation-wrap
@@ -56,6 +70,10 @@ body {
 .conversation:not(.selected):hover
 {
     background-color: #f5f7fa;
+}
+
+.conversation:hover .list-inline{
+    opacity: 1;
 }
 
 .message-wrap
