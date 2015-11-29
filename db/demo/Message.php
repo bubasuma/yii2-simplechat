@@ -14,7 +14,7 @@ use yii\db\ActiveQuery;
  * Class Message
  * @package bubasuma\simplechat\db\demo
  *
- * @property User $contact
+ * @property-read User contact
  */
 class Message extends \bubasuma\simplechat\db\Model
 {

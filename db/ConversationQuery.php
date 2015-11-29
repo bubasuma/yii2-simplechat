@@ -45,7 +45,7 @@ class ConversationQuery extends ActiveQuery
             ->params([':userId' => $this->userId])
             ->groupBy(['[[contact_id]]']);
 
-        $this->select(['contact_id', 'id', 'sender_id','is_new', 'text', 'created_at'])
+        $this->select(['contact_id', 'id', 'sender_id', 'text', 'created_at'])
             ->from(['ms' => $subQuery])
             ->innerJoin(['m' => $tableName], '[[last_message_id]] = [[id]]')
             ->orderBy(['id' => SORT_DESC])

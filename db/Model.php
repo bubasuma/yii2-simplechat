@@ -20,6 +20,8 @@ use yii\helpers\Html;
  * @property bool is_deleted_by_receiver
  * @property string created_at
  *
+ * @property-read mixed newMessages
+ *
  */
 class Model extends ActiveRecord
 {
@@ -38,6 +40,12 @@ class Model extends ActiveRecord
         ];
     }
 
+    public function getNewMessages(){
+        return $this->hasOne(static::className(),['sender_id' => 'contact_id'])
+            ->where(['is_new' => 1])
+            ->groupBy('sender_id');
+    }
+
 
     /**
      * @param string $userId
@@ -46,12 +54,19 @@ class Model extends ActiveRecord
      */
     public static function conversations($userId)
     {
-        return \Yii::createObject(ConversationQuery::className(),
+        /**@var ConversationQuery $query**/
+        $query = \Yii::createObject(ConversationQuery::className(),
             [
                 get_called_class(),
                 ['userId' => $userId]
             ]
         );
+        return $query->with([
+            'newMessages' => function($msg) use ($userId) {
+                /**@var $msg ConversationQuery **/
+                $msg->andOnCondition(['receiver_id' => $userId])->select(['sender_id','COUNT(*) AS count']);
+            }
+        ]);
     }
 
     /**
@@ -107,6 +122,68 @@ class Model extends ActiveRecord
                 'pageSize' => $limit,
             ]
         ]);
+    }
+
+    /**
+     * @param string $userId
+     * @param string $contactId
+     * @return int the number of rows updated
+     */
+    public static function deleteConversation($userId, $contactId){
+        return static::updateAll(
+            [
+                'is_deleted_by_sender' => new Expression('IF([[sender_id]] =:userId, 1, is_deleted_by_sender)'),
+                'is_deleted_by_receiver' => new Expression('IF([[receiver_id]] =:userId, 1, is_deleted_by_receiver)')
+            ],
+            ['or',
+                [
+                    'receiver_id' => $userId,
+                    'sender_id' => $contactId,
+                    'is_deleted_by_receiver' => 0
+                ],
+                [
+                    'sender_id' => $userId,
+                    'receiver_id' => $contactId,
+                    'is_deleted_by_sender' => 0
+                ],
+            ],
+            [
+                ':userId' => $userId
+            ]
+        );
+    }
+
+    /**
+     * @param $userId
+     * @param $contactId
+     * @return int the number of rows updated
+     */
+    public static function markConversationAsRead($userId, $contactId)
+    {
+        return static::updateAll(
+            ['is_new' => 0,],
+            ['receiver_id' => $userId, 'sender_id' => $contactId, 'is_new' => 1]
+        );
+    }
+
+    /**
+     * @param $userId
+     * @param $contactId
+     * @return int
+     */
+    public static function markConversationAsUnread($userId, $contactId)
+    {
+        /** @var self $last_received_message */
+        $last_received_message = static::find()
+            ->where(['sender_id' => $contactId, 'receiver_id' => $userId])
+            ->orderBy(['id' => SORT_DESC])
+            ->limit(1)
+            ->one();
+        if(!$last_received_message){
+            return 0;
+        }
+        $last_received_message->is_new = 1;
+        return intval($last_received_message->update());
     }
 
 

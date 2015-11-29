@@ -45,12 +45,13 @@ class DemoController extends DefaultController
         $conversationDataProvider = call_user_func([$this->modelClass, 'loadConversations'],
             $user->id, [$this, 'formatConversation'], 8);
 
+
         $messageDataProvider = call_user_func([$this->modelClass, 'loadMessages'],
             $user->id, $contact->id, [$this, 'formatMessage'], 10);
 
         $users = [];
 
-        foreach(User::find()->all() as $userItem){
+        foreach(User::find()->with('profile')->all() as $userItem){
             $users[] = [
                 'label' => $userItem->fullName,
                 'url' =>'/messages/' . $contact->id . '?userId='.$userItem->id,
@@ -73,8 +74,9 @@ class DemoController extends DefaultController
      */
     public function formatConversation($model)
     {
+        $model = parent::formatConversation($model);
         $model['date'] = DateHelper::formatConversationDate($model['created_at']);
-        $model['text'] = \yii\helpers\StringHelper::truncate($model['text'],30);
+        $model['text'] = \yii\helpers\StringHelper::truncate($model['text'],20);
         $model['load_url'] = '/messages/' . $model['contact']['id'] . '?userId='.$this->user->id;
         $model['send_url'] = '/message/' . $model['contact']['id']. '?userId='.$this->user->id;
         return $model;

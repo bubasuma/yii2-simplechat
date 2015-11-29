@@ -69,8 +69,9 @@ class Module extends \yii\base\Module implements BootstrapInterface
                 'GET messages/<contactId:\d+>' => $this->id . '/default/index',
                 'POST messages/<contactId:\d+>' => $this->id . '/default/messages',
                 'DELETE messages/<contactId:\d+>' => $this->id . '/default/delete-conversation',
+                'PATCH messages/mark-as-read/<contactId:\d+>' => $this->id . '/default/mark-conversation-as-read',
+                'PATCH messages/mark-as-unread/<contactId:\d+>' => $this->id . '/default/mark-conversation-as-unread',
 
-                'GET messages' => $this->id . '/default/index',
                 'POST messages' => $this->id . '/default/conversations',
                 'PUT,POST message/<contactId:\d+>' => $this->id . '/default/create-message',
                 'DELETE message/<id:\d+>' => $this->id . '/default/delete-message',

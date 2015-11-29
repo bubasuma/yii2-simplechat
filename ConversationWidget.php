@@ -76,7 +76,7 @@ class ConversationWidget extends ListView
             $options['data-key'] = is_array($key) ? json_encode($key, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE) : (string) $key;
             $options['data-contact'] = $model['contact_id'];
             if(isset($this->clientOptions['unreadCssClass'])){
-                if ($model['is_new']) {
+                if ($model['new_messages'] > 0) {
                     Html::addCssClass($options,$this->clientOptions['unreadCssClass']);
                 }
             }

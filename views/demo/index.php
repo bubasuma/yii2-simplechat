@@ -33,8 +33,8 @@ $this->params['users'] = $users;
         'clientOptions' => [
             'url' => '/messages?userId='.$user->id,
             'template' => '#conv-tmpl',
-            'currentCssClass' => 'selected current',
-            'unreadCssClass'=>'selected unread',
+            'currentCssClass' => 'current',
+            'unreadCssClass'=>'unread',
             'baseUrl' => $asset->baseUrl
         ]
     ]);

@@ -67,13 +67,17 @@ body {
     cursor: pointer;
 }
 
-.conversation:not(.selected):hover
+.conversation:not(.current):hover
 {
     background-color: #f5f7fa;
 }
 
 .conversation:hover .list-inline{
     opacity: 1;
+}
+
+.conversation:hover .msg-new{
+    display: none;
 }
 
 .message-wrap
@@ -89,15 +93,20 @@ body {
 }
 
 .unread {
-    background-color: #cbcdd0;
+    background-color: #EBEEF4;
 }
 .current {
     background-color: #6D84B4;
     border-color: #4E5D7B;
+    color: #ffffff;
 }
 
-.selected {
-    color: #ffffff;
+.conversation.current .close{
+    color: #FFFFFF;
+}
+
+.conversation .close:hover{
+    opacity: 0.8;
 }
 
 .msg-wrap
@@ -113,7 +122,7 @@ body {
     color:#bfbfbf;
 }
 
-.selected .time{
+.current .time{
     color: #ffffff;
 }
 
@@ -182,7 +191,7 @@ body {
     color:#003bb3;
 }
 
-.selected .media-heading{
+.current .media-heading{
     color: #ffffff;
 }
 

@@ -18,8 +18,11 @@ $widget->itemOptions['data-contact-info'] = $model['contact'];
 
     <h5 class="media-heading"><?= $model['contact']['profile']['full_name']?></h5>
     <small><?=$user['id'] == $model['sender_id'] ? '<i class="fa fa-reply"></i>':''?> <?= $model['text']?></small>
+    <?php if($model['new_messages'] > 0):?>
+        <span class="badge pull-right msg-new"><?= $model['new_messages']?></span>
+    <?php endif;?>
     <ul class="pull-right list-inline">
-        <li><a class="close" title="Mark as <?=$model['is_new'] ?'read':'unread'?>"><small class="small-icon" aria-hidden="true"><i class="fa fa-circle<?=$model['is_new'] ?'':'-o'?>"></i></small></a></li>
+        <li><a class="close" title="Mark as <?=$model['new_messages'] > 0 ?'read':'unread'?>"><small class="small-icon" aria-hidden="true"><i class="fa fa-circle<?=$model['new_messages'] > 0 ?'':'-o'?>"></i></small></a></li>
         <li><a class="close" title="Archive"><small class="small-icon" aria-hidden="true"><i class="fa fa-times"></i></small></a></li>
     </ul>
 </div>

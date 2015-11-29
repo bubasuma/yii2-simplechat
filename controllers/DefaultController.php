@@ -5,6 +5,7 @@ namespace bubasuma\simplechat\controllers;
 use bubasuma\simplechat\db\Model;
 use yii\base\NotSupportedException;
 use yii\db\ActiveQuery;
+use yii\helpers\ArrayHelper;
 use yii\helpers\Inflector;
 use yii\web\Controller;
 use yii\web\Response;
@@ -33,9 +34,7 @@ class DefaultController extends Controller
                 'only' => [
                     'messages',
                     'create-message',
-                    'delete-message',
                     'conversations',
-                    'delete-conversation',
                 ],
                 'formats' => [
                     'application/json' => Response::FORMAT_JSON,
@@ -48,8 +47,9 @@ class DefaultController extends Controller
                     'messages'   => ['post'],
                     'conversations' => ['post'],
                     'create-message' => ['post', 'put'],
-                    'delete-message' => ['delete'],
                     'delete-conversation' => ['delete'],
+                    'mark-conversation-as-read' => ['patch'],
+                    'mark-conversation-as-unread' => ['patch'],
                 ],
             ],
         ];
@@ -94,7 +94,24 @@ class DefaultController extends Controller
     }
 
     public function actionDeleteConversation(){
-        throw new NotSupportedException(get_class($this) . ' does not support actionDeleteConversation().');
+        $userId = $this->user->id;
+        $contactId = \Yii::$app->request->get('contactId');
+        $callable = [$this->modelClass, 'deleteConversation'];
+        return call_user_func($callable, $userId, $contactId);
+    }
+
+    public function actionMarkConversationAsRead(){
+        $userId = $this->user->id;
+        $contactId = \Yii::$app->request->get('contactId');
+        $callable = [$this->modelClass, 'markConversationAsRead'];
+        return call_user_func($callable, $userId, $contactId);
+    }
+
+    public function actionMarkConversationAsUnread(){
+        $userId = $this->user->id;
+        $contactId = \Yii::$app->request->get('contactId');
+        $callable = [$this->modelClass, 'markConversationAsUnRead'];
+        return call_user_func($callable, $userId, $contactId);
     }
 
     /**
@@ -110,6 +127,8 @@ class DefaultController extends Controller
      * @return array
      */
     public function formatConversation($model){
+        $model['new_messages'] = ArrayHelper::getValue($model,'newMessages.count',0);
+        ArrayHelper::remove($model, 'newMessages');
         return $model;
     }
 

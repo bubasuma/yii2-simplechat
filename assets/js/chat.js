@@ -23,12 +23,8 @@
         });
 
         $(conversations).on('click','.conversation:not(.current)', function () {
-            $(this).addClass('selected')
-                .addClass('current')
-                .siblings('.current')
-                .removeClass('current')
-                .filter(':not(.unread)')
-                .removeClass('selected');
+            $(this).addClass('current').siblings('.current').removeClass('current');
+
 
             //copy previous configuration
             var options = $.extend({}, messages.simpleChatMessages('data'));
@@ -101,6 +97,7 @@
             if(data.length == 0){
                 messages.simpleChatMessages('resetForm');
                 messages.simpleChatMessages('load','new');
+                conversations.simpleChatConversations('load','new');
             }
         });
 
