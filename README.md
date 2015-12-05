@@ -31,30 +31,15 @@ Once the extension is installed, simply modify your application configuration as
 return [
     'bootstrap' => ['simplechat'],
     'modules' => [
-        'simplechat' => [
-            'class' => 'bubasuma\simplechat\Module',
-            'controllerMap' => [
-                'default' => 'bubasuma\simplechat\controllers\DemoController'
-            ]
-        ],
-        // ...
-    ],
-    // ...
-];
-```
-Use this configuration for your console application:
-```php
-return [
-    'bootstrap' => ['simplechat'],
-    'modules' => [
         'simplechat' => 'bubasuma\simplechat\Module',
         // ...
     ],
     // ...
 ];
 ```
+>Note:Use the save configuration for your console application.
 
-You can  Simple Chat via command line as follows,
+You can access Simple Chat via command line as follows,
 
 ```
 # change path to your application's base path
@@ -73,13 +58,13 @@ yii simplechat/stop
 You can then access Simple Chat through the following URL:
 
 ```
-http://localhost/path/to/index.php?r=messages/2?userId=1
+http://localhost/path/to/index.php?r=messages?userId=1&contactId=2
 ```
 
 or if you have enabled pretty URLs, you may use the following URL:
 
 ```
-http://localhost/path/to/index.php/messages/2?userId=1
+http://localhost/path/to/index.php/messages?userId=1&contactId=2
 ```
 
 
