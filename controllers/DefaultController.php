@@ -35,6 +35,9 @@ class DefaultController extends Controller
                     'messages',
                     'create-message',
                     'conversations',
+                    'delete-conversation',
+                    'mark-conversation-as-read',
+                    'mark-conversation-as-unread',
                 ],
                 'formats' => [
                     'application/json' => Response::FORMAT_JSON,
@@ -45,8 +48,8 @@ class DefaultController extends Controller
                 'actions' => [
                     'index'  => ['get'],
                     'messages'   => ['post'],
-                    'conversations' => ['post'],
                     'create-message' => ['post', 'put'],
+                    'conversations' => ['post'],
                     'delete-conversation' => ['delete'],
                     'mark-conversation-as-read' => ['patch'],
                     'mark-conversation-as-unread' => ['patch'],
@@ -57,7 +60,7 @@ class DefaultController extends Controller
 
     public function actionIndex()
     {
-        throw new NotSupportedException();
+        throw new NotSupportedException(get_class($this) . ' does not support actionIndex().');
     }
 
     public function actionConversations()
@@ -69,19 +72,17 @@ class DefaultController extends Controller
         return  call_user_func($callable, $userId, $formatter, $limit);
     }
 
-    public function actionMessages()
+    public function actionMessages($contactId)
     {
         $userId = $this->user->id;
-        $contactId = \Yii::$app->request->get('contactId');
         $callable = [$this->modelClass, 'loadMessages'];
         $formatter = [$this, 'formatMessage'];
         $limit = \Yii::$app->request->post('limit');
         return call_user_func($callable, $userId, $contactId, $formatter, $limit);
     }
 
-    public function actionCreateMessage(){
+    public function actionCreateMessage($contactId){
         $userId = $this->user->id;
-        $contactId = \Yii::$app->request->get('contactId');
         if($userId == $contactId){
             throw new ForbiddenHttpException('You attempt to send message to yourself');
         }
@@ -89,27 +90,24 @@ class DefaultController extends Controller
         return call_user_func([$this->modelClass,'create'], $userId, $contactId, $text);
     }
 
-    public function actionDeleteMessage(){
+    public function actionDeleteMessage($id){
         throw new NotSupportedException(get_class($this) . ' does not support actionDeleteMessage().');
     }
 
-    public function actionDeleteConversation(){
+    public function actionDeleteConversation($contactId){
         $userId = $this->user->id;
-        $contactId = \Yii::$app->request->get('contactId');
         $callable = [$this->modelClass, 'deleteConversation'];
         return call_user_func($callable, $userId, $contactId);
     }
 
-    public function actionMarkConversationAsRead(){
+    public function actionMarkConversationAsRead($contactId){
         $userId = $this->user->id;
-        $contactId = \Yii::$app->request->get('contactId');
         $callable = [$this->modelClass, 'markConversationAsRead'];
         return call_user_func($callable, $userId, $contactId);
     }
 
-    public function actionMarkConversationAsUnread(){
+    public function actionMarkConversationAsUnread($contactId){
         $userId = $this->user->id;
-        $contactId = \Yii::$app->request->get('contactId');
         $callable = [$this->modelClass, 'markConversationAsUnRead'];
         return call_user_func($callable, $userId, $contactId);
     }

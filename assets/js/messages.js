@@ -16,6 +16,7 @@
     };
 
     var events = {
+        init: 'initialized',
         send:{
             beforeSend: 'beforeSend.send',
             complete: 'complete.send',
@@ -59,20 +60,22 @@
                     e.preventDefault();
                     methods.send.apply($chat);
                 });
+
                 if(settings.sendUrl){
                     $form.attr('action', settings.sendUrl)
                 }
                 if(settings.sendMethod){
                     $form.attr('method', settings.sendMethod)
                 }
+                $chat.trigger(events.init);
             });
         },
 
 
         resetForm: function () {
             var $chat = $(this);
-            var $options = $chat.data('simpleChatMessages');
-            var $form = $chat.find($options.settings.form);
+            var options = $chat.data('simpleChatMessages');
+            var $form = $chat.find(options.settings.form);
             $form.find('input, textarea, select').each(function () {
                 var $input = $(this);
                 $input.val('');
@@ -81,10 +84,16 @@
 
         send: function () {
             var $chat = $(this);
-            var $options = $chat.data('simpleChatMessages');
-            var $form = $chat.find($options.settings.form);
+            var options = $chat.data('simpleChatMessages');
+            var $form = $chat.find(options.settings.form);
+            var url = $form.attr('action');
+            if(-1 !== url.indexOf('?')){
+                url += '&contactId=' + options.contact.id;
+            }else{
+                url += '?contactId=' + options.contact.id;
+            }
             $.ajax({
-                url: $form.attr('action'),
+                url: url,
                 type: $form.attr('method'),
                 dataType: 'JSON',
                 data: $form.serialize(),
@@ -129,9 +138,17 @@
             if(elem){
                 data[options.settings.loadParam] = elem.data(options.settings.loadParam);
             }
+
+            var url = options.settings.loadUrl;
+            if(-1 !== url.indexOf('?')){
+                url += '&contactId=' + options.contact.id;
+            }else{
+                url += '?contactId=' + options.contact.id;
+            }
+
             if(options.status == 0) {
                 $.ajax({
-                    url: options.settings.loadUrl,
+                    url: url,
                     type: options.settings.loadMethod,
                     dataType: 'JSON',
                     data: data,
@@ -155,17 +172,17 @@
 
         empty: function () {
             var $chat = $(this);
-            var $options = $chat.data('simpleChatMessages');
-            var $container = $chat.find($options.settings.container);
+            var options = $chat.data('simpleChatMessages');
+            var $container = $chat.find(options.settings.container);
             $container.empty();
         },
 
         append: function (data) {
             var $chat = $(this);
-            var $options = $chat.data('simpleChatMessages');
-            var $container = $chat.find($options.settings.container);
+            var options = $chat.data('simpleChatMessages');
+            var $container = $chat.find(options.settings.container);
             if(typeof data == 'object'){
-                $container.append(tmpl($options.settings.template,data));
+                $container.append(tmpl(options.settings.template,data));
             }else{
                 $container.append(data);
             }
@@ -173,10 +190,10 @@
 
         prepend: function (data) {
             var $chat = $(this);
-            var $options = $chat.data('simpleChatMessages');
-            var $container = $chat.find($options.settings.container);
+            var options = $chat.data('simpleChatMessages');
+            var $container = $chat.find(options.settings.container);
             if(typeof data == 'object'){
-                $container.prepend(tmpl($options.settings.template,data));
+                $container.prepend(tmpl(options.settings.template,data));
             }else{
                 $container.prepend(data);
             }
@@ -184,14 +201,14 @@
 
         insert: function (data, selector, before) {
             var $chat = $(this);
-            var $options = $chat.data('simpleChatMessages');
-            var $container = $chat.find($options.settings.container);
+            var options = $chat.data('simpleChatMessages');
+            var $container = $chat.find(options.settings.container);
             var $elem = $container.find(selector);
             if(typeof data == 'object'){
                 if(before){
-                    $elem.before(tmpl($options.settings.template,data));
+                    $elem.before(tmpl(options.settings.template,data));
                 }else{
-                    $elem.after(tmpl($options.settings.template,data));
+                    $elem.after(tmpl(options.settings.template,data));
                 }
             }else{
                 if(before){
@@ -205,8 +222,8 @@
         destroy: function () {
             return this.each(function () {
                 var $chat = $(this);
-                var $options = $chat.data('simpleChatMessages');
-                var $form = $chat.find($options.settings.form);
+                var options = $chat.data('simpleChatMessages');
+                var $form = $chat.find(options.settings.form);
                 $form.off('.simpleChatMessages');
                 $chat.removeData('simpleChatMessages');
             });

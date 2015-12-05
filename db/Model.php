@@ -127,10 +127,10 @@ class Model extends ActiveRecord
     /**
      * @param string $userId
      * @param string $contactId
-     * @return int the number of rows updated
+     * @return array the number of rows updated
      */
     public static function deleteConversation($userId, $contactId){
-        return static::updateAll(
+        $count =  static::updateAll(
             [
                 'is_deleted_by_sender' => new Expression('IF([[sender_id]] =:userId, 1, is_deleted_by_sender)'),
                 'is_deleted_by_receiver' => new Expression('IF([[receiver_id]] =:userId, 1, is_deleted_by_receiver)')
@@ -151,25 +151,27 @@ class Model extends ActiveRecord
                 ':userId' => $userId
             ]
         );
+        return compact('count');
     }
 
     /**
      * @param $userId
      * @param $contactId
-     * @return int the number of rows updated
+     * @return array the number of rows updated
      */
     public static function markConversationAsRead($userId, $contactId)
     {
-        return static::updateAll(
+        $count = static::updateAll(
             ['is_new' => 0,],
             ['receiver_id' => $userId, 'sender_id' => $contactId, 'is_new' => 1]
         );
+        return compact('count');
     }
 
     /**
      * @param $userId
      * @param $contactId
-     * @return int
+     * @return array
      */
     public static function markConversationAsUnread($userId, $contactId)
     {
@@ -179,11 +181,12 @@ class Model extends ActiveRecord
             ->orderBy(['id' => SORT_DESC])
             ->limit(1)
             ->one();
-        if(!$last_received_message){
-            return 0;
+        $count =  0;
+        if($last_received_message){
+            $last_received_message->is_new = 1;
+            $count =  intval($last_received_message->update());
         }
-        $last_received_message->is_new = 1;
-        return intval($last_received_message->update());
+        return compact('count');
     }
 
 

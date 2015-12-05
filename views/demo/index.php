@@ -31,7 +31,10 @@ $this->params['users'] = $users;
             ],
         ],
         'clientOptions' => [
-            'url' => '/messages?userId='.$user->id,
+            'loadUrl' => '/conversations?userId=' . $user->id,
+            'deleteUrl' => '/conversation?userId=' . $user->id,
+            'readUrl' => '/conversation/read?userId=' . $user->id,
+            'unreadUrl' => '/conversation/unread?userId=' . $user->id,
             'template' => '#conv-tmpl',
             'currentCssClass' => 'current',
             'unreadCssClass'=>'unread',
@@ -68,10 +71,11 @@ $this->params['users'] = $users;
         'options' => ['class'=>'message-wrap col-lg-8', 'id'=>'messages'],
         'itemOptions' => ['class'=>'media msg'],
         'formOptions' => [
-            'action' => '/message/' . $contact->id . '?userId=' . $user->id,
+            'action' => '/message?userId=' . $user->id,
             'method'=>'post'
         ],
         'clientOptions' => [
+            'loadUrl' => '/messages?userId='.$user->id,
             'container' => '#msg-wrap',
             'template' => '#msg-tmpl',
             'baseUrl' => $asset->baseUrl,

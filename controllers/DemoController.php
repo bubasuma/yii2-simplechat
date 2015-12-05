@@ -5,6 +5,7 @@ namespace bubasuma\simplechat\controllers;
 use bubasuma\simplechat\db\demo\User;
 use bubasuma\simplechat\helpers\DateHelper;
 use bubasuma\simplechat\Module;
+use yii\helpers\StringHelper;
 use yii\web\NotFoundHttpException;
 
 class DemoController extends DefaultController
@@ -23,7 +24,7 @@ class DemoController extends DefaultController
     public function init()
     {
         parent::init();
-        $this->module->db->tablePrefix = $this->module->id.'_';
+        $this->module->initDemo();
         $this->user = User::findOne(['id' => \Yii::$app->request->get('userId')]);
     }
 
@@ -54,7 +55,7 @@ class DemoController extends DefaultController
         foreach(User::find()->with('profile')->all() as $userItem){
             $users[] = [
                 'label' => $userItem->fullName,
-                'url' =>'/messages/' . $contact->id . '?userId='.$userItem->id,
+                'url' =>'/messages?userId=' . $userItem->id . '&contactId=' . $contact->id,
                 'options' => ['class' => $userItem->id == $contact->id || $userItem->id == $user->id ? 'disabled' : '']
             ];
         }
@@ -76,9 +77,7 @@ class DemoController extends DefaultController
     {
         $model = parent::formatConversation($model);
         $model['date'] = DateHelper::formatConversationDate($model['created_at']);
-        $model['text'] = \yii\helpers\StringHelper::truncate($model['text'],20);
-        $model['load_url'] = '/messages/' . $model['contact']['id'] . '?userId='.$this->user->id;
-        $model['send_url'] = '/message/' . $model['contact']['id']. '?userId='.$this->user->id;
+        $model['text'] = StringHelper::truncate($model['text'],20);
         return $model;
     }
 

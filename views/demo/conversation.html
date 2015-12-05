@@ -1,7 +1,6 @@
 <script id="conv-tmpl" type="text/plain">
     <div class="media conversation <%= model.new_messages > 0 ? options.settings.unreadCssClass : '' %> <%= is_current ? options.settings.currentCssClass : '' %>" data-key="<%= key %>"
-        data-contact-info = '<%= JSON.stringify(model.contact) %>'
-        data-contact="<%= model.contact_id %>" data-load-url="<%= model.load_url %>" data-send-url="<%= model.send_url %>">
+        data-contact-info = '<%= JSON.stringify(model.contact) %>' data-contact="<%= model.contact_id %>" >
         <a class="pull-left" href="#">
             <img class="media-object" data-src="holder.js/64x64" alt="64x64" style="width: 50px; height: 50px;" src="<%= options.settings.baseUrl + '/img/' + model.contact.profile.avatar %>">
         </a>
@@ -9,9 +8,7 @@
             <small class="pull-right time"><%= model.date %></small>
             <h5 class="media-heading"><%= model.contact.profile.full_name %></h5>
             <small><%= options.user.id == model.sender_id ? '<i class="fa fa-reply"></i>' : '' %> <%= model.text %></small>
-            <% if(model.new_messages > 0) { %>
-                <span class="badge pull-right msg-new"><%= model.new_messages %></span>
-            <% } %>
+            <span class="badge pull-right msg-new"><%= model.new_messages > 0 ? model.new_messages : '' %></span>
             <ul class="pull-right list-inline">
                 <li><a class="close" title="Mark as <%= model.new_messages > 0 ?'read':'unread'%>"><small class="small-icon" aria-hidden="true"><i class="fa fa-circle<%= model.new_messages > 0 ?'':'-o'%>"></i></small></a></li>
                 <li><a class="close" title="Archive"><small class="small-icon" aria-hidden="true"><i class="fa fa-times"></i></small></a></li>

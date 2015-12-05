@@ -16,18 +16,43 @@
     };
 
     var events = {
+        init: 'initialized',
         load:{
             beforeSend: 'beforeSend.load',
             complete: 'complete.load',
             error: 'error.load',
             success: 'success.load'
+        },
+        read:{
+            beforeSend: 'beforeSend.read',
+            complete: 'complete.read',
+            error: 'error.read',
+            success: 'success.read'
+        },
+        unread:{
+            beforeSend: 'beforeSend.unread',
+            complete: 'complete.unread',
+            error: 'error.unread',
+            success: 'success.unread'
+        },
+        delete:{
+            beforeSend: 'beforeSend.delete',
+            complete: 'complete.delete',
+            error: 'error.delete',
+            success: 'success.delete'
         }
 
     };
 
     var defaults = {
-        url: '',
-        type: 'POST',
+        loadUrl: '',
+        loadType: 'POST',
+        unreadUrl: '',
+        unreadType: 'PATCH',
+        readUrl: '',
+        readType: 'PATCH',
+        deleteUrl: '',
+        deleteType: 'DELETE',
         loadParam: 'key',
         limit: 10
     };
@@ -45,6 +70,7 @@
                     user: user,
                     status: 0  // load status, 0: pending load, 1: loading
                 });
+                $chat.trigger(events.init);
             });
         },
         load: function (args) {
@@ -62,13 +88,13 @@
                 data = $.extend({}, data, args || {});
             }
             var elem = find($chat, data['type'] == loadTypes.up ?'first':'last');
-
-            data[options.settings.loadParam] = elem.data(options.settings.loadParam);
-
+            if(elem){
+                data[options.settings.loadParam] = elem.data(options.settings.loadParam);
+            }
             if(options.status == 0) {
                 $.ajax({
-                    url: options.settings.url,
-                    type: options.settings.type,
+                    url: options.settings.loadUrl,
+                    type: options.settings.loadType,
                     dataType: 'JSON',
                     data: data,
                     beforeSend: function (xhr, settings) {
@@ -89,11 +115,98 @@
             }
         },
 
+        unread: function (id) {
+            var $chat = $(this);
+            var options = $chat.data('simpleChatConversations');
+            var url = options.settings.unreadUrl;
+            if(-1 !== url.indexOf('?')){
+                url += '&contactId=' + id;
+            }else{
+                url += '?contactId=' + id;
+            }
+            $.ajax({
+                url: url,
+                type: options.settings.unreadType,
+                dataType: 'JSON',
+                data: {contactId : id},
+                beforeSend: function (xhr,settings) {
+                    $chat.trigger(events.unread.beforeSend, [id, xhr,settings]);
+                },
+                complete: function (xhr,textStatus) {
+                    $chat.trigger(events.unread.complete,[id, xhr,textStatus]);
+                },
+                success: function (res, textStatus, xhr) {
+                    $chat.trigger(events.unread.success,[id, res, textStatus, xhr]);
+                },
+                error: function (xhr,textStatus,errorThrown) {
+                    $chat.trigger(events.unread.error,[id, xhr,textStatus,errorThrown]);
+                }
+            });
+        },
+
+        read: function (id) {
+            var $chat = $(this);
+            var options = $chat.data('simpleChatConversations');
+            var url = options.settings.readUrl;
+            if(-1 !== url.indexOf('?')){
+                url += '&contactId=' + id;
+            }else{
+                url += '?contactId=' + id;
+            }
+            $.ajax({
+                url: url,
+                type: options.settings.readType,
+                dataType: 'JSON',
+                data: {contactId : id},
+                beforeSend: function (xhr,settings) {
+                    $chat.trigger(events.read.beforeSend, [id, xhr,settings]);
+                },
+                complete: function (xhr,textStatus) {
+                    $chat.trigger(events.read.complete,[id, xhr,textStatus]);
+                },
+                success: function (res, textStatus, xhr) {
+                    $chat.trigger(events.read.success,[id, res, textStatus, xhr]);
+                },
+                error: function (xhr,textStatus,errorThrown) {
+                    $chat.trigger(events.read.error,[id, xhr,textStatus,errorThrown]);
+                }
+            });
+        },
+
+        delete: function (id) {
+            var $chat = $(this);
+            var options = $chat.data('simpleChatConversations');
+            var url = options.settings.deleteUrl;
+            if(-1 !== url.indexOf('?')){
+                url += '&contactId=' + id;
+            }else{
+                url += '?contactId=' + id;
+            }
+            $.ajax({
+                url: url,
+                type: options.settings.deleteType,
+                dataType: 'JSON',
+                data: {contactId : id},
+                beforeSend: function (xhr,settings) {
+                    $chat.trigger(events.delete.beforeSend, [id, xhr,settings]);
+                },
+                complete: function (xhr,textStatus) {
+                    $chat.trigger(events.delete.complete,[id, xhr,textStatus]);
+                },
+                success: function (res, textStatus, xhr) {
+                    $chat.trigger(events.delete.success,[id, res, textStatus, xhr]);
+                },
+                error: function (xhr,textStatus,errorThrown) {
+                    $chat.trigger(events.delete.error,[id, xhr,textStatus,errorThrown]);
+                }
+            });
+        },
+
         append: function (data) {
             var $chat = $(this);
-            var $options = $chat.data('simpleChatConversations');
+            var options = $chat.data('simpleChatConversations');
             if(typeof data == 'object'){
-                $chat.append(tmpl($options.settings.template,data));
+                $chat.append(tmpl(options.settings.template,data));
             }else{
                 $chat.append(data);
             }
@@ -101,9 +214,9 @@
 
         prepend: function (data) {
             var $chat = $(this);
-            var $options = $chat.data('simpleChatConversations');
+            var options = $chat.data('simpleChatConversations');
             if(typeof data == 'object'){
-                $chat.prepend(tmpl($options.settings.template,data));
+                $chat.prepend(tmpl(options.settings.template,data));
             }else{
                 $chat.prepend(data);
             }
@@ -111,13 +224,13 @@
 
         insert: function (data, selector, before) {
             var $chat = $(this);
-            var $options = $chat.data('simpleChatConversations');
+            var options = $chat.data('simpleChatConversations');
             var $elem = $chat.find(selector);
             if(typeof data == 'object'){
                 if(before){
-                    $elem.before(tmpl($options.settings.template,data));
+                    $elem.before(tmpl(options.settings.template,data));
                 }else{
-                    $elem.after(tmpl($options.settings.template,data));
+                    $elem.after(tmpl(options.settings.template,data));
                 }
             }else{
                 if(before){

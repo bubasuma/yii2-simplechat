@@ -66,22 +66,28 @@ class Module extends \yii\base\Module implements BootstrapInterface
     {
         if ($app instanceof \yii\web\Application) {
             $app->getUrlManager()->addRules([
-                'GET messages/<contactId:\d+>' => $this->id . '/default/index',
-                'POST messages/<contactId:\d+>' => $this->id . '/default/messages',
-                'DELETE messages/<contactId:\d+>' => $this->id . '/default/delete-conversation',
-                'PATCH messages/mark-as-read/<contactId:\d+>' => $this->id . '/default/mark-conversation-as-read',
-                'PATCH messages/mark-as-unread/<contactId:\d+>' => $this->id . '/default/mark-conversation-as-unread',
+                'GET messages' => $this->id . '/demo/index',
 
-                'POST messages' => $this->id . '/default/conversations',
-                'PUT,POST message/<contactId:\d+>' => $this->id . '/default/create-message',
-                'DELETE message/<id:\d+>' => $this->id . '/default/delete-message',
+                'POST messages' => $this->id . '/demo/messages',
+                'PUT,POST message' => $this->id . '/demo/create-message',
+                'DELETE message' => $this->id . '/demo/delete-message',
+
+                'POST conversations' => $this->id . '/demo/conversations',
+                'PATCH conversation/unread' => $this->id . '/demo/mark-conversation-as-unread',
+                'PATCH conversation/read' => $this->id . '/demo/mark-conversation-as-read',
+                'DELETE conversation' => $this->id . '/demo/delete-conversation',
             ], false);
         }elseif ($app instanceof \yii\console\Application) {
             $app->controllerMap[$this->id] = [
-                'class' => 'bubasuma\simplechat\console\ConsoleController',
+                'class' => 'bubasuma\simplechat\console\DemoController',
                 'module' => $this,
             ];
         }
+    }
+
+    public function initDemo()
+    {
+        $this->db->tablePrefix = $this->id . '_';
     }
 
 }

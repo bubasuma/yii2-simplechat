@@ -8,29 +8,12 @@
 
 namespace bubasuma\simplechat\console;
 
-use bubasuma\simplechat\Module;
 use yii\db\Query;
 use yii\helpers\Console;
 
 class MigrateController extends \yii\console\controllers\MigrateController
 {
-    /**
-     * @var Module
-     */
-    public $module;
 
-    /**
-     * @inheritdoc
-     */
-    public function beforeAction($action)
-    {
-        if (parent::beforeAction($action)) {
-            $this->module->db->tablePrefix = $this->module->id.'_';
-            return true;
-        } else {
-            return false;
-        }
-    }
     /**
      * Creates the migration history table.
      */
