@@ -31,15 +31,47 @@ Once the extension is installed, simply modify your application configuration as
 return [
     'bootstrap' => ['simplechat'],
     'modules' => [
+        'simplechat' => [
+            'class' => 'bubasuma\simplechat\Module',
+            'controllerMap' => [
+                //demo configuration. Replace 'bubasuma\simplechat\controllers\DemoController'
+                //to your controller class path
+                'default' => 'bubasuma\simplechat\controllers\DemoController'
+            ],
+        ],
+        // ...
+    ],
+    // ...
+    'components' => [
+        'view' => [
+            'theme' => [
+                'pathMap' => [                    
+                    //Demo configuration. Replace @bubasuma/simplechat/views/demo 
+                    //to your view path
+                    '@bubasuma/simplechat/views/default' => '@bubasuma/simplechat/views/demo',
+                ],
+            ],
+        ],
+        // ...
+    ],
+    // ...
+];
+```
+Use this configuration for your console application:
+
+```php
+return [
+    'bootstrap' => ['simplechat'],
+    'modules' => [
         'simplechat' => 'bubasuma\simplechat\Module',
         // ...
     ],
     // ...
 ];
 ```
->Note:Use the save configuration for your console application.
+>Note: You need this configuration to access simple chat via command line. You can remove it in production mode.
 
-You can access Simple Chat via command line as follows,
+You can access Simple Chat via command line as follows:
 
 ```
 # change path to your application's base path

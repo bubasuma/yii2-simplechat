@@ -66,16 +66,16 @@ class Module extends \yii\base\Module implements BootstrapInterface
     {
         if ($app instanceof \yii\web\Application) {
             $app->getUrlManager()->addRules([
-                'GET messages' => $this->id . '/demo/index',
+                'GET messages' => $this->id . '/default/index',
 
-                'POST messages' => $this->id . '/demo/messages',
-                'PUT,POST message' => $this->id . '/demo/create-message',
-                'DELETE message' => $this->id . '/demo/delete-message',
+                'POST messages' => $this->id . '/default/messages',
+                'PUT,POST message' => $this->id . '/default/create-message',
+                'DELETE message' => $this->id . '/default/delete-message',
 
-                'POST conversations' => $this->id . '/demo/conversations',
-                'PATCH conversation/unread' => $this->id . '/demo/mark-conversation-as-unread',
-                'PATCH conversation/read' => $this->id . '/demo/mark-conversation-as-read',
-                'DELETE conversation' => $this->id . '/demo/delete-conversation',
+                'POST conversations' => $this->id . '/default/conversations',
+                'PATCH conversation/unread' => $this->id . '/default/mark-conversation-as-unread',
+                'PATCH conversation/read' => $this->id . '/default/mark-conversation-as-read',
+                'DELETE conversation' => $this->id . '/default/delete-conversation',
             ], false);
         }elseif ($app instanceof \yii\console\Application) {
             $app->controllerMap[$this->id] = [

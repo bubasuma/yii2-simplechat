@@ -129,18 +129,4 @@ class DefaultController extends Controller
         ArrayHelper::remove($model, 'newMessages');
         return $model;
     }
-
-    /**
-     * Returns the directory containing view files for this controller.
-     * returns the directory named as controller [[id]] under the app's
-     * [[viewPath]] directory.
-     * @return string the directory containing the view files for this controller.
-     */
-    public function getViewPath()
-    {
-        $className = preg_replace('/[A-Za-z_-]+\\\/','',$this->className());
-        $folder = str_replace('-controller','', trim(Inflector::camel2id($className),'-'));
-        return $this->module->getViewPath() . DIRECTORY_SEPARATOR . $folder;
-    }
-
 }
