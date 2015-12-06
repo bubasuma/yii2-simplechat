@@ -106,3 +106,10 @@ You should see the below "Congratulations!" page in your browser, if you are run
 If you are running with demo configurations:
 
 ![yii simple chat demo page](http://i.imgur.com/mB0CsETh.png "yii simple chat demo page")
+
+If not, please check if demo migration has been successfully applied against your database. You can check it by running the following command:
+
+```
+yii simplechat/start
+```
+>Note: the command above is accessible only if you have configured your console application as it is recommended above.
