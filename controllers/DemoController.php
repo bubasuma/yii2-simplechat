@@ -15,7 +15,6 @@ class DemoController extends DefaultController
      */
     public $module;
 
-    public $layout = 'main';
     public $modelClass = 'bubasuma\simplechat\db\demo\Message';
 
     /**

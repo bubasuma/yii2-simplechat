@@ -23,8 +23,7 @@ class DemoAsset extends AssetBundle
         'js/chat.js'
     ];
     public $depends = [
-        'yii\web\YiiAsset',
-        'yii\bootstrap\BootstrapAsset',
+        'bubasuma\simplechat\BaseAsset',
     ];
 
     public function init(){

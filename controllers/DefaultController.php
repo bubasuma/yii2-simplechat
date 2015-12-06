@@ -13,6 +13,7 @@ use yii\web\ForbiddenHttpException;
 
 class DefaultController extends Controller
 {
+    public $layout = 'main';
     public $modelClass = 'bubasuma\simplechat\db\Model';
     public $user;
 
@@ -60,7 +61,7 @@ class DefaultController extends Controller
 
     public function actionIndex()
     {
-        throw new NotSupportedException(get_class($this) . ' does not support actionIndex().');
+        return $this->render('index');
     }
 
     public function actionConversations()

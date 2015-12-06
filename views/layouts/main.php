@@ -30,15 +30,20 @@ use yii\widgets\Breadcrumbs;
         ],
     ]);
 
-    $menuItems[] = [
-        'label' => 'Hi, '. $this->params['user']['fullName'],
-        'items' => \yii\helpers\ArrayHelper::merge(
-            [
-                ['label' => 'Log in as']
-            ],
-            $this->params['users']
-        )
-    ];
+    $menuItems = [];
+
+    if(isset($this->params['user']) && isset($this->params['users'])){
+        $menuItems[] = [
+            'label' => 'Hi, '. $this->params['user']['fullName'],
+            'items' => \yii\helpers\ArrayHelper::merge(
+                [
+                    ['label' => 'Log in as']
+                ],
+                $this->params['users']
+            )
+        ];
+    }
+
 
     echo Nav::widget([
         'options' => ['class' => 'navbar-nav navbar-right'],
