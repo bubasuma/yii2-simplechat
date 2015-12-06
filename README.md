@@ -99,4 +99,10 @@ or if you have enabled pretty URLs, you may use the following URL:
 http://localhost/path/to/index.php/messages?userId=1&contactId=2
 ```
 
+You should see the below "Congratulations!" page in your browser, if you are running extension without demo configuration.
 
+[yii simple chat Congratulation page]:http://i.imgur.com/lLQnfHs.png "yii simple chat Congratulation page"
+
+If you are running with demo configurations:
+
+[yii simple chat demo page]:http://i.imgur.com/mB0CsET.png "yii simple chat demo page"
