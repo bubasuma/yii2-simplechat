@@ -1,13 +1,24 @@
 <?php
-
+/**
+ * @link https://github.com/bubasuma/yii2-simplechat
+ * @copyright Copyright (c) 2015 bubasuma
+ * @license http://opensource.org/licenses/BSD-3-Clause
+ */
 namespace bubasuma\simplechat;
+
 use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
 use yii\helpers\Json;
 use yii\helpers\Url;
 use yii\widgets\ListView;
 
-
+/**
+ * Class MessageWidget
+ * @package bubasuma\simplechat
+ *
+ * @author Buba Suma <bubasuma@gmail.com>
+ * @since 1.0
+ */
 class MessageWidget extends ListView
 {
     /**
@@ -26,7 +37,7 @@ class MessageWidget extends ListView
 
     public $formParams = [];
 
-    public $formOptions = ['method'=>'post'];
+    public $formOptions = ['method' => 'post'];
 
     public $clientOptions = [];
 
@@ -37,21 +48,21 @@ class MessageWidget extends ListView
 
     public function renderForm()
     {
-        $action = ArrayHelper::remove($this->formOptions,'action','/message/' . $this->contact['id']);
-        $method = ArrayHelper::remove($this->formOptions,'method','post');
+        $action = ArrayHelper::remove($this->formOptions, 'action', '');
+        $method = ArrayHelper::remove($this->formOptions, 'method', 'post');
 
-        if(!isset($this->formOptions['id'])){
+        if (!isset($this->formOptions['id'])) {
             $this->formOptions['id'] = 'msg-form';
         }
 
-        $content = Html::beginForm($action,$method,$this->formOptions);
+        $content = Html::beginForm($action, $method, $this->formOptions);
 
         if (is_string($this->formView)) {
             $content .= $this->getView()->render($this->formView, array_merge([
                 'widget' => $this,
             ], $this->formParams));
         } else {
-            $content .= call_user_func($this->formView,$this);
+            $content .= call_user_func($this->formView, $this);
         }
 
         $content .= Html::endForm();
@@ -60,10 +71,11 @@ class MessageWidget extends ListView
 
     }
 
-    public function registerJs(){
+    public function registerJs()
+    {
         $id = $this->options['id'];
-        if(!isset($this->clientOptions['selector'])){
-            $this->clientOptions['selector'] = '.' . strstr($this->itemOptions['class'],' ',true);
+        if (!isset($this->clientOptions['selector'])) {
+            $this->clientOptions['selector'] = '.' . strstr($this->itemOptions['class'], ' ', true);
         }
         $this->clientOptions['form'] = '#' . $this->formOptions['id'];
         $options = Json::htmlEncode($this->clientOptions);
@@ -86,8 +98,8 @@ class MessageWidget extends ListView
         if (!isset($this->itemOptions['class'])) {
             $this->itemOptions['class'] = 'msg-item';
         }
-        $this->tag = ArrayHelper::remove($this->options,'tag', 'div');
-        echo Html::beginTag($this->tag,$this->options);
+        $this->tag = ArrayHelper::remove($this->options, 'tag', 'div');
+        echo Html::beginTag($this->tag, $this->options);
 
     }
 
@@ -116,7 +128,7 @@ class MessageWidget extends ListView
         $options = $this->itemOptions;
         $tag = ArrayHelper::remove($options, 'tag', 'div');
         if ($tag !== false) {
-            $options['data-key'] = is_array($key) ? json_encode($key, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE) : (string) $key;
+            $options['data-key'] = is_array($key) ? json_encode($key, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE) : (string)$key;
 
             return Html::tag($tag, $content, $options);
         } else {
@@ -153,6 +165,6 @@ class MessageWidget extends ListView
     {
         $users = [$this->user['id'], $this->contact['id']];
         sort($users);
-        return md5(implode('&',$users));
+        return md5(implode('&', $users));
     }
 }

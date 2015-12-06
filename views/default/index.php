@@ -1,6 +1,6 @@
 <?php
 /**
- *@var $this \yii\web\View
+ * @var $this \yii\web\View
  */
 
 use bubasuma\simplechat\BaseAsset;
@@ -13,6 +13,7 @@ BaseAsset::register($this);
 
         <p class="lead">You have successfully installed Yii2-SimpleChat.</p>
 
-        <p><a class="btn btn-lg btn-success" href="https://github.com/bubasuma/yii2-simplechat#usage">Get started with Demo</a></p>
+        <p><a class="btn btn-lg btn-success" href="https://github.com/bubasuma/yii2-simplechat#usage">Get started with
+                Demo</a></p>
     </div>
 </div>

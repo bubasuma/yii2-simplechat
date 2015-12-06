@@ -1,19 +1,23 @@
 <?php
 /**
- * Created by PhpStorm.
- * User: buba
- * Date: 27.11.15
- * Time: 12:20
+ * @link https://github.com/bubasuma/yii2-simplechat
+ * @copyright Copyright (c) 2015 bubasuma
+ * @license http://opensource.org/licenses/BSD-3-Clause
  */
-
 namespace bubasuma\simplechat\console;
 
 use yii\db\Query;
 use yii\helpers\Console;
 
+/**
+ * Class MigrateController
+ * @package bubasuma\simplechat\console
+ *
+ * @author Buba Suma <bubasuma@gmail.com>
+ * @since 1.0
+ */
 class MigrateController extends \yii\console\controllers\MigrateController
 {
-
     /**
      * Creates the migration history table.
      */
@@ -30,10 +34,10 @@ class MigrateController extends \yii\console\controllers\MigrateController
      */
     public function actionDown($limit = 'all')
     {
-        $ret =  parent::actionDown('all');
+        $ret = parent::actionDown('all');
         $query = new Query;
         $query->from($this->migrationTable);
-        if(1 == $query->count()){
+        if (1 == $query->count()) {
             $this->deleteMigrationHistoryTable();
         }
         return $ret;

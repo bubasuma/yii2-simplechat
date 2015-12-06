@@ -1,4 +1,9 @@
 <?php
+/**
+ * @link https://github.com/bubasuma/yii2-simplechat
+ * @copyright Copyright (c) 2015 bubasuma
+ * @license http://opensource.org/licenses/BSD-3-Clause
+ */
 return [
     [
         'email' => 'johnny-deep@gmail.com',

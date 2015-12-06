@@ -1,18 +1,22 @@
 <?php
 /**
- * Created by PhpStorm.
- * User: buba
- * Date: 18.10.15
- * Time: 12:43
+ * @link https://github.com/bubasuma/yii2-simplechat
+ * @copyright Copyright (c) 2015 bubasuma
+ * @license http://opensource.org/licenses/BSD-3-Clause
  */
-
 namespace bubasuma\simplechat\db;
-
 
 use yii\db\ActiveQuery;
 use yii\db\ActiveRecord;
 use yii\db\Query;
 
+/**
+ * Class ConversationQuery
+ * @package bubasuma\simplechat\db
+ *
+ * @author Buba Suma <bubasuma@gmail.com>
+ * @since 1.0
+ */
 class ConversationQuery extends ActiveQuery
 {
     public $userId;
@@ -67,7 +71,7 @@ class ConversationQuery extends ActiveQuery
 
         if ($this->indexBy === null) {
             $models = $rows;
-        }else{
+        } else {
             foreach ($rows as $row) {
                 if (is_string($this->indexBy)) {
                     $key = $row[$this->indexBy];

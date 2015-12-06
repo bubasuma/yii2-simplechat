@@ -1,3 +1,14 @@
+/**
+ * yii2-simplechat conversations widget.
+ *
+ * This is the JavaScript widget used by the bubasuma\simplechat\ConversationWidget widget.
+ *
+ * @link https://github.com/bubasuma/yii2-simplechat
+ * @copyright Copyright (c) 2015 bubasuma
+ * @license http://opensource.org/licenses/BSD-3-Clause
+ * @author Buba Suma <bubasuma@gmail.com>
+ * @since 1.0
+ */
 (function ($) {
     $.fn.simpleChatConversations = function (method) {
         if (methods[method]) {

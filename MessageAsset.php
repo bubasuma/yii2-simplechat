@@ -1,14 +1,19 @@
 <?php
-
+/**
+ * @link https://github.com/bubasuma/yii2-simplechat
+ * @copyright Copyright (c) 2015 bubasuma
+ * @license http://opensource.org/licenses/BSD-3-Clause
+ */
 namespace bubasuma\simplechat;
 
 use yii\web\AssetBundle;
 
 /**
- * Created by PhpStorm.
- * User: buba
- * Date: 18.10.15
- * Time: 10:00
+ * Class MessageAsset
+ * @package bubasuma\simplechat
+ *
+ * @author Buba Suma <bubasuma@gmail.com>
+ * @since 1.0
  */
 class MessageAsset extends AssetBundle
 {
@@ -16,7 +21,8 @@ class MessageAsset extends AssetBundle
         'js/messages.js',
     ];
 
-    public function init(){
+    public function init()
+    {
         parent::init();
         $this->sourcePath = __DIR__ . '/assets';
     }

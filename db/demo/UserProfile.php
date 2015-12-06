@@ -1,13 +1,10 @@
 <?php
 /**
- * Created by PhpStorm.
- * User: buba
- * Date: 21.11.15
- * Time: 12:36
+ * @link https://github.com/bubasuma/yii2-simplechat
+ * @copyright Copyright (c) 2015 bubasuma
+ * @license http://opensource.org/licenses/BSD-3-Clause
  */
-
 namespace bubasuma\simplechat\db\demo;
-
 
 use bubasuma\simplechat\migrations\Migration;
 use yii\db\ActiveRecord;
@@ -21,6 +18,9 @@ use yii\db\ActiveRecord;
  * @property string last_name
  * @property string gender
  * @property string avatar
+ *
+ * @author Buba Suma <bubasuma@gmail.com>
+ * @since 1.0
  */
 class UserProfile extends ActiveRecord
 {

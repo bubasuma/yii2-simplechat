@@ -1,12 +1,23 @@
 <?php
-
+/**
+ * @link https://github.com/bubasuma/yii2-simplechat
+ * @copyright Copyright (c) 2015 bubasuma
+ * @license http://opensource.org/licenses/BSD-3-Clause
+ */
 namespace bubasuma\simplechat;
+
 use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
 use yii\helpers\Json;
 use yii\widgets\ListView;
 
-
+/**
+ * Class ConversationWidget
+ * @package bubasuma\simplechat
+ *
+ * @author Buba Suma <bubasuma@gmail.com>
+ * @since 1.0
+ */
 class ConversationWidget extends ListView
 {
     public $user;
@@ -20,10 +31,11 @@ class ConversationWidget extends ListView
     private $tag;
 
 
-    public function registerJs(){
+    public function registerJs()
+    {
         $id = $this->options['id'];
-        if(!isset($this->clientOptions['selector'])){
-            $this->clientOptions['selector'] = '.' . strstr($this->itemOptions['class'],' ',true);
+        if (!isset($this->clientOptions['selector'])) {
+            $this->clientOptions['selector'] = '.' . strstr($this->itemOptions['class'], ' ', true);
         }
         $options = Json::htmlEncode($this->clientOptions);
         $user = Json::htmlEncode($this->user);
@@ -44,8 +56,8 @@ class ConversationWidget extends ListView
         if (!isset($this->itemOptions['class'])) {
             $this->itemOptions['class'] = 'conv-item';
         }
-        $this->tag = ArrayHelper::remove($this->options,'tag', 'div');
-        echo Html::beginTag($this->tag,$this->options);
+        $this->tag = ArrayHelper::remove($this->options, 'tag', 'div');
+        echo Html::beginTag($this->tag, $this->options);
 
     }
 
@@ -73,16 +85,16 @@ class ConversationWidget extends ListView
         $options = $this->itemOptions;
         $tag = ArrayHelper::remove($options, 'tag', 'div');
         if ($tag !== false) {
-            $options['data-key'] = is_array($key) ? json_encode($key, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE) : (string) $key;
+            $options['data-key'] = is_array($key) ? json_encode($key, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE) : (string)$key;
             $options['data-contact'] = $model['contact_id'];
-            if(isset($this->clientOptions['unreadCssClass'])){
+            if (isset($this->clientOptions['unreadCssClass'])) {
                 if ($model['new_messages'] > 0) {
-                    Html::addCssClass($options,$this->clientOptions['unreadCssClass']);
+                    Html::addCssClass($options, $this->clientOptions['unreadCssClass']);
                 }
             }
-            if(isset($this->clientOptions['currentCssClass'])){
+            if (isset($this->clientOptions['currentCssClass'])) {
                 if ($model['contact_id'] == \Yii::$app->request->get('contactId')) {
-                    Html::addCssClass($options,$this->clientOptions['currentCssClass']);
+                    Html::addCssClass($options, $this->clientOptions['currentCssClass']);
                 }
             }
 

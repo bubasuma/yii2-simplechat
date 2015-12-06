@@ -1,17 +1,19 @@
 <?php
 /**
- * @link http://www.yiiframework.com/
- * @copyright Copyright (c) 2008 Yii Software LLC
- * @license http://www.yiiframework.com/license/
+ * @link https://github.com/bubasuma/yii2-simplechat
+ * @copyright Copyright (c) 2015 bubasuma
+ * @license http://opensource.org/licenses/BSD-3-Clause
  */
-
 namespace bubasuma\simplechat;
 
 use yii\web\AssetBundle;
 
 /**
- * @author Qiang Xue <qiang.xue@gmail.com>
- * @since 2.0
+ * Class DemoAsset
+ * @package bubasuma\simplechat
+ *
+ * @author Buba Suma <bubasuma@gmail.com>
+ * @since 1.0
  */
 class DemoAsset extends AssetBundle
 {
@@ -26,7 +28,8 @@ class DemoAsset extends AssetBundle
         'bubasuma\simplechat\BaseAsset',
     ];
 
-    public function init(){
+    public function init()
+    {
         parent::init();
         $this->sourcePath = __DIR__ . '/assets';
     }

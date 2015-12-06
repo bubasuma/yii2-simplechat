@@ -1,6 +1,11 @@
 <?php
-
+/**
+ * @link https://github.com/bubasuma/yii2-simplechat
+ * @copyright Copyright (c) 2015 bubasuma
+ * @license http://opensource.org/licenses/BSD-3-Clause
+ */
 namespace bubasuma\simplechat;
+
 use yii\base\BootstrapInterface;
 use yii\base\InvalidConfigException;
 use yii\db\Connection;
@@ -37,7 +42,7 @@ use yii\di\Instance;
  *
  * The `user` table stores users, and the `message` table stores messages
  *
- * @author Buba <buba@bigdropinc.com>
+ * @author Buba Suma <bubasuma@gmail.com>
  * @since 1.0
  */
 class Module extends \yii\base\Module implements BootstrapInterface
@@ -48,6 +53,7 @@ class Module extends \yii\base\Module implements BootstrapInterface
     public $db = 'db';
 
     public $controllerNamespace = 'bubasuma\simplechat\controllers';
+
     /**
      * Initializes simplechat module.
      * This method will initialize the [[db]] property to make sure it refers to a valid DB connection.
@@ -77,7 +83,7 @@ class Module extends \yii\base\Module implements BootstrapInterface
                 'PATCH conversation/read' => $this->id . '/default/mark-conversation-as-read',
                 'DELETE conversation' => $this->id . '/default/delete-conversation',
             ], false);
-        }elseif ($app instanceof \yii\console\Application) {
+        } elseif ($app instanceof \yii\console\Application) {
             $app->controllerMap[$this->id] = [
                 'class' => 'bubasuma\simplechat\console\DemoController',
                 'module' => $this,

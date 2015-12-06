@@ -1,5 +1,9 @@
 <?php
-
+/**
+ * @link https://github.com/bubasuma/yii2-simplechat
+ * @copyright Copyright (c) 2015 bubasuma
+ * @license http://opensource.org/licenses/BSD-3-Clause
+ */
 namespace bubasuma\simplechat\controllers;
 
 use bubasuma\simplechat\db\demo\User;
@@ -8,6 +12,13 @@ use bubasuma\simplechat\Module;
 use yii\helpers\StringHelper;
 use yii\web\NotFoundHttpException;
 
+/**
+ * Class DemoController
+ * @package bubasuma\simplechat\controllers
+ *
+ * @author Buba Suma <bubasuma@gmail.com>
+ * @since 1.0
+ */
 class DemoController extends DefaultController
 {
     /**
@@ -36,7 +47,7 @@ class DemoController extends DefaultController
          */
         $user = $this->user;
         $contact = User::findOne(['id' => $contactId]);
-        if(empty($contact)){
+        if (empty($contact)) {
             throw new NotFoundHttpException();
         }
 
@@ -51,15 +62,15 @@ class DemoController extends DefaultController
 
         $users = [];
 
-        foreach(User::find()->with('profile')->all() as $userItem){
+        foreach (User::find()->with('profile')->all() as $userItem) {
             $users[] = [
                 'label' => $userItem->fullName,
-                'url' =>'/messages?userId=' . $userItem->id . '&contactId=' . $contact->id,
+                'url' => '/messages?userId=' . $userItem->id . '&contactId=' . $contact->id,
                 'options' => ['class' => $userItem->id == $contact->id || $userItem->id == $user->id ? 'disabled' : '']
             ];
         }
 
-        return $this->render('index',compact('conversationDataProvider','messageDataProvider', 'users','user','contact'));
+        return $this->render('index', compact('conversationDataProvider', 'messageDataProvider', 'users', 'user', 'contact'));
 
     }
 
@@ -76,7 +87,7 @@ class DemoController extends DefaultController
     {
         $model = parent::formatConversation($model);
         $model['date'] = DateHelper::formatConversationDate($model['created_at']);
-        $model['text'] = StringHelper::truncate($model['text'],20);
+        $model['text'] = StringHelper::truncate($model['text'], 20);
         return $model;
     }
 

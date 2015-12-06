@@ -4,12 +4,12 @@ use bubasuma\simplechat\db\demo\User;
 use bubasuma\simplechat\DemoAsset;
 
 /**
- *@var $user User
- *@var $contact User
- *@var array $users
- *@var $messageDataProvider \yii\data\ActiveDataProvider
- *@var $conversationDataProvider \yii\data\ActiveDataProvider
- *@var $this \yii\web\View
+ * @var $user User
+ * @var $contact User
+ * @var array $users
+ * @var $messageDataProvider \yii\data\ActiveDataProvider
+ * @var $conversationDataProvider \yii\data\ActiveDataProvider
+ * @var $this \yii\web\View
  */
 $asset = DemoAsset::register($this);
 $this->params['user'] = $user;
@@ -22,8 +22,8 @@ $this->params['users'] = $users;
 
     $conversation = \bubasuma\simplechat\ConversationWidget::begin([
         'dataProvider' => $conversationDataProvider,
-        'options' => ['class'=>'conversation-wrap col-lg-3', 'id'=>'conv-wrap'],
-        'itemOptions' => ['class'=>'media conversation'],
+        'options' => ['class' => 'conversation-wrap col-lg-3', 'id' => 'conv-wrap'],
+        'itemOptions' => ['class' => 'media conversation'],
         'user' => [
             'id' => $user->id,
             'profile' => [
@@ -37,7 +37,7 @@ $this->params['users'] = $users;
             'unreadUrl' => '/conversation/unread?userId=' . $user->id,
             'template' => '#conv-tmpl',
             'currentCssClass' => 'current',
-            'unreadCssClass'=>'unread',
+            'unreadCssClass' => 'unread',
             'baseUrl' => $asset->baseUrl
         ]
     ]);
@@ -45,7 +45,7 @@ $this->params['users'] = $users;
 
     <?php echo $conversation->renderItems() ?>
     <div id="conv-loader" style="display: none" class="text-center">
-        <img alt="Loading..." src="<?=$asset->baseUrl?>/img/inf-square-loader.gif" />
+        <img alt="Loading..." src="<?= $asset->baseUrl ?>/img/inf-square-loader.gif"/>
     </div>
     <?php
     bubasuma\simplechat\ConversationWidget::end();
@@ -68,14 +68,14 @@ $this->params['users'] = $users;
                 'avatar' => $contact->profile->avatar,
             ],
         ],
-        'options' => ['class'=>'message-wrap col-lg-8', 'id'=>'messages'],
-        'itemOptions' => ['class'=>'media msg'],
+        'options' => ['class' => 'message-wrap col-lg-8', 'id' => 'messages'],
+        'itemOptions' => ['class' => 'media msg'],
         'formOptions' => [
             'action' => '/message?userId=' . $user->id,
-            'method'=>'post'
+            'method' => 'post'
         ],
         'clientOptions' => [
-            'loadUrl' => '/messages?userId='.$user->id,
+            'loadUrl' => '/messages?userId=' . $user->id,
             'container' => '#msg-wrap',
             'template' => '#msg-tmpl',
             'baseUrl' => $asset->baseUrl,
@@ -84,7 +84,7 @@ $this->params['users'] = $users;
     ?>
     <div id="msg-wrap" class="msg-wrap">
         <div id="msg-loader" style="display: none" class="text-center">
-            <img alt="Loading..." src="<?=$asset->baseUrl?>/img/inf-circle-loader.gif" />
+            <img alt="Loading..." src="<?= $asset->baseUrl ?>/img/inf-circle-loader.gif"/>
         </div>
         <?php //echo $message->renderItems();?>
         <?php
@@ -92,10 +92,10 @@ $this->params['users'] = $users;
         $keys = $message->dataProvider->getKeys();
         $rows = [];
         $when = false;
-        foreach (array_reverse($models,true) as $index => $model) {
-            if(strcmp($when, $model['when'])){
+        foreach (array_reverse($models, true) as $index => $model) {
+            if (strcmp($when, $model['when'])) {
                 $when = $model['when'];
-                $rows[] = \yii\bootstrap\Html::tag('div',"<strong>$when</strong>",['class'=>'alert alert-info msg-date']);
+                $rows[] = \yii\bootstrap\Html::tag('div', "<strong>$when</strong>", ['class' => 'alert alert-info msg-date']);
             }
             $rows[] = $message->renderItem($model, $keys[$index], $index);
         }
@@ -104,17 +104,18 @@ $this->params['users'] = $users;
     </div>
 
     <div class="send-wrap ">
-        <?= $message->renderForm();?>
+        <?= $message->renderForm(); ?>
     </div>
     <div class="btn-panel">
         <!--<a href="" class=" col-lg-3 btn   send-message-btn " role="button"><i class="fa fa-cloud-upload"></i> Add Files</a>-->
-        <a id="msg-send" href="" class=" col-lg-4 text-right btn   send-message-btn pull-right" role="button"><i class="fa fa-location-arrow"></i> Send Message</a>
+        <a id="msg-send" href="" class=" col-lg-4 text-right btn   send-message-btn pull-right" role="button"><i
+                class="fa fa-location-arrow"></i> Send Message</a>
     </div>
     <?php
     bubasuma\simplechat\MessageWidget::end();
     ?>
 </div>
 <?php require 'conversation.html' ?>
-<?php require 'message.html'?>
+<?php require 'message.html' ?>
 
 

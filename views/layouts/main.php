@@ -32,9 +32,9 @@ use yii\widgets\Breadcrumbs;
 
     $menuItems = [];
 
-    if(isset($this->params['user']) && isset($this->params['users'])){
+    if (isset($this->params['user']) && isset($this->params['users'])) {
         $menuItems[] = [
-            'label' => 'Hi, '. $this->params['user']['fullName'],
+            'label' => 'Hi, ' . $this->params['user']['fullName'],
             'items' => \yii\helpers\ArrayHelper::merge(
                 [
                     ['label' => 'Log in as']
@@ -59,6 +59,7 @@ use yii\widgets\Breadcrumbs;
 <footer class="footer">
     <div class="container">
         <p class="pull-left">&copy; bubasuma <?= date('Y') ?></p>
+
         <p class="pull-right"><a href="https://github.com/bubasuma/yii2-simplechat">yii2-simplechat</a></p>
     </div>
 </footer>

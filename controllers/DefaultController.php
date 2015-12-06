@@ -1,5 +1,9 @@
 <?php
-
+/**
+ * @link https://github.com/bubasuma/yii2-simplechat
+ * @copyright Copyright (c) 2015 bubasuma
+ * @license http://opensource.org/licenses/BSD-3-Clause
+ */
 namespace bubasuma\simplechat\controllers;
 
 use bubasuma\simplechat\db\Model;
@@ -11,6 +15,13 @@ use yii\web\Controller;
 use yii\web\Response;
 use yii\web\ForbiddenHttpException;
 
+/**
+ * Class DefaultController
+ * @package bubasuma\simplechat\controllers
+ *
+ * @author Buba Suma <bubasuma@gmail.com>
+ * @since 1.0
+ */
 class DefaultController extends Controller
 {
     public $layout = 'main';
@@ -47,8 +58,8 @@ class DefaultController extends Controller
             [
                 'class' => 'yii\filters\VerbFilter',
                 'actions' => [
-                    'index'  => ['get'],
-                    'messages'   => ['post'],
+                    'index' => ['get'],
+                    'messages' => ['post'],
                     'create-message' => ['post', 'put'],
                     'conversations' => ['post'],
                     'delete-conversation' => ['delete'],
@@ -70,7 +81,7 @@ class DefaultController extends Controller
         $callable = [$this->modelClass, 'loadConversations'];
         $formatter = [$this, 'formatConversation'];
         $limit = \Yii::$app->request->post('limit');
-        return  call_user_func($callable, $userId, $formatter, $limit);
+        return call_user_func($callable, $userId, $formatter, $limit);
     }
 
     public function actionMessages($contactId)
@@ -82,32 +93,37 @@ class DefaultController extends Controller
         return call_user_func($callable, $userId, $contactId, $formatter, $limit);
     }
 
-    public function actionCreateMessage($contactId){
+    public function actionCreateMessage($contactId)
+    {
         $userId = $this->user->id;
-        if($userId == $contactId){
+        if ($userId == $contactId) {
             throw new ForbiddenHttpException('You attempt to send message to yourself');
         }
         $text = \Yii::$app->request->post('text');
-        return call_user_func([$this->modelClass,'create'], $userId, $contactId, $text);
+        return call_user_func([$this->modelClass, 'create'], $userId, $contactId, $text);
     }
 
-    public function actionDeleteMessage($id){
+    public function actionDeleteMessage($id)
+    {
         throw new NotSupportedException(get_class($this) . ' does not support actionDeleteMessage().');
     }
 
-    public function actionDeleteConversation($contactId){
+    public function actionDeleteConversation($contactId)
+    {
         $userId = $this->user->id;
         $callable = [$this->modelClass, 'deleteConversation'];
         return call_user_func($callable, $userId, $contactId);
     }
 
-    public function actionMarkConversationAsRead($contactId){
+    public function actionMarkConversationAsRead($contactId)
+    {
         $userId = $this->user->id;
         $callable = [$this->modelClass, 'markConversationAsRead'];
         return call_user_func($callable, $userId, $contactId);
     }
 
-    public function actionMarkConversationAsUnread($contactId){
+    public function actionMarkConversationAsUnread($contactId)
+    {
         $userId = $this->user->id;
         $callable = [$this->modelClass, 'markConversationAsUnRead'];
         return call_user_func($callable, $userId, $contactId);
@@ -117,7 +133,8 @@ class DefaultController extends Controller
      * @param array|Model $model
      * @return array
      */
-    public function formatMessage($model){
+    public function formatMessage($model)
+    {
         return $model;
     }
 
@@ -125,8 +142,9 @@ class DefaultController extends Controller
      * @param array $model
      * @return array
      */
-    public function formatConversation($model){
-        $model['new_messages'] = ArrayHelper::getValue($model,'newMessages.count',0);
+    public function formatConversation($model)
+    {
+        $model['new_messages'] = ArrayHelper::getValue($model, 'newMessages.count', 0);
         ArrayHelper::remove($model, 'newMessages');
         return $model;
     }

@@ -1,4 +1,9 @@
 <?php
+/**
+ * @link https://github.com/bubasuma/yii2-simplechat
+ * @copyright Copyright (c) 2015 bubasuma
+ * @license http://opensource.org/licenses/BSD-3-Clause
+ */
 namespace bubasuma\simplechat\console;
 
 use bubasuma\simplechat\Module;
@@ -8,7 +13,12 @@ use yii\helpers\Console;
 /**
  * Yii2 SimpleChat Demo
  * Creates or clears demo data and tables
- * @package bubasuma\simplechat\controllers
+ *
+ * Class DemoController
+ * @package bubasuma\simplechat\console
+ *
+ * @author Buba Suma <bubasuma@gmail.com>
+ * @since 1.0
  */
 class DemoController extends Controller
 {
@@ -34,7 +44,7 @@ class DemoController extends Controller
     public function beforeAction($action)
     {
         if (parent::beforeAction($action)) {
-            if(!strcmp($action->id, 'start') || !strcmp($action->id, 'stop')){
+            if (!strcmp($action->id, 'start') || !strcmp($action->id, 'stop')) {
                 $this->module->initDemo();
                 $this->module->controllerMap['migrate'] = [
                     'class' => 'bubasuma\simplechat\console\MigrateController',

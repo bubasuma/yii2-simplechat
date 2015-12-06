@@ -1,17 +1,21 @@
 <?php
 /**
- * Created by PhpStorm.
- * User: buba
- * Date: 18.10.15
- * Time: 12:42
+ * @link https://github.com/bubasuma/yii2-simplechat
+ * @copyright Copyright (c) 2015 bubasuma
+ * @license http://opensource.org/licenses/BSD-3-Clause
  */
-
 namespace bubasuma\simplechat\db;
-
 
 use yii\db\ActiveQuery;
 use yii\db\ActiveRecord;
 
+/**
+ * Class MessageQuery
+ * @package bubasuma\simplechat\db
+ *
+ * @author Buba Suma <bubasuma@gmail.com>
+ * @since 1.0
+ */
 class MessageQuery extends ActiveQuery
 {
     public $userId;
@@ -23,7 +27,7 @@ class MessageQuery extends ActiveQuery
         /* @var $modelClass ActiveRecord */
         $modelClass = $this->modelClass;
         $tableName = $modelClass::tableName();
-        $this->select(['m.id','m.text', 'm.created_at', 'm.is_new', 'm.sender_id'])
+        $this->select(['m.id', 'm.text', 'm.created_at', 'm.is_new', 'm.sender_id'])
             ->from(['m' => $tableName])
             ->where(
                 ['or',

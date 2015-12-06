@@ -1,9 +1,8 @@
 <?php
 /**
- * Created by PhpStorm.
- * User: buba
- * Date: 21.11.15
- * Time: 12:36
+ * @link https://github.com/bubasuma/yii2-simplechat
+ * @copyright Copyright (c) 2015 bubasuma
+ * @license http://opensource.org/licenses/BSD-3-Clause
  */
 
 namespace bubasuma\simplechat\db\demo;
@@ -22,6 +21,9 @@ use yii\db\Expression;
  *
  * @property-read UserProfile profile
  * @property-read string fullName
+ *
+ * @author Buba Suma <bubasuma@gmail.com>
+ * @since 1.0
  *
  */
 class User extends ActiveRecord
@@ -56,12 +58,12 @@ class User extends ActiveRecord
 
     public function getProfile()
     {
-        return $this->hasOne(UserProfile::className(),['id'=>'id']);
+        return $this->hasOne(UserProfile::className(), ['id' => 'id']);
     }
 
     public function getFullName()
     {
-        return $this->profile->first_name. ' '.$this->profile->last_name;
+        return $this->profile->first_name . ' ' . $this->profile->last_name;
     }
 
 
