@@ -101,11 +101,11 @@ http://localhost/path/to/index.php/messages?userId=1&contactId=2
 
 You should see the below "Congratulations!" page in your browser, if you are running extension without demo configuration:
 
-![yii simple chat Congratulation page](http://i.imgur.com/lLQnfHsh.png "yii simple chat Congratulation page")
+![yii simple chat Congratulation page](http://i.imgur.com/lLQnfHs.png "yii simple chat Congratulation page")
 
 If you are running with demo configurations:
 
-![yii simple chat demo page](http://i.imgur.com/mB0CsETh.png "yii simple chat demo page")
+![yii simple chat demo page](http://i.imgur.com/mB0CsET.png "yii simple chat demo page")
 
 If not, please check if demo migration has been successfully applied against your database. You can check it by running the following command:
 
