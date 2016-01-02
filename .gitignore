@@ -1,4 +1,6 @@
 # phpstorm project files
-.idea
-# temp files
-temp*.*
+/.idea
+#vendor
+/vendor
+#composer
+/composer.lock
