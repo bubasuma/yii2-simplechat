@@ -10,6 +10,8 @@ use yii\base\BootstrapInterface;
 use yii\base\InvalidConfigException;
 use yii\db\Connection;
 use yii\di\Instance;
+use yii\web\Application as Web;
+use yii\console\Application as Console;
 
 /**
  * Module extends [[\yii\base\Module]] and represents a message system that stores
@@ -63,6 +65,7 @@ class Module extends \yii\base\Module implements BootstrapInterface
     {
         parent::init();
         $this->db = Instance::ensure($this->db, Connection::className());
+        $this->db->tablePrefix = $this->id . '_';
     }
 
     /**
@@ -70,30 +73,22 @@ class Module extends \yii\base\Module implements BootstrapInterface
      */
     public function bootstrap($app)
     {
-        if ($app instanceof \yii\web\Application) {
+        if ($app instanceof Web) {
             $app->getUrlManager()->addRules([
-                'GET messages' => $this->id . '/default/index',
-
-                'POST messages' => $this->id . '/default/messages',
-                'PUT,POST message' => $this->id . '/default/create-message',
-                'DELETE message' => $this->id . '/default/delete-message',
-
-                'POST conversations' => $this->id . '/default/conversations',
-                'PATCH conversation/unread' => $this->id . '/default/mark-conversation-as-unread',
-                'PATCH conversation/read' => $this->id . '/default/mark-conversation-as-read',
-                'DELETE conversation' => $this->id . '/default/delete-conversation',
+                'messages/<contactId:\d+>' => $this->id . '/default/index',
+                'chat/get/messages/<contactId:\d+>' => $this->id . '/default/messages',
+                'chat/get/conversations' => $this->id . '/default/conversations',
+                'chat/delete/message/<id:\d+>' => $this->id . '/default/delete-message',
+                'chat/delete/conversation/<contactId:\d+>' => $this->id . '/default/delete-conversation',
+                'chat/post/message/<contactId:\d+>' => $this->id . '/default/create-message',
+                'chat/unread/conversation/<contactId:\d+>' => $this->id . '/default/mark-conversation-as-unread',
+                'chat/read/conversation//<contactId:\d+>' => $this->id . '/default/mark-conversation-as-read',
             ], false);
-        } elseif ($app instanceof \yii\console\Application) {
+        } elseif ($app instanceof Console) {
             $app->controllerMap[$this->id] = [
-                'class' => 'bubasuma\simplechat\console\DemoController',
+                'class' => 'bubasuma\simplechat\console\DefaultController',
                 'module' => $this,
             ];
         }
     }
-
-    public function initDemo()
-    {
-        $this->db->tablePrefix = $this->id . '_';
-    }
-
 }

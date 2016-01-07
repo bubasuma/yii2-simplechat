@@ -5,8 +5,9 @@
  * @license http://opensource.org/licenses/BSD-3-Clause
  */
 
-namespace bubasuma\simplechat\db\demo;
+namespace bubasuma\simplechat\models;
 
+use bubasuma\simplechat\db\Model;
 use yii\db\ActiveQuery;
 
 
@@ -19,7 +20,7 @@ use yii\db\ActiveQuery;
  * @author Buba Suma <bubasuma@gmail.com>
  * @since 1.0
  */
-class Message extends \bubasuma\simplechat\db\Model
+class Message extends Model
 {
     public function getContact()
     {
@@ -40,6 +41,10 @@ class Message extends \bubasuma\simplechat\db\Model
                         $advanced->select(['id', 'CONCAT_WS(\' \', first_name, last_name) AS full_name', 'avatar']);
                     },
                 ])->select(['id', 'email']);
+            },
+            'newMessages' => function ($msg) use ($userId) {
+                /**@var $msg ActiveQuery * */
+                $msg->andOnCondition(['receiver_id' => $userId])->select(['sender_id', 'COUNT(*) AS count']);
             }
         ]);
     }

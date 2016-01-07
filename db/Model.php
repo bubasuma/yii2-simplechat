@@ -63,19 +63,12 @@ class Model extends ActiveRecord
      */
     public static function conversations($userId)
     {
-        /**@var ConversationQuery $query * */
-        $query = \Yii::createObject(ConversationQuery::className(),
+        return \Yii::createObject(ConversationQuery::className(),
             [
                 get_called_class(),
                 ['userId' => $userId]
             ]
         );
-        return $query->with([
-            'newMessages' => function ($msg) use ($userId) {
-                /**@var $msg ConversationQuery * */
-                $msg->andOnCondition(['receiver_id' => $userId])->select(['sender_id', 'COUNT(*) AS count']);
-            }
-        ]);
     }
 
     /**

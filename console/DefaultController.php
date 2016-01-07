@@ -14,13 +14,13 @@ use yii\helpers\Console;
  * Yii2 SimpleChat Demo
  * Creates or clears demo data and tables
  *
- * Class DemoController
+ * Class DefaultController
  * @package bubasuma\simplechat\console
  *
  * @author Buba Suma <bubasuma@gmail.com>
  * @since 1.0
  */
-class DemoController extends Controller
+class DefaultController extends Controller
 {
     /**
      * @var Module
@@ -45,7 +45,6 @@ class DemoController extends Controller
     {
         if (parent::beforeAction($action)) {
             if (!strcmp($action->id, 'start') || !strcmp($action->id, 'stop')) {
-                $this->module->initDemo();
                 $this->module->controllerMap['migrate'] = [
                     'class' => 'bubasuma\simplechat\console\MigrateController',
                     'migrationPath' => $this->migrationPath

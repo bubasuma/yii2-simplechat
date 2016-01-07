@@ -1,0 +1,97 @@
+{{ use('\yii\helpers\Html') }}
+{{ use('bubasuma\simplechat\ConversationWidget') }}
+{{ use('bubasuma\simplechat\MessageWidget') }}
+
+{% set asset = register_asset_bundle('bubasuma\simplechat\ChatAsset') %}
+
+{{ set(this, 'params', this.params|merge({'user': user})) }}
+{{ set(this, 'params', this.params|merge({'users': users})) }}
+
+<div class="row">
+    <div class="loading" style="display: none">Loading&#8230;</div>
+    {% set conversation = conversation_widget_begin({
+        'dataProvider' : conversationDataProvider,
+        'options' : {
+            'class' : 'conversation-wrap col-lg-3',
+            'id' : 'conv-wrap'
+        },
+        'itemOptions' : {
+            'class' : 'media conversation'
+        },
+        'user' : {
+            'id' : user.id,
+            'name' : user.name,
+        },
+        'clientOptions' : {
+            'loadUrl' : path('conversations'),
+            'deleteUrl': path('delete-conversation'),
+            'readUrl': path('mark-conversation-as-read'),
+            'unreadUrl': path('mark-conversation-as-unread'),
+            'currentCssClass' : 'current',
+            'unreadCssClass' : 'unread',
+            'baseUrl' : asset.baseUrl,
+        }
+    })
+    %}
+    {{ conversation.renderItems|raw }}
+    <div id="conv-loader" style="display: none" class="text-center">
+        <img alt="Loading..." src="{{ asset.baseUrl }}/img/inf-square-loader.gif"/>
+    </div>
+    {{ conversation_widget_end() }}
+    {% set message = message_widget_begin({
+        'dataProvider' : messageDataProvider,
+        'user' : {
+            'id' : user.id,
+            'name' : user.name,
+            'avatar' : user.avatar,
+        },
+        'contact' : {
+            'id' : contact.id,
+            'name' : contact.name,
+            'avatar' : contact.avatar,
+        },
+        'options' : {
+            'class' : 'message-wrap col-lg-8',
+            'id' : 'messages',
+        },
+        'itemOptions' : {
+            'class' : 'media msg',
+        },
+        'formOptions' : {
+            'action' : path('create-message'),
+            'method' : 'post',
+        },
+        'clientOptions' : {
+            'loadUrl' : path('messages'),
+            'baseUrl' : asset.baseUrl,
+            'container' : '#msg-wrap',
+        }
+    })
+    %}
+    <div id="msg-wrap" class="msg-wrap">
+        <div id="msg-loader" style="display: none" class="text-center">
+            <img alt="Loading..." src="{{ asset.baseUrl }}/img/inf-circle-loader.gif"/>
+        </div>
+        {% set models = message.dataProvider.models %}
+        {% set keys = message.dataProvider.keys %}
+        {% set rows = [], when = false %}
+        {% for index, model in models|reverse(true) %}
+            {% if when != model.when %}
+                {% set when = model.when %}
+                {% set rows = rows|merge([html.tag('div', '<strong>' ~ when ~ '</strong>', {'class' : 'alert alert-info msg-date'})]) %}
+            {% endif %}
+            {% set rows = rows|merge([message.renderItem(model, keys[index], index)]) %}
+        {% endfor %}
+    </div>
+
+    <div class="send-wrap ">
+        {{ message.renderForm() }}
+    </div>
+    <div class="btn-panel">
+        <a id="msg-send" href="" class=" col-lg-4 text-right btn   send-message-btn pull-right" role="button">
+            <i class="fa fa-location-arrow"></i>
+            Send Message
+        </a>
+    </div>
+    {{ message_widget_end() }}
+</div>

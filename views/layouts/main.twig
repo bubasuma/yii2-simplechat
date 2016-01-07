@@ -1,0 +1,52 @@
+{{ use('yii\helpers\Html') }}
+{{ use('yii\bootstrap\Nav') }}
+{{ use('yii\bootstrap\NavBar') }}
+
+{{   void(this.beginPage()) }}
+<!DOCTYPE html>
+<html lang="{{ app.language }}">
+<head>
+    <meta charset="{{ app.charset }}">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{{ html.encode(this.title) }}</title>
+    {{ html.csrfMetaTags | raw }}
+    {{   void(this.head) }}
+</head>
+<body>
+{{   void(this.beginBody()) }}
+<div class="wrap">
+    {{ nav_bar_begin({
+        'brandLabel': 'Yii2-SimpleChat',
+        'brandUrl' : '',
+        'options' : {
+            'class' : 'navbar-inverse navbar-fixed-top',
+        }
+    }) }}
+    {% set menuItems = [] %}
+    {% set menuItems = menuItems|merge([
+        {
+            'label' : 'Hi, ' ~ app.params.user.name,
+            'items' : [{'label' => 'Log in as'}]|merge(app.params.users),
+        }
+    ]) %}
+    {{ nav_widget({
+        'options': {
+            'class': 'navbar-nav navbar-right',
+        },
+        'items': menuItems
+    }) }}
+    {{ nav_bar_end() }}
+    <div class="container">
+        {{ content | raw}}
+    </div>
+</div>
+<footer class="footer">
+    <div class="container">
+        <p class="pull-left">&copy; bubasuma 2015-2016</p>
+        <p class="pull-right"><a href="https://github.com/bubasuma/yii2-simplechat">yii2-simplechat</a></p>
+    </div>
+</footer>
+{{   void(this.endBody()) }}
+</body>
+</html>
+{{   void(this.endPage()) }}

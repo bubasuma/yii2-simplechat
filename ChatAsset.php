@@ -15,7 +15,7 @@ use yii\web\AssetBundle;
  * @author Buba Suma <bubasuma@gmail.com>
  * @since 1.0
  */
-class DemoAsset extends AssetBundle
+class ChatAsset extends AssetBundle
 {
     public $css = [
         '//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css',

@@ -4,7 +4,7 @@
  * @copyright Copyright (c) 2015 bubasuma
  * @license http://opensource.org/licenses/BSD-3-Clause
  */
-namespace bubasuma\simplechat\db\demo;
+namespace bubasuma\simplechat\models;
 
 use bubasuma\simplechat\migrations\Migration;
 use yii\db\ActiveRecord;
