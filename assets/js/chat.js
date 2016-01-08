@@ -327,10 +327,11 @@
                     }
                     // object to inject to the template
                     msg = {
-                        options: options,
                         model: data.models[index],
                         key: data.keys[index],
-                        index: index
+                        index: index,
+                        sender: data.models[index]['sender_id'] == options.user.id ? options.user : options.contact,
+                        settings: options.settings
                     };
 
                     if (when == _top_when_text) {
@@ -363,10 +364,11 @@
                     }
                     // object to inject to the template
                     msg = {
-                        options: options,
                         model: data.models[index],
                         key: data.keys[index],
-                        index: index
+                        index: index,
+                        sender: data.models[index]['sender_id'] == options.user.id ? options.user : options.contact,
+                        settings: options.settings
                     };
                     // append the message
                     messages.simpleChatMessages('append', msg);

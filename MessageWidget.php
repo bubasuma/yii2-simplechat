@@ -119,9 +119,8 @@ class MessageWidget extends ListView
                 'model' => $model,
                 'key' => $key,
                 'index' => $index,
-                'widget' => $this,
-                'user' => $this->user,
-                'contact' => $this->contact,
+                'sender' => $model['sender_id'] == $this->user['id'] ? $this->user : $this->contact,
+                'settings' => $this->clientOptions,
             ], $this->viewParams));
         } else {
             $content = call_user_func($this->itemView, $model, $key, $index, $this);

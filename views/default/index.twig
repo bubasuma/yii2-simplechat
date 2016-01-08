@@ -2,7 +2,7 @@
 {{ use('bubasuma\simplechat\ConversationWidget') }}
 {{ use('bubasuma\simplechat\MessageWidget') }}
 
-{% set asset = register_asset_bundle('bubasuma\simplechat\ChatAsset') %}
+{% set asset = register_asset_bundle('bubasuma\simplechat\ChatAsset', true) %}
 
 {{ set(this, 'params', this.params|merge({'user': user})) }}
 {{ set(this, 'params', this.params|merge({'users': users})) }}
@@ -12,8 +12,7 @@
     {% set conversation = conversation_widget_begin({
         'dataProvider' : conversationDataProvider,
         'options' : {
-            'class' : 'conversation-wrap col-lg-3',
-            'id' : 'conv-wrap'
+            'tag' : false,
         },
         'itemOptions' : {
             'class' : 'media conversation'
@@ -55,7 +54,7 @@
             'id' : 'messages',
         },
         'itemOptions' : {
-            'class' : 'media msg',
+            'tag': false,
         },
         'formOptions' : {
             'action' : path('create-message'),

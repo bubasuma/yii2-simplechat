@@ -76,8 +76,9 @@ class ConversationWidget extends ListView
                 'model' => $model,
                 'key' => $key,
                 'index' => $index,
-                'widget' => $this,
                 'user' => $this->user,
+                'is_current' => $model['contact_id'] == \Yii::$app->request->get('contactId'),
+                'settings' => $this->clientOptions,
             ], $this->viewParams));
         } else {
             $content = call_user_func($this->itemView, $model, $key, $index, $this);
@@ -87,17 +88,6 @@ class ConversationWidget extends ListView
         if ($tag !== false) {
             $options['data-key'] = is_array($key) ? json_encode($key, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE) : (string)$key;
             $options['data-contact'] = $model['contact_id'];
-            if (isset($this->clientOptions['unreadCssClass'])) {
-                if ($model['new_messages'] > 0) {
-                    Html::addCssClass($options, $this->clientOptions['unreadCssClass']);
-                }
-            }
-            if (isset($this->clientOptions['currentCssClass'])) {
-                if ($model['contact_id'] == \Yii::$app->request->get('contactId')) {
-                    Html::addCssClass($options, $this->clientOptions['currentCssClass']);
-                }
-            }
-
             return Html::tag($tag, $content, $options);
         } else {
             return $content;
