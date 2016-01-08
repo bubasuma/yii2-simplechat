@@ -75,7 +75,8 @@ class MessageWidget extends ListView
     {
         $id = $this->options['id'];
         if (!isset($this->clientOptions['selector'])) {
-            $this->clientOptions['selector'] = '.' . strstr($this->itemOptions['class'], ' ', true);
+            $class = explode(' ', $this->itemOptions['class']);
+            $this->clientOptions['selector'] = '.' . $class[0];
         }
         $this->clientOptions['form'] = '#' . $this->formOptions['id'];
         $options = Json::htmlEncode($this->clientOptions);
@@ -141,7 +142,7 @@ class MessageWidget extends ListView
         $models = $this->dataProvider->getModels();
         $keys = $this->dataProvider->getKeys();
         $rows = [];
-        foreach (array_reverse($models) as $index => $model) {
+        foreach (array_reverse($models, true) as $index => $model) {
             $rows[] = $this->renderItem($model, $keys[$index], $index);
         }
 
