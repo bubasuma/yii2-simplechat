@@ -52,7 +52,7 @@ class MessageWidget extends ListView
         $method = ArrayHelper::remove($this->formOptions, 'method', 'post');
 
         if (!isset($this->formOptions['id'])) {
-            $this->formOptions['id'] = 'msg-form';
+            $this->formOptions['id'] = 'message-form';
         }
 
         $content = Html::beginForm($action, $method, $this->formOptions);
@@ -97,7 +97,7 @@ class MessageWidget extends ListView
             $this->options['id'] = $this->getId();
         }
         if (!isset($this->itemOptions['class'])) {
-            $this->itemOptions['class'] = 'msg-item';
+            $this->itemOptions['class'] = 'message-item';
         }
         $this->tag = ArrayHelper::remove($this->options, 'tag', 'div');
         echo Html::beginTag($this->tag, $this->options);

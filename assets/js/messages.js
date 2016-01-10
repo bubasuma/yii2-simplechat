@@ -21,6 +21,8 @@
         }
     };
 
+    var view = null;
+
     var loadTypes  = {
         up:'history',
         down:'new'
@@ -46,10 +48,10 @@
     var defaults = {
         loadUrl: '',
         loadMethod: 'POST',
-        loadParam: 'key',
         sendUrl: false,
         sendMethod: false,
-        limit: 10
+        limit: 10,
+        templateUrl: ''
     };
 
     var methods = {
@@ -85,8 +87,8 @@
 
         resetForm: function () {
             var $chat = $(this);
-            var options = $chat.data('simpleChatMessages');
-            var $form = $chat.find(options.settings.form);
+            var widget = $chat.data('simpleChatMessages');
+            var $form = $chat.find(widget.settings.form);
             $form.find('input, textarea, select').each(function () {
                 var $input = $(this);
                 $input.val('');
@@ -95,14 +97,9 @@
 
         send: function () {
             var $chat = $(this);
-            var options = $chat.data('simpleChatMessages');
-            var $form = $chat.find(options.settings.form);
+            var widget = $chat.data('simpleChatMessages');
+            var $form = $chat.find(widget.settings.form);
             var url = $form.attr('action');
-            if(-1 !== url.indexOf('?')){
-                url += '&contactId=' + options.contact.id;
-            }else{
-                url += '?contactId=' + options.contact.id;
-            }
             $.ajax({
                 url: url,
                 type: $form.attr('method'),
@@ -132,10 +129,10 @@
 
         load: function (args) {
             var $chat = $(this);
-            var options = $chat.data('simpleChatMessages');
+            var widget = $chat.data('simpleChatMessages');
             var data = {
                 type: loadTypes.up,
-                limit: options.settings.limit
+                limit: widget.settings.limit
             };
             if(typeof args == 'number'){
                 data['limit'] = args;
@@ -147,28 +144,23 @@
 
             var elem = find($chat, data['type'] == loadTypes.up ?'first':'last');
             if(elem){
-                data[options.settings.loadParam] = elem.data(options.settings.loadParam);
+                data['key'] = elem.data('key');
             }
 
-            var url = options.settings.loadUrl;
-            if(-1 !== url.indexOf('?')){
-                url += '&contactId=' + options.contact.id;
-            }else{
-                url += '?contactId=' + options.contact.id;
-            }
+            var url = widget.settings.loadUrl;
 
-            if(options.status == 0) {
+            if(widget.status == 0) {
                 $.ajax({
                     url: url,
-                    type: options.settings.loadMethod,
+                    type: widget.settings.loadMethod,
                     dataType: 'JSON',
                     data: data,
                     beforeSend: function (xhr, settings) {
-                        options.status = 1;
+                        widget.status = 1;
                         $chat.trigger(events.load.beforeSend, [data['type'], xhr,settings]);
                     },
                     complete: function (xhr, textStatus) {
-                        options.status = 0;
+                        widget.status = 0;
                         $chat.trigger(events.load.complete,[data['type'], xhr,textStatus]);
                     },
                     success: function (res, textStatus, xhr) {
@@ -183,17 +175,17 @@
 
         empty: function () {
             var $chat = $(this);
-            var options = $chat.data('simpleChatMessages');
-            var $container = $chat.find(options.settings.container);
+            var widget = $chat.data('simpleChatMessages');
+            var $container = $chat.find(widget.settings.container);
             $container.empty();
         },
 
         append: function (data) {
             var $chat = $(this);
-            var options = $chat.data('simpleChatMessages');
-            var $container = $chat.find(options.settings.container);
+            var widget = $chat.data('simpleChatMessages');
+            var $container = $chat.find(widget.settings.container);
             if(typeof data == 'object'){
-                $container.append(tmpl(options.settings.template,data));
+                $container.append(tmpl(widget.settings.templateUrl,data));
             }else{
                 $container.append(data);
             }
@@ -201,10 +193,10 @@
 
         prepend: function (data) {
             var $chat = $(this);
-            var options = $chat.data('simpleChatMessages');
-            var $container = $chat.find(options.settings.container);
+            var widget = $chat.data('simpleChatMessages');
+            var $container = $chat.find(widget.settings.container);
             if(typeof data == 'object'){
-                $container.prepend(tmpl(options.settings.template,data));
+                $container.prepend(tmpl(widget.settings.templateUrl,data));
             }else{
                 $container.prepend(data);
             }
@@ -212,35 +204,33 @@
 
         insert: function (data, selector, before) {
             var $chat = $(this);
-            var options = $chat.data('simpleChatMessages');
-            var $container = $chat.find(options.settings.container);
+            var widget = $chat.data('simpleChatMessages');
+            var $container = $chat.find(widget.settings.container);
             var $elem = $container.find(selector);
+            var $message = null;
             if(typeof data == 'object'){
-                if(before){
-                    $elem.before(tmpl(options.settings.template,data));
-                }else{
-                    $elem.after(tmpl(options.settings.template,data));
-                }
+                $message = tmpl(widget.settings.templateUrl, data);
             }else{
-                if(before){
-                    $elem.before(data);
-                }else{
-                    $elem.after(data);
-                }
+                $message = data;
+            }
+            if(before){
+                $elem.before($message);
+            }else{
+                $elem.after($message);
             }
         },
 
         destroy: function () {
             return this.each(function () {
                 var $chat = $(this);
-                var options = $chat.data('simpleChatMessages');
-                var $form = $chat.find(options.settings.form);
+                var widget = $chat.data('simpleChatMessages');
+                var $form = $chat.find(widget.settings.form);
                 $form.off('.simpleChatMessages');
                 $chat.removeData('simpleChatMessages');
             });
         },
 
-        data: function () {
+        widget: function () {
             return this.data('simpleChatMessages');
         },
 
@@ -253,35 +243,28 @@
 
 
     var find = function ($chat, id) {
-        var options = $chat.data('simpleChatMessages');
-        var $container = $chat.find(options.settings.container);
+        var widget = $chat.data('simpleChatMessages');
+        var $container = $chat.find(widget.settings.container);
         if(typeof id == 'number'){
             return $container.find('[data-key=' + id + ']');
         } else if(id == 'last') {
-            return $container.find(options.settings.selector).last();
+            return $container.find(widget.settings.selector).last();
         } else if(id == 'first') {
-            return $container.find(options.settings.selector).first();
+            return $container.find(widget.settings.selector).first();
         }else{
             return $container.find(id);
         }
     };
 
-    var tmlCache = {};
-    var tmpl = function (str, data){
-        var fn = /#[a-z0-9_-]+/i.test(str) ? tmlCache[str] = tmlCache[str] || tmpl($(str).html()) :
-            new Function("obj",
-                "var p=[],print=function(){p.push.apply(p,arguments);};" +
-                "with(obj){p.push('" +
-                str
-                    .replace(/[\r\t\n]/g, " ")
-                    .split("<%").join("\t")
-                    .replace(/((^|%>)[^\t]*)'/g, "$1\r")
-                    .replace(/\t=(.*?)%>/g, "',$1,'")
-                    .split("\t").join("');")
-                    .split("%>").join("p.push('")
-                    .split("\r").join("\\'")
-                + "');}return p.join('');");
-        return data ? fn( data ) : fn;
+    var tmpl = function (url, data){
+        if(null == view){
+            view = twig({
+                id: 'conversation',
+                href: url,
+                async: false
+            })
+        }
+        return view.render(data);
     }
 
 })(jQuery);

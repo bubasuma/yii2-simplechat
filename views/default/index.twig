@@ -1,6 +1,5 @@
-{{ use('\yii\helpers\Html') }}
-{{ use('bubasuma\simplechat\ConversationWidget') }}
-{{ use('bubasuma\simplechat\MessageWidget') }}
+{{ use('bubasuma/simplechat/ConversationWidget') }}
+{{ use('bubasuma/simplechat/MessageWidget') }}
 
 {% set asset = register_asset_bundle('bubasuma\simplechat\ChatAsset', true) %}
 
@@ -11,34 +10,45 @@
     <div class="loading" style="display: none">Loading&#8230;</div>
     {% set conversation = conversation_widget_begin({
         'dataProvider' : conversationDataProvider,
+        'itemView' : '../../assets/tmpl/conversation.twig',
         'options' : {
-            'tag' : false,
+            'class' : 'conversation-wrap col-lg-3',
+            'id' : 'conversations',
         },
         'itemOptions' : {
-            'class' : 'media conversation'
+            'tag' : false
         },
         'user' : {
             'id' : user.id,
             'name' : user.name,
         },
+        'current' : {
+            'contact' : {
+                'id' : contact.id,
+                'name' : contact.name,
+                'avatar' : contact.avatar,
+            },
+            'deleteUrl': path('delete-conversation', {'contactId' : contact.id}),
+            'readUrl': path('mark-conversation-as-read', {'contactId' : contact.id}),
+            'unreadUrl': path('mark-conversation-as-unread', {'contactId' : contact.id}),
+        },
         'clientOptions' : {
             'loadUrl' : path('conversations'),
-            'deleteUrl': path('delete-conversation'),
-            'readUrl': path('mark-conversation-as-read'),
-            'unreadUrl': path('mark-conversation-as-unread'),
+            'templateUrl' : asset.baseurl ~ '/tmpl/conversation.twig',
+            'baseUrl' : asset.baseUrl,
             'currentCssClass' : 'current',
             'unreadCssClass' : 'unread',
-            'baseUrl' : asset.baseUrl,
         }
     })
     %}
     {{ conversation.renderItems|raw }}
-    <div id="conv-loader" style="display: none" class="text-center">
+    <div id="conversations-loader" style="display: none" class="text-center">
         <img alt="Loading..." src="{{ asset.baseUrl }}/img/inf-square-loader.gif"/>
     </div>
     {{ conversation_widget_end() }}
     {% set message = message_widget_begin({
         'dataProvider' : messageDataProvider,
+        'itemView' : '../../assets/tmpl/message.twig',
         'user' : {
             'id' : user.id,
             'name' : user.name,
@@ -51,29 +61,31 @@
         },
         'options' : {
             'class' : 'message-wrap col-lg-8',
-            'id' : 'messages',
+            'id' : 'messenger',
         },
         'itemOptions' : {
             'tag': false,
         },
         'formOptions' : {
-            'action' : path('create-message'),
+            'action' : path('create-message', {'contactId' : contact.id}),
             'method' : 'post',
         },
         'clientOptions' : {
-            'loadUrl' : path('messages'),
+            'loadUrl' : path('messages', {'contactId' : contact.id}),
             'baseUrl' : asset.baseUrl,
-            'container' : '#msg-wrap',
+            'templateUrl' : asset.baseurl ~ '/tmpl/message.twig',
+            'container' : '#messages',
         }
     })
     %}
-    <div id="msg-wrap" class="msg-wrap">
-        <div id="msg-loader" style="display: none" class="text-center">
+    <div id="messages" class="msg-wrap">
+        <div id="messages-loader" style="display: none" class="text-center">
             <img alt="Loading..." src="{{ asset.baseUrl }}/img/inf-circle-loader.gif"/>
         </div>
         {% set models = message.dataProvider.models %}
         {% set keys = message.dataProvider.keys %}
-        {% set rows = [], when = false %}
+        {% set rows = [] %}
+        {% set when = false %}
         {% for index, model in models|reverse(true) %}
             {% if when != model.when %}
                 {% set when = model.when %}
@@ -81,10 +93,11 @@
             {% endif %}
             {% set rows = rows|merge([message.renderItem(model, keys[index], index)]) %}
         {% endfor %}
+        {{ rows|join(message.separator)|raw }}
     </div>
 
     <div class="send-wrap ">
-        {{ message.renderForm() }}
+        {{ message.renderForm|raw }}
     </div>
     <div class="btn-panel">
         <a id="msg-send" href="" class=" col-lg-4 text-right btn   send-message-btn pull-right" role="button">

@@ -15,6 +15,9 @@ use yii\db\Expression;
 use yii\web\IdentityInterface;
 
 /**
+ * Class User
+ * @package bubasuma\simplechat\models
+ *
  * @property string id
  * @property string email
  * @property string created_at

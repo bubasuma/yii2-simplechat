@@ -1,6 +1,5 @@
-{{ use('yii\helpers\Html') }}
-{{ use('yii\bootstrap\Nav') }}
-{{ use('yii\bootstrap\NavBar') }}
+{{ use('yii/bootstrap/Nav') }}
+{{ use('yii/bootstrap/NavBar') }}
 
 {{   void(this.beginPage()) }}
 <!DOCTYPE html>
@@ -25,8 +24,8 @@
     {% set menuItems = [] %}
     {% set menuItems = menuItems|merge([
         {
-            'label' : 'Hi, ' ~ app.params.user.name,
-            'items' : [{'label' => 'Log in as'}]|merge(app.params.users),
+            'label' : 'Hi, ' ~ this.params.user.name,
+            'items' : [{'label' : 'Log in as'}]|merge(this.params.users),
         }
     ]) %}
     {{ nav_widget({

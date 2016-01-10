@@ -82,7 +82,7 @@ class Module extends \yii\base\Module implements BootstrapInterface
                 'chat/delete/conversation/<contactId:\d+>' => $this->id . '/default/delete-conversation',
                 'chat/post/message/<contactId:\d+>' => $this->id . '/default/create-message',
                 'chat/unread/conversation/<contactId:\d+>' => $this->id . '/default/mark-conversation-as-unread',
-                'chat/read/conversation//<contactId:\d+>' => $this->id . '/default/mark-conversation-as-read',
+                'chat/read/conversation/<contactId:\d+>' => $this->id . '/default/mark-conversation-as-read',
             ], false);
         } elseif ($app instanceof Console) {
             $app->controllerMap[$this->id] = [

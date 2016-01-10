@@ -13,7 +13,7 @@ use yii\db\ActiveQuery;
 
 /**
  * Class Message
- * @package bubasuma\simplechat\db\demo
+ * @package bubasuma\simplechat\models
  *
  * @property-read User contact
  *
@@ -38,9 +38,9 @@ class Message extends Model
                 $contact->with([
                     'profile' => function ($advanced) {
                         /**@var $advanced ActiveQuery * */
-                        $advanced->select(['id', 'CONCAT_WS(\' \', first_name, last_name) AS full_name', 'avatar']);
+                        $advanced->select(['id', 'CONCAT_WS(\' \', first_name, last_name) AS name', 'avatar']);
                     },
-                ])->select(['id', 'email']);
+                ])->select(['id']);
             },
             'newMessages' => function ($msg) use ($userId) {
                 /**@var $msg ActiveQuery * */

@@ -37,11 +37,13 @@ class DataProvider extends ActiveDataProvider implements Arrayable
         }
 
         $request = \Yii::$app->request;
-        if ($request->post('key')) {
-            if (!strcmp('history', $request->post('type'))) {
-                $this->query->andWhere(['<', 'id', $request->post('key')]);
+        $key = $request->isGet ? $request->get('key') : $request->post('key');
+        if ($key) {
+            $type = $request->isGet ? $request->get('type') : $request->post('type');
+            if (!strcmp('history', $type)) {
+                $this->query->andWhere(['<', 'id', $key]);
             } else {
-                $this->query->andWhere(['>', 'id', $request->post('key')]);
+                $this->query->andWhere(['>', 'id', $key]);
             }
         }
     }

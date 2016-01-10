@@ -20,7 +20,18 @@ use yii\widgets\ListView;
  */
 class ConversationWidget extends ListView
 {
+    /**
+     * The current user
+     * @var array
+     */
     public $user;
+
+    /**
+     * The current conversation
+     * @since 2.0
+     * @var array
+     */
+    public $current;
 
     public $itemView = 'conversation';
 
@@ -35,13 +46,15 @@ class ConversationWidget extends ListView
     {
         $id = $this->options['id'];
         if (!isset($this->clientOptions['selector'])) {
-            $this->clientOptions['selector'] = '.' . strstr($this->itemOptions['class'], ' ', true);
+            $class = explode(' ', $this->itemOptions['class']);
+            $this->clientOptions['selector'] = '.' . $class[0];
         }
         $options = Json::htmlEncode($this->clientOptions);
         $user = Json::htmlEncode($this->user);
+        $current = Json::htmlEncode($this->current);
         $view = $this->getView();
         ConversationAsset::register($view);
-        $view->registerJs("jQuery('#$id').simpleChatConversations($user,$options);");
+        $view->registerJs("jQuery('#$id').simpleChatConversations($user, $current, $options);");
     }
 
 
@@ -54,7 +67,7 @@ class ConversationWidget extends ListView
             $this->options['id'] = $this->getId();
         }
         if (!isset($this->itemOptions['class'])) {
-            $this->itemOptions['class'] = 'conv-item';
+            $this->itemOptions['class'] = 'conversation-item';
         }
         $this->tag = ArrayHelper::remove($this->options, 'tag', 'div');
         echo Html::beginTag($this->tag, $this->options);
@@ -77,7 +90,7 @@ class ConversationWidget extends ListView
                 'key' => $key,
                 'index' => $index,
                 'user' => $this->user,
-                'is_current' => $model['contact_id'] == \Yii::$app->request->get('contactId'),
+                'is_current' => $model['contact_id'] == $this->current['contact']['id'],
                 'settings' => $this->clientOptions,
             ], $this->viewParams));
         } else {
@@ -88,6 +101,16 @@ class ConversationWidget extends ListView
         if ($tag !== false) {
             $options['data-key'] = is_array($key) ? json_encode($key, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE) : (string)$key;
             $options['data-contact'] = $model['contact_id'];
+            if (isset($this->clientOptions['unreadCssClass'])) {
+                if ($model['new_messages'] > 0) {
+                    Html::addCssClass($options, $this->clientOptions['unreadCssClass']);
+                }
+            }
+            if (isset($this->clientOptions['currentCssClass'])) {
+                if ($model['contact_id'] == $this->current['contact']['id']) {
+                    Html::addCssClass($options, $this->clientOptions['currentCssClass']);
+                }
+            }
             return Html::tag($tag, $content, $options);
         } else {
             return $content;

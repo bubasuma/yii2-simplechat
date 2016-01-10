@@ -1,7 +1,8 @@
 <div class="media conversation {{ model.new_messages > 0 ? settings.unreadCssClass : '' }} {{ is_current ? settings.currentCssClass : '' }}"
-     data-key="{{ key }}" data-contact-info="{{ model.contact|json_encode() }}" data-contact="{{ model.contact_id }}" >
+     data-key="{{ key }}" data-contact="{{ model.contact.id }}" data-contactInfo="{{ model.contact|json_encode() }}"
+     data-unreadUrl="{{ model.unreadUrl }}" data-readUrl="{{ model.readUrl }}" data-deleteUrl="{{ model.deleteUrl }}">
     <a class="pull-left" href="#">
-        <img class="media-object" data-src="holder.js/64x64" alt="64x64" style="width: 50px; height: 50px;" src="{{ settings.baseUrl }}'/img/'{{ model.contact.avatar }}">
+        <img class="media-object" alt="{{ model.contact.name }}" style="width: 50px; height: 50px;" src="{{ settings.baseUrl }}/img/{{ model.contact.avatar }}"/>
     </a>
     <div class="media-body">
         <small class="pull-right time"> {{ model.date }}</small>

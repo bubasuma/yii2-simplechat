@@ -11,7 +11,7 @@ use yii\db\ActiveRecord;
 
 /**
  * Class UserProfile
- * @package bubasuma\simplechat\db\demo
+ * @package bubasuma\simplechat\models
  *
  * @property string id
  * @property string first_name

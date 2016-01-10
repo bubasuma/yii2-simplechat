@@ -21,6 +21,8 @@
         }
     };
 
+    var view = null;
+
     var loadTypes  = {
         down:'history',
         up:'new'
@@ -33,52 +35,30 @@
             complete: 'complete.load',
             error: 'error.load',
             success: 'success.load'
-        },
-        read:{
-            beforeSend: 'beforeSend.read',
-            complete: 'complete.read',
-            error: 'error.read',
-            success: 'success.read'
-        },
-        unread:{
-            beforeSend: 'beforeSend.unread',
-            complete: 'complete.unread',
-            error: 'error.unread',
-            success: 'success.unread'
-        },
-        delete:{
-            beforeSend: 'beforeSend.delete',
-            complete: 'complete.delete',
-            error: 'error.delete',
-            success: 'success.delete'
         }
-
     };
 
     var defaults = {
         loadUrl: '',
-        loadType: 'POST',
-        unreadUrl: '',
-        unreadType: 'PATCH',
-        readUrl: '',
-        readType: 'PATCH',
-        deleteUrl: '',
-        deleteType: 'DELETE',
-        loadParam: 'key',
-        limit: 10
+        loadMethod: 'GET',
+        unreadMethod: 'PATCH',
+        readMethod: 'PATCH',
+        deleteMethod: 'DELETE',
+        limit: 10,
+        templateUrl: ''
     };
 
     var methods = {
-        init: function (user,options) {
+        init: function (user, current, options) {
             return this.each(function () {
                 var $chat = $(this);
                 if ($chat.data('simpleChatConversations')) {
                     return;
                 }
-                var settings = $.extend({}, defaults, options || {});
                 $chat.data('simpleChatConversations', {
-                    settings: settings,
+                    settings: $.extend({}, defaults, options || {}),
                     user: user,
+                    current: $.extend({}, {deleteUrl: null, unreadUrl: null, readUrl: null}, options || {}),
                     status: 0  // load status, 0: pending load, 1: loading
                 });
                 $chat.trigger(events.init);
@@ -86,10 +66,10 @@
         },
         load: function (args) {
             var $chat = $(this);
-            var options = $chat.data('simpleChatConversations');
+            var widget = $chat.data('simpleChatConversations');
             var data = {
                 type: loadTypes.down,
-                limit: options.settings.limit
+                limit: widget.settings.limit
             };
             if(typeof args == 'number'){
                 data['limit'] = args;
@@ -98,22 +78,22 @@
             }else {
                 data = $.extend({}, data, args || {});
             }
-            var elem = find($chat, data['type'] == loadTypes.up ?'first':'last');
-            if(elem){
-                data[options.settings.loadParam] = elem.data(options.settings.loadParam);
+            var $conversation = find($chat, data['type'] == loadTypes.up ?'first':'last');
+            if($conversation){
+                data['key'] = $conversation.data('key');
             }
-            if(options.status == 0) {
+            if(widget.status == 0) {
                 $.ajax({
-                    url: options.settings.loadUrl,
-                    type: options.settings.loadType,
+                    url: widget.settings.loadUrl,
+                    type: widget.settings.loadMethod,
                     dataType: 'JSON',
                     data: data,
                     beforeSend: function (xhr, settings) {
-                        options.status = 1;
+                        widget.status = 1;
                         $chat.trigger(events.load.beforeSend, [data['type'], xhr,settings]);
                     },
                     complete: function (xhr, textStatus) {
-                        options.status = 0;
+                        widget.status = 0;
                         $chat.trigger(events.load.complete,[data['type'], xhr,textStatus]);
                     },
                     success: function (res, textStatus, xhr) {
@@ -126,98 +106,41 @@
             }
         },
 
-        unread: function (id) {
+        unread: function (settings) {
             var $chat = $(this);
-            var options = $chat.data('simpleChatConversations');
-            var url = options.settings.unreadUrl;
-            if(-1 !== url.indexOf('?')){
-                url += '&contactId=' + id;
-            }else{
-                url += '?contactId=' + id;
-            }
-            $.ajax({
-                url: url,
-                type: options.settings.unreadType,
+            var widget = $chat.data('simpleChatConversations');
+            $.ajax($.extend({}, {
                 dataType: 'JSON',
-                data: {contactId : id},
-                beforeSend: function (xhr,settings) {
-                    $chat.trigger(events.unread.beforeSend, [id, xhr,settings]);
-                },
-                complete: function (xhr,textStatus) {
-                    $chat.trigger(events.unread.complete,[id, xhr,textStatus]);
-                },
-                success: function (res, textStatus, xhr) {
-                    $chat.trigger(events.unread.success,[id, res, textStatus, xhr]);
-                },
-                error: function (xhr,textStatus,errorThrown) {
-                    $chat.trigger(events.unread.error,[id, xhr,textStatus,errorThrown]);
-                }
-            });
+                url: widget.current.unreadUrl,
+                type: widget.settings.unreadMethod
+            }, settings || {}));
         },
 
-        read: function (id) {
+        read: function (settings) {
             var $chat = $(this);
-            var options = $chat.data('simpleChatConversations');
-            var url = options.settings.readUrl;
-            if(-1 !== url.indexOf('?')){
-                url += '&contactId=' + id;
-            }else{
-                url += '?contactId=' + id;
-            }
-            $.ajax({
-                url: url,
-                type: options.settings.readType,
+            var widget = $chat.data('simpleChatConversations');
+            $.ajax($.extend({}, {
                 dataType: 'JSON',
-                data: {contactId : id},
-                beforeSend: function (xhr,settings) {
-                    $chat.trigger(events.read.beforeSend, [id, xhr,settings]);
-                },
-                complete: function (xhr,textStatus) {
-                    $chat.trigger(events.read.complete,[id, xhr,textStatus]);
-                },
-                success: function (res, textStatus, xhr) {
-                    $chat.trigger(events.read.success,[id, res, textStatus, xhr]);
-                },
-                error: function (xhr,textStatus,errorThrown) {
-                    $chat.trigger(events.read.error,[id, xhr,textStatus,errorThrown]);
-                }
-            });
+                url: widget.current.readUrl,
+                type: widget.settings.readMethod
+            }, settings || {}));
         },
 
-        delete: function (id) {
+        delete: function (settings) {
             var $chat = $(this);
-            var options = $chat.data('simpleChatConversations');
-            var url = options.settings.deleteUrl;
-            if(-1 !== url.indexOf('?')){
-                url += '&contactId=' + id;
-            }else{
-                url += '?contactId=' + id;
-            }
-            $.ajax({
-                url: url,
-                type: options.settings.deleteType,
+            var widget = $chat.data('simpleChatConversations');
+            $.ajax($.extend({}, {
                 dataType: 'JSON',
-                data: {contactId : id},
-                beforeSend: function (xhr,settings) {
-                    $chat.trigger(events.delete.beforeSend, [id, xhr,settings]);
-                },
-                complete: function (xhr,textStatus) {
-                    $chat.trigger(events.delete.complete,[id, xhr,textStatus]);
-                },
-                success: function (res, textStatus, xhr) {
-                    $chat.trigger(events.delete.success,[id, res, textStatus, xhr]);
-                },
-                error: function (xhr,textStatus,errorThrown) {
-                    $chat.trigger(events.delete.error,[id, xhr,textStatus,errorThrown]);
-                }
-            });
+                url: widget.current.deleteUrl,
+                type: widget.settings.deleteMethod
+            }, settings || {}));
         },
 
         append: function (data) {
             var $chat = $(this);
-            var options = $chat.data('simpleChatConversations');
+            var widget = $chat.data('simpleChatConversations');
             if(typeof data == 'object'){
-                $chat.append(tmpl(options.settings.template,data));
+                $chat.append(tmpl(widget.settings.templateUrl, data));
             }else{
                 $chat.append(data);
             }
@@ -225,9 +148,9 @@
 
         prepend: function (data) {
             var $chat = $(this);
-            var options = $chat.data('simpleChatConversations');
+            var widget = $chat.data('simpleChatConversations');
             if(typeof data == 'object'){
-                $chat.prepend(tmpl(options.settings.template,data));
+                $chat.prepend(tmpl(widget.settings.templateUrl, data));
             }else{
                 $chat.prepend(data);
             }
@@ -235,24 +158,22 @@
 
         insert: function (data, selector, before) {
             var $chat = $(this);
-            var options = $chat.data('simpleChatConversations');
+            var widget = $chat.data('simpleChatConversations');
             var $elem = $chat.find(selector);
+            var $conversation = null;
             if(typeof data == 'object'){
-                if(before){
-                    $elem.before(tmpl(options.settings.template,data));
-                }else{
-                    $elem.after(tmpl(options.settings.template,data));
-                }
+                $conversation = tmpl(widget.settings.templateUrl, data);
             }else{
-                if(before){
-                    $elem.before(data);
-                }else{
-                    $elem.after(data);
-                }
+                $conversation = data;
+            }
+            if(before){
+                $elem.before($conversation);
+            }else{
+                $elem.after($conversation);
             }
         },
 
-        data: function () {
+        widget: function () {
             return this.data('simpleChatConversations');
         },
 
@@ -272,35 +193,28 @@
 
 
     var find = function ($chat, id, dataAttr) {
-        var options = $chat.data('simpleChatConversations');
+        var widget = $chat.data('simpleChatConversations');
         if(typeof id == 'number' || typeof dataAttr != 'undefined'){
             dataAttr = typeof dataAttr == 'undefined' ? 'key' : dataAttr;
             return $chat.find('[data-' + dataAttr +'=' + id + ']');
         } else if(id == 'last') {
-            return $chat.find(options.settings.selector).last();
+            return $chat.find(widget.settings.selector).last();
         } else if(id == 'first') {
-            return $chat.find(options.settings.selector).first();
+            return $chat.find(widget.settings.selector).first();
         }else{
             return $chat.find(id);
         }
     };
 
-    var tmlCache = {};
-    var tmpl = function (str, data){
-        var fn = /#[a-z0-9_-]+/i.test(str) ? tmlCache[str] = tmlCache[str] || tmpl($(str).html()) :
-            new Function("obj",
-                "var p=[],print=function(){p.push.apply(p,arguments);};" +
-                "with(obj){p.push('" +
-                str
-                    .replace(/[\r\t\n]/g, " ")
-                    .split("<%").join("\t")
-                    .replace(/((^|%>)[^\t]*)'/g, "$1\r")
-                    .replace(/\t=(.*?)%>/g, "',$1,'")
-                    .split("\t").join("');")
-                    .split("%>").join("p.push('")
-                    .split("\r").join("\\'")
-                + "');}return p.join('');");
-        return data ? fn( data ) : fn;
+    var tmpl = function (url, data){
+        if(null == view){
+            view = twig({
+                id: 'conversation',
+                href: url,
+                async: false
+            })
+        }
+        return view.render(data);
     }
 
 })(jQuery);

@@ -9,7 +9,7 @@ namespace bubasuma\simplechat;
 use yii\web\AssetBundle;
 
 /**
- * Class DemoAsset
+ * Class ChatAsset
  * @package bubasuma\simplechat
  *
  * @author Buba Suma <bubasuma@gmail.com>
@@ -26,6 +26,7 @@ class ChatAsset extends AssetBundle
     ];
     public $depends = [
         'bubasuma\simplechat\BaseAsset',
+        'bubasuma\simplechat\TwigAsset',
     ];
 
     public function init()
