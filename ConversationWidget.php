@@ -35,7 +35,8 @@ class ConversationWidget extends ListView
     {
         $id = $this->options['id'];
         if (!isset($this->clientOptions['selector'])) {
-            $this->clientOptions['selector'] = '.' . strstr($this->itemOptions['class'], ' ', true);
+            $class = explode(' ', $this->itemOptions['class']);
+            $this->clientOptions['selector'] = '.' . $class[0];
         }
         $options = Json::htmlEncode($this->clientOptions);
         $user = Json::htmlEncode($this->user);
