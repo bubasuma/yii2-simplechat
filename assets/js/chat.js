@@ -63,7 +63,7 @@
                         self.messenger.removeData('loaded');
                         //reinitialize the chat
                         var current = {
-                            contact: $conversation.data('contactInfo'),
+                            contact: $conversation.data('contactinfo'),
                             deleteUrl: $conversation.data('deleteurl'),
                             readUrl: $conversation.data('readurl'),
                             unreadUrl: $conversation.data('unreadurl'),

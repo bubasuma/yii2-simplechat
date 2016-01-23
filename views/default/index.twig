@@ -52,7 +52,7 @@
     {% set message = message_widget_begin({
         'dataProvider' : messageDataProvider,
         'itemView' : asset.sourcePath ~ '/tmpl/message.twig',
-        'formView' : this.context.viewPath ~ '/form.twig'
+        'formView' : this.context.viewPath ~ '/form.twig',
         'user' : {
             'id' : user.id,
             'name' : user.name,
