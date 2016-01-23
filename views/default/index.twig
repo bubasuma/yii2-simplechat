@@ -1,7 +1,7 @@
 {{ use('bubasuma/simplechat/ConversationWidget') }}
 {{ use('bubasuma/simplechat/MessageWidget') }}
 
-{% set asset = register_asset_bundle('bubasuma\simplechat\ChatAsset', true) %}
+{% set asset = register_asset_bundle('bubasuma/simplechat/ChatAsset', true) %}
 
 {{ set(this, 'params', this.params|merge({'user': user})) }}
 {{ set(this, 'params', this.params|merge({'users': users})) }}
@@ -10,7 +10,7 @@
     <div class="loading" style="display: none">Loading&#8230;</div>
     {% set conversation = conversation_widget_begin({
         'dataProvider' : conversationDataProvider,
-        'itemView' : '../../assets/tmpl/conversation.twig',
+        'itemView' : asset.sourcePath ~ '/tmpl/conversation.twig',
         'options' : {
             'class' : 'conversation-wrap col-lg-3',
             'id' : 'conversations',
@@ -48,7 +48,7 @@
     {{ conversation_widget_end() }}
     {% set message = message_widget_begin({
         'dataProvider' : messageDataProvider,
-        'itemView' : '../../assets/tmpl/message.twig',
+        'itemView' : asset.sourcePath ~ '/tmpl/message.twig',
         'user' : {
             'id' : user.id,
             'name' : user.name,
