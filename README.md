@@ -10,13 +10,13 @@ The preferred way to install this extension is through [composer](http://getcomp
 Either run
 
 ```
-php composer.phar require --prefer-dist bubasuma/yii2-simplechat "v2.0.0-alpha"
+php composer.phar require --prefer-dist bubasuma/yii2-simplechat "dev-master"
 ```
 
 or add
 
 ```
-"bubasuma/yii2-simplechat": "v2.0.0-alpha"
+"bubasuma/yii2-simplechat": "dev-master"
 ```
 
 to the require section of your `composer.json` file.
