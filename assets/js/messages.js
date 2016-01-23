@@ -47,7 +47,7 @@
 
     var defaults = {
         loadUrl: '',
-        loadMethod: 'POST',
+        loadMethod: 'GET',
         sendUrl: false,
         sendMethod: false,
         limit: 10,
@@ -259,7 +259,7 @@
     var tmpl = function (url, data){
         if(null == view){
             view = twig({
-                id: 'conversation',
+                id: 'message',
                 href: url,
                 async: false
             })

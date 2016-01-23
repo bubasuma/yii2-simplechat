@@ -33,8 +33,6 @@ class ConversationWidget extends ListView
      */
     public $current;
 
-    public $itemView = 'conversation';
-
     public $clientOptions = [];
 
     public $liveOptions = [];
@@ -85,7 +83,7 @@ class ConversationWidget extends ListView
         if ($this->itemView === null) {
             $content = $key;
         } elseif (is_string($this->itemView)) {
-            $content = $this->getView()->render($this->itemView, array_merge([
+            $content = $this->getView()->renderFile($this->itemView, array_merge([
                 'model' => $model,
                 'key' => $key,
                 'index' => $index,

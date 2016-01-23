@@ -66,7 +66,7 @@ trait ControllerTrait
     {
         $userId = $this->user->getId();
         if ($userId == $contactId) {
-            throw new ForbiddenHttpException('You attempt to send message to yourself');
+            throw new ForbiddenHttpException('You cannot send a message in this conversation');
         }
         $text = \Yii::$app->request->post('text');
         return call_user_func([$this->modelClass, 'create'], $userId, $contactId, $text);
@@ -74,7 +74,7 @@ trait ControllerTrait
 
     public function actionDeleteMessage($id)
     {
-        throw new NotSupportedException(get_class($this) . ' does not support actionDeleteMessage().');
+        throw new NotSupportedException(get_class($this) . " does not support actionDeleteMessage($id).");
     }
 
     public function actionDeleteConversation($contactId)

@@ -17,7 +17,7 @@ class m151121_105707_message_data extends Migration
 {
     public function up()
     {
-        $users = \bubasuma\simplechat\db\demo\User::find()->select(['id'])->asArray()->all();
+        $users = \bubasuma\simplechat\models\User::find()->select(['id'])->asArray()->all();
         $data = require(__DIR__ . '/data/messages.php');
         $count = count($data);
         $messages = [];
@@ -35,7 +35,7 @@ class m151121_105707_message_data extends Migration
             }
             ArrayHelper::multisort($messages, 'created_at', SORT_ASC, SORT_NUMERIC);
             foreach ($messages as $message) {
-                $new = new \bubasuma\simplechat\db\demo\Message();
+                $new = new \bubasuma\simplechat\models\Message();
                 $new->sender_id = $message['sender_id'];
                 $new->receiver_id = $message['receiver_id'];
                 $new->text = $message['text'];

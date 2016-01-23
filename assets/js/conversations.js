@@ -58,7 +58,7 @@
                 $chat.data('simpleChatConversations', {
                     settings: $.extend({}, defaults, options || {}),
                     user: user,
-                    current: $.extend({}, {deleteUrl: null, unreadUrl: null, readUrl: null}, options || {}),
+                    current: $.extend({}, {deleteUrl: null, unreadUrl: null, readUrl: null}, current || {}),
                     status: 0  // load status, 0: pending load, 1: loading
                 });
                 $chat.trigger(events.init);

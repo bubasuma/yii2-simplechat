@@ -17,8 +17,8 @@ use yii\web\AssetBundle;
  */
 class TwigAsset extends AssetBundle
 {
-    public $sourcePath = '@bower/jquery/dist';
+    public $sourcePath = '@bower/twig.js';
     public $js = [
-        'jquery.js',
+        'twig.js',
     ];
 }

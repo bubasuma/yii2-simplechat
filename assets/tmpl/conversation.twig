@@ -1,13 +1,14 @@
 <div class="media conversation {{ model.new_messages > 0 ? settings.unreadCssClass : '' }} {{ is_current ? settings.currentCssClass : '' }}"
-     data-key="{{ key }}" data-contact="{{ model.contact.id }}" data-contactInfo="{{ model.contact|json_encode() }}"
-     data-unreadUrl="{{ model.unreadUrl }}" data-readUrl="{{ model.readUrl }}" data-deleteUrl="{{ model.deleteUrl }}">
+     data-key="{{ key }}" data-contact="{{ model.contact.id }}" data-contactinfo="{{ model.contact|json_encode()|escape }}"
+     data-unreadurl="{{ model.unreadUrl }}" data-readurl="{{ model.readUrl }}" data-deleteurl="{{ model.deleteUrl }}"
+     data-loadurl="{{ model.loadUrl }}" data-sendurl="{{ model.sendUrl }}">
     <a class="pull-left" href="#">
         <img class="media-object" alt="{{ model.contact.name }}" style="width: 50px; height: 50px;" src="{{ settings.baseUrl }}/img/{{ model.contact.avatar }}"/>
     </a>
     <div class="media-body">
         <small class="pull-right time"> {{ model.date }}</small>
         <h5 class="media-heading">{{ model.contact.name }}</h5>
-        <small>{{ user.id == model.sender_id ? '<i class="fa fa-reply"></i>' : '' }} {{ model.text }}</small>
+        <small>{{ user.id == model.sender_id ? '<i class="fa fa-reply"></i>' : '' }} {{ model.text|raw }}</small>
         <span class="badge pull-right msg-new">{{ model.new_messages > 0 ? model.new_messages : '' }}</span>
         <ul class="pull-right list-inline">
             <li><a class="close" title="Mark as {{ model.new_messages > 0 ? 'read' : 'unread' }}"><small class="small-icon" aria-hidden="true"><i class="fa fa-circle{{ model.new_messages > 0 ? '' : '-o' }}"></i></small></a></li>

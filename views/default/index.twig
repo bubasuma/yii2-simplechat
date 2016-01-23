@@ -16,7 +16,8 @@
             'id' : 'conversations',
         },
         'itemOptions' : {
-            'tag' : false
+            'tag' : false,
+            'class' : 'media conversation',
         },
         'user' : {
             'id' : user.id,
@@ -31,11 +32,13 @@
             'deleteUrl': path('delete-conversation', {'contactId' : contact.id}),
             'readUrl': path('mark-conversation-as-read', {'contactId' : contact.id}),
             'unreadUrl': path('mark-conversation-as-unread', {'contactId' : contact.id}),
+            'loadUrl' : path('messages', {'contactId' : contact.id}),
+            'sendUrl' : path('create-message', {'contactId' : contact.id}),
         },
         'clientOptions' : {
-            'loadUrl' : path('conversations'),
-            'templateUrl' : asset.baseurl ~ '/tmpl/conversation.twig',
+            'loadUrl' : path(['conversations']),
             'baseUrl' : asset.baseUrl,
+            'templateUrl' : asset.baseUrl ~ '/tmpl/conversation.twig',
             'currentCssClass' : 'current',
             'unreadCssClass' : 'unread',
         }
@@ -49,6 +52,7 @@
     {% set message = message_widget_begin({
         'dataProvider' : messageDataProvider,
         'itemView' : asset.sourcePath ~ '/tmpl/message.twig',
+        'formView' : this.context.viewPath ~ '/form.twig'
         'user' : {
             'id' : user.id,
             'name' : user.name,
@@ -65,6 +69,7 @@
         },
         'itemOptions' : {
             'tag': false,
+            'class' : 'media msg',
         },
         'formOptions' : {
             'action' : path('create-message', {'contactId' : contact.id}),
@@ -72,8 +77,8 @@
         },
         'clientOptions' : {
             'loadUrl' : path('messages', {'contactId' : contact.id}),
+            'templateUrl' : asset.baseUrl ~ '/tmpl/message.twig',
             'baseUrl' : asset.baseUrl,
-            'templateUrl' : asset.baseurl ~ '/tmpl/message.twig',
             'container' : '#messages',
         }
     })

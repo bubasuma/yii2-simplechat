@@ -47,7 +47,7 @@
                         // check whether not all history is loaded
                         if (!self.conversations.data('loaded')) {
                             // check whether the scroll is at the bottom
-                            if (self.conversations.scrollTop + self.conversations.innerHeight() >= self.conversations.scrollHeight) {
+                            if (self.conversations.get(0).scrollTop + self.conversations.innerHeight() >= self.conversations.get(0).scrollHeight) {
                                 // load conversations
                                 self.conversations.simpleChatConversations('load', 8);
                             }
@@ -62,8 +62,17 @@
                         self.messenger.simpleChatMessages('destroy');
                         self.messenger.removeData('loaded');
                         //reinitialize the chat
-                        var contact = $conversation.data('contactInfo');
-                        self.messenger.simpleChatMessages(widget.user, contact, widget.settings);
+                        var current = {
+                            contact: $conversation.data('contactInfo'),
+                            deleteUrl: $conversation.data('deleteurl'),
+                            readUrl: $conversation.data('readurl'),
+                            unreadUrl: $conversation.data('unreadurl'),
+                            loadUrl: $conversation.data('loadurl'),
+                            sendUrl: $conversation.data('sendurl')
+                        };
+                        widget.settings.loadUrl = current.loadUrl;
+                        widget.settings.sendUrl = current.sendUrl;
+                        self.messenger.simpleChatMessages(widget.user, current.contact, widget.settings);
 
                         var tempHandler1 = function () {
                             // show loader
@@ -94,12 +103,7 @@
                             $conversation.addClass('current').siblings('.current').removeClass('current');
 
                             // set this conversation as current conversation
-                            self.conversations.simpleChatConversations('widget').current = {
-                                contact: contact,
-                                deleteUrl: $conversation.data('deleteUrl'),
-                                readUrl: $conversation.data('readUrl'),
-                                unreadUrl: $conversation.data('unreadUrl')
-                            };
+                            self.conversations.simpleChatConversations('widget').current = current;
 
                             // check whether the current conversation has unread messages
                             if ($conversation.is('.unread')) {
@@ -107,9 +111,9 @@
                                 $conversation.find('.fa-circle').trigger('click');
                             }
                             // update the window state
-                            document.title = contact.profile.full_name;
+                            document.title = current.contact.profile.full_name;
                             var re = /\/(\s*\d+\s*)/;
-                            var url = location.href.replace(re, '/' + contact.id);
+                            var url = location.href.replace(re, '/' + current.contact.id);
                             window.history.replaceState(null, document.title, url);
                             // remove itself as handler
                             self.messenger.off('success.load', tempHandler3);
@@ -128,7 +132,7 @@
                         e.stopPropagation();
                         var $conversation = $(this).parents('.conversation');
                         self.conversations.simpleChatConversations('delete', {
-                            url: $conversation.data('deleteUrl'),
+                            url: $conversation.data('deleteurl'),
                             success: function (data) {
                                 if (data['count'] && $conversation.length) {
                                     // remove conversation
@@ -151,7 +155,7 @@
                         e.stopPropagation();
                         var $conversation = $(this).parents('.conversation');
                         self.conversations.simpleChatConversations('read', {
-                            url: $conversation.data('readUrl'),
+                            url: $conversation.data('readurl'),
                             success: function (data) {
                                 if (data['count'] && $conversation.length) {
                                     // remove unread class and change read icon to unread
@@ -173,7 +177,7 @@
                         e.stopPropagation();
                         var $conversation = $(this).parents('.conversation');
                         self.conversations.simpleChatConversations('unread', {
-                            url: $conversation.data('unreadUrl'),
+                            url: $conversation.data('unreadurl'),
                             success: function (data) {
                                 if (data['count'] && $conversation.length) {
                                     // add unread class and change unread icon to read

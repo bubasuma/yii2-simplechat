@@ -5,6 +5,6 @@
     <div class="media-body">
         <small class="pull-right time"><i class="fa fa-clock-o"></i> {{ model.date }}</small>
         <h5 class="media-heading">{{ sender.name }}</h5>
-        <small class="col-lg-10">{{ model.text }}</small>
+        <small class="col-lg-10">{{ model.text|raw }}</small>
     </div>
 </div>

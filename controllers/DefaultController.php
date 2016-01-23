@@ -14,6 +14,7 @@ use yii\helpers\ArrayHelper;
 use yii\helpers\StringHelper;
 use yii\helpers\Url;
 use yii\web\Controller;
+use yii\web\ForbiddenHttpException;
 use yii\web\NotFoundHttpException;
 
 /**
@@ -69,6 +70,9 @@ class DefaultController extends Controller
             return \Yii::$app->getResponse()->redirect(Url::current(['userId' => null]));
         }
         $user = $this->user;
+        if($contactId == $user->id){
+            throw new ForbiddenHttpException('You cannot open this conversation');
+        }
         $contact = User::findIdentity(['id' => $contactId]);
         if (empty($contact)) {
             throw new NotFoundHttpException();
@@ -83,8 +87,9 @@ class DefaultController extends Controller
         foreach (User::getAll() as $userItem) {
             $users[] = [
                 'label' => $userItem->name,
-                'url' => Url::current(['contactId' => $contact->id]),
-                'options' => ['class' => $userItem->id == $user->id ? 'disabled' : '', 'data-method' => 'post']
+                'url' => Url::current(['userId' => $userItem->id]),
+                'options' => ['class' => in_array($userItem->id, [$user->id, $contact->id]) ? 'disabled' : ''],
+                'linkOptions' => ['data-method' => 'post'],
             ];
         }
         return $this->render('index.twig', compact('conversationDataProvider', 'messageDataProvider', 'users', 'user', 'contact'));
@@ -109,9 +114,11 @@ class DefaultController extends Controller
         $model['text'] = StringHelper::truncate($model['text'], 20);
         $model['new_messages'] = ArrayHelper::getValue($model, 'newMessages.count', 0);
         $model['contact'] = ArrayHelper::merge($model['contact'], $model['contact']['profile']);
-        $model['deleteUrl'] = Url::to(['delete-conversation','contactId' => $model['contact']['id']]);
-        $model['readUrl'] = Url::to(['mark-conversation-as-read','contactId' => $model['contact']['id']]);
-        $model['unreadUrl'] = Url::to(['mark-conversation-as-unread','contactId' => $model['contact']['id']]);
+        $model['deleteUrl'] = Url::to(['/' . $this->uniqueId . '/delete-conversation','contactId' => $model['contact']['id']]);
+        $model['readUrl'] = Url::to(['/' . $this->uniqueId . '/mark-conversation-as-read','contactId' => $model['contact']['id']]);
+        $model['unreadUrl'] = Url::to(['/' . $this->uniqueId . '/mark-conversation-as-unread','contactId' => $model['contact']['id']]);
+        $model['loadUrl'] = Url::to(['/' . $this->uniqueId . '/messages','contactId' => $model['contact']['id']]);
+        $model['sendUrl'] = Url::to(['/' . $this->uniqueId . '/create-message','contactId' => $model['contact']['id']]);
         ArrayHelper::remove($model, 'contact.profile');
         ArrayHelper::remove($model, 'newMessages');
         return $model;

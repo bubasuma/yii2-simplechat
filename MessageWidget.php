@@ -9,7 +9,6 @@ namespace bubasuma\simplechat;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
 use yii\helpers\Json;
-use yii\helpers\Url;
 use yii\widgets\ListView;
 
 /**
@@ -31,9 +30,7 @@ class MessageWidget extends ListView
      */
     public $contact;
 
-    public $itemView = 'message';
-
-    public $formView = 'form';
+    public $formView;
 
     public $formParams = [];
 
@@ -58,7 +55,7 @@ class MessageWidget extends ListView
         $content = Html::beginForm($action, $method, $this->formOptions);
 
         if (is_string($this->formView)) {
-            $content .= $this->getView()->render($this->formView, array_merge([
+            $content .= $this->getView()->renderFile($this->formView, array_merge([
                 'widget' => $this,
             ], $this->formParams));
         } else {
@@ -115,7 +112,7 @@ class MessageWidget extends ListView
         if ($this->itemView === null) {
             $content = $key;
         } elseif (is_string($this->itemView)) {
-            $content = $this->getView()->render($this->itemView, array_merge([
+            $content = $this->getView()->renderFile($this->itemView, array_merge([
                 'model' => $model,
                 'key' => $key,
                 'index' => $index,
