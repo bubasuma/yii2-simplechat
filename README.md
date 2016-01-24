@@ -90,7 +90,7 @@ namespace common\models;
 
 //...
 use bubasuma\simplechat\db\Model;
-use common\models\User
+use common\models\User;
 use yii\db\ActiveQuery;
 //...
 
@@ -113,10 +113,6 @@ class Message extends Model
                 $contact->with([
                     //...
                 ])->select(['id', ]);
-            },
-            'newMessages' => function ($msg) use ($userId) {
-                /**@var $msg ActiveQuery * */
-                $msg->andOnCondition(['receiver_id' => $userId])->select(['sender_id', 'COUNT(*) AS count']);
             },
             //...
         ]);
@@ -169,4 +165,47 @@ class MessageController extends Controller
     }
 }
 ```
-If you are using this extension in your frontend application, you can configure widgets as follows: 
+If you are using this extension in your frontend application, you can configure widgets as follows:
+
+```twig
+{% set conversation = conversation_widget_begin({
+    'dataProvider' : conversationDataProvider,
+    'itemView' : asset.sourcePath ~ '/tmpl/conversation.twig',
+    'options' : {
+        'class' : 'conversation-wrap col-lg-3',
+        'id' : 'conversations',
+    },
+    'itemOptions' : {
+        'tag' : false,
+        'class' : 'media conversation',
+    },
+    'user' : {
+        'id' : user.id,
+        'name' : user.name,
+    },
+    'current' : {
+        'contact' : {
+            'id' : contact.id,
+            'name' : contact.name,
+            'avatar' : contact.avatar,
+        },
+        'deleteUrl': path('delete-conversation', {'contactId' : contact.id}),
+        'readUrl': path('mark-conversation-as-read', {'contactId' : contact.id}),
+        'unreadUrl': path('mark-conversation-as-unread', {'contactId' : contact.id}),
+        'loadUrl' : path('messages', {'contactId' : contact.id}),
+        'sendUrl' : path('create-message', {'contactId' : contact.id}),
+    },
+    'clientOptions' : {
+        'loadUrl' : path(['conversations']),
+        'baseUrl' : asset.baseUrl,
+        'templateUrl' : asset.baseUrl ~ '/tmpl/conversation.twig',
+        'currentCssClass' : 'current',
+        'unreadCssClass' : 'unread',
+    }
+})
+%}
+{{#...}}
+{{ conversation.renderItems|raw }}
+{{#...}}
+{{ conversation_widget_end() }}
+```
