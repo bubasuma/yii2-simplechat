@@ -19,7 +19,7 @@ class ChatAsset extends AssetBundle
 {
     public $css = [
         '//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css',
-        'css/chat.css',
+        'css/yiiSimpleChat.css',
     ];
     public $js = [
         'js/yiiSimpleChat.js'
