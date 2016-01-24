@@ -111,7 +111,7 @@
                                 $conversation.find('.fa-circle').trigger('click');
                             }
                             // update the window state
-                            document.title = current.contact.profile.full_name;
+                            document.title = current.contact.profile.name;
                             var re = /\/(\s*\d+\s*)/;
                             var url = location.href.replace(re, '/' + current.contact.id);
                             window.history.replaceState(null, document.title, url);
