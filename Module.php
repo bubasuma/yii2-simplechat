@@ -65,7 +65,6 @@ class Module extends \yii\base\Module implements BootstrapInterface
     {
         parent::init();
         $this->db = Instance::ensure($this->db, Connection::className());
-        $this->db->tablePrefix = $this->id . '_';
     }
 
     /**
@@ -91,4 +90,18 @@ class Module extends \yii\base\Module implements BootstrapInterface
             ];
         }
     }
+
+    /**
+     * @inheritdoc
+     */
+    public function beforeAction($action)
+    {
+        if(!parent::beforeAction($action)){
+            return false;
+        }
+        $this->db->tablePrefix = $this->id . '_';
+        return true;
+    }
+
+
 }
