@@ -22,7 +22,7 @@ class ChatAsset extends AssetBundle
         'css/chat.css',
     ];
     public $js = [
-        'js/chat.js'
+        'js/yiiSimpleChat.js'
     ];
     public $depends = [
         'bubasuma\simplechat\BaseAsset',

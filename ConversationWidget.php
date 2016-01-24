@@ -52,7 +52,7 @@ class ConversationWidget extends ListView
         $current = Json::htmlEncode($this->current);
         $view = $this->getView();
         ConversationAsset::register($view);
-        $view->registerJs("jQuery('#$id').simpleChatConversations($user, $current, $options);");
+        $view->registerJs("jQuery('#$id').yiiSimpleChatConversations($user, $current, $options);");
     }
 
 

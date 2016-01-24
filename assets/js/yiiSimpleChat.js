@@ -25,9 +25,9 @@
                 var conversationsLoader = $('#conversations-loader');
 
                 var tempHandler4 = function () {
-                    var widget = self.conversations.simpleChatConversations('widget');
+                    var widget = self.conversations.yiiSimpleChatConversations('widget');
                     // read all messages in the current conversation
-                    var $conversation = self.conversations.simpleChatConversations('find', widget.current.contact.id, 'contact');
+                    var $conversation = self.conversations.yiiSimpleChatConversations('find', widget.current.contact.id, 'contact');
                     if($conversation.length){
                         // check whether the current conversation has unread messages
                         if ($conversation.is('.unread')) {
@@ -35,7 +35,7 @@
                             $conversation.find('.fa-circle').trigger('click');
                         }
                     }else{
-                        self.conversations.simpleChatConversations('read');
+                        self.conversations.yiiSimpleChatConversations('read');
                     }
                     self.messenger.off('initialized', tempHandler4)
                 };
@@ -49,7 +49,7 @@
                             // check whether the scroll is at the bottom
                             if (self.conversations.get(0).scrollTop + self.conversations.innerHeight() >= self.conversations.get(0).scrollHeight) {
                                 // load conversations
-                                self.conversations.simpleChatConversations('load', 8);
+                                self.conversations.yiiSimpleChatConversations('load', 8);
                             }
                         }
                     })
@@ -57,9 +57,9 @@
                     .on('click', '.conversation:not(.current)', function () {
                         var $conversation = $(this);
                         //copy previous configuration
-                        var widget = $.extend({}, self.messenger.simpleChatMessages('widget'));
+                        var widget = $.extend({}, self.messenger.yiiSimpleChatMessages('widget'));
                         //destroy previous chat
-                        self.messenger.simpleChatMessages('destroy');
+                        self.messenger.yiiSimpleChatMessages('destroy');
                         self.messenger.removeData('loaded');
                         //reinitialize the chat
                         var current = {
@@ -72,7 +72,7 @@
                         };
                         widget.settings.loadUrl = current.loadUrl;
                         widget.settings.sendUrl = current.sendUrl;
-                        self.messenger.simpleChatMessages(widget.user, current.contact, widget.settings);
+                        self.messenger.yiiSimpleChatMessages(widget.user, current.contact, widget.settings);
 
                         var tempHandler1 = function () {
                             // show loader
@@ -103,7 +103,7 @@
                             $conversation.addClass('current').siblings('.current').removeClass('current');
 
                             // set this conversation as current conversation
-                            self.conversations.simpleChatConversations('widget').current = current;
+                            self.conversations.yiiSimpleChatConversations('widget').current = current;
 
                             // check whether the current conversation has unread messages
                             if ($conversation.is('.unread')) {
@@ -123,7 +123,7 @@
                         // Because it removes itself as handler at the end of its body
                         self.messenger.on('success.load', tempHandler3);
                         //reload messages
-                        self.messenger.simpleChatMessages('reload');
+                        self.messenger.yiiSimpleChatMessages('reload');
 
                     })
                     // on click delete icon
@@ -131,7 +131,7 @@
                         e.preventDefault();
                         e.stopPropagation();
                         var $conversation = $(this).parents('.conversation');
-                        self.conversations.simpleChatConversations('delete', {
+                        self.conversations.yiiSimpleChatConversations('delete', {
                             url: $conversation.data('deleteurl'),
                             success: function (data) {
                                 if (data['count'] && $conversation.length) {
@@ -143,7 +143,7 @@
                                     // check whether this conversation is the current
                                     if($conversation.is('.current')){
                                         // remove messages from messenger
-                                        self.messenger.simpleChatMessages('empty');
+                                        self.messenger.yiiSimpleChatMessages('empty');
                                     }
                                 }
                             }
@@ -154,7 +154,7 @@
                         e.preventDefault();
                         e.stopPropagation();
                         var $conversation = $(this).parents('.conversation');
-                        self.conversations.simpleChatConversations('read', {
+                        self.conversations.yiiSimpleChatConversations('read', {
                             url: $conversation.data('readurl'),
                             success: function (data) {
                                 if (data['count'] && $conversation.length) {
@@ -176,7 +176,7 @@
                         e.preventDefault();
                         e.stopPropagation();
                         var $conversation = $(this).parents('.conversation');
-                        self.conversations.simpleChatConversations('unread', {
+                        self.conversations.yiiSimpleChatConversations('unread', {
                             url: $conversation.data('unreadurl'),
                             success: function (data) {
                                 if (data['count'] && $conversation.length) {
@@ -211,7 +211,7 @@
                     })
                     // on conversations load successful
                     .on('success.load', function (e, type, data) {
-                        var widget = self.conversations.simpleChatConversations('widget');
+                        var widget = self.conversations.yiiSimpleChatConversations('widget');
                         var index, conversation;
                         // check whether we load history or new conversations
                         if (type == 'history') {
@@ -231,7 +231,7 @@
                                     settings: widget.settings
                                 };
                                 //prepend conversation
-                                self.conversations.simpleChatConversations('append', conversation);
+                                self.conversations.yiiSimpleChatConversations('append', conversation);
                             }
                         } else {
                             // loop through data.models
@@ -246,12 +246,12 @@
                                     settings: widget.settings
                                 };
                                 // remove conversation if it existed before
-                                var $conversation = self.conversations.simpleChatConversations('find', conversation.model.contact.id, 'contact');
+                                var $conversation = self.conversations.yiiSimpleChatConversations('find', conversation.model.contact.id, 'contact');
                                 if ($conversation.length) {
                                     $conversation.remove();
                                 }
                                 // prepend conversation
-                                self.conversations.simpleChatConversations('prepend', conversation);
+                                self.conversations.yiiSimpleChatConversations('prepend', conversation);
                             }
                         }
                     });
@@ -261,7 +261,7 @@
                     // check whether the scroll is at the top  and not all history is loaded
                     if (self.messages.get(0).scrollTop == 0 && !self.messenger.data('loaded')) {
                         // load messages
-                        self.messenger.simpleChatMessages('load', 10);
+                        self.messenger.yiiSimpleChatMessages('load', 10);
                     }
                 });
 
@@ -287,13 +287,13 @@
                     })
                     // on message load successful
                     .on('success.load', function (e, type, data) {
-                        var when = false, options = self.messenger.simpleChatMessages('widget');
+                        var when = false, options = self.messenger.yiiSimpleChatMessages('widget');
                         var index, msg;
                         // check whether we load history or new messages
                         if (type == 'history') {
                             // get the first date block
                             var _top_when_text = false,
-                                _top_when = self.messenger.simpleChatMessages('find', '.msg-date').first();
+                                _top_when = self.messenger.yiiSimpleChatMessages('find', '.msg-date').first();
                             if (_top_when) {
                                 when = _top_when_text = _top_when.find('strong').text();
                             }
@@ -306,7 +306,7 @@
                                 // check whether to insert date block
                                 if (data['models'][index]['when'] != when) {
                                     if (when != _top_when_text) {
-                                        self.messenger.simpleChatMessages('prepend', '<div class="alert alert-info msg-date"><strong>' + when + '</strong></div>');
+                                        self.messenger.yiiSimpleChatMessages('prepend', '<div class="alert alert-info msg-date"><strong>' + when + '</strong></div>');
                                     }
                                     when = data['models'][index]['when'];
                                 }
@@ -321,20 +321,20 @@
 
                                 if (when == _top_when_text) {
                                     // insert message after the first date block from the top of the container
-                                    self.messenger.simpleChatMessages('insert', msg, _top_when);
+                                    self.messenger.yiiSimpleChatMessages('insert', msg, _top_when);
                                 } else {
                                     // prepend message to a container
-                                    self.messenger.simpleChatMessages('prepend', msg);
+                                    self.messenger.yiiSimpleChatMessages('prepend', msg);
                                 }
                             }
                             // prepend the the date block
                             if (when != _top_when_text) {
-                                self.messenger.simpleChatMessages('prepend', '<div class="alert alert-info msg-date"><strong>' + when + '</strong></div>');
+                                self.messenger.yiiSimpleChatMessages('prepend', '<div class="alert alert-info msg-date"><strong>' + when + '</strong></div>');
                             }
                         } else {
                             // get the last date block
                             var _last_when_text = false,
-                                _last_when = self.messenger.simpleChatMessages('find', '.msg-date').last();
+                                _last_when = self.messenger.yiiSimpleChatMessages('find', '.msg-date').last();
                             if (_last_when) {
                                 when = _last_when_text = _last_when.find('strong').text();
                             }
@@ -344,7 +344,7 @@
                                 if (data['models'][index]['when'] != when) {
                                     when = data['models'][index]['when'];
                                     if (when != _last_when_text) {
-                                        self.messenger.simpleChatMessages('append', '<div class="alert alert-info msg-date"><strong>' + when + '</strong></div>');
+                                        self.messenger.yiiSimpleChatMessages('append', '<div class="alert alert-info msg-date"><strong>' + when + '</strong></div>');
                                     }
                                 }
                                 // object to inject to the template
@@ -356,7 +356,7 @@
                                     settings: options.settings
                                 };
                                 // append the message
-                                self.messenger.simpleChatMessages('append', msg);
+                                self.messenger.yiiSimpleChatMessages('append', msg);
                             }
                             // scroll down the messages container
                             if (data['models'].length > 0) {
@@ -370,11 +370,11 @@
                         // check whether we got empty array
                         if (data.length == 0) {
                             // reset form
-                            self.messenger.simpleChatMessages('resetForm');
+                            self.messenger.yiiSimpleChatMessages('resetForm');
                             // load new messages
-                            self.messenger.simpleChatMessages('load', 'new');
+                            self.messenger.yiiSimpleChatMessages('load', 'new');
                             // load new conversations
-                            self.conversations.simpleChatConversations('load', 'new');
+                            self.conversations.yiiSimpleChatConversations('load', 'new');
                         }else{
                             console.error(data);
                         }
@@ -389,12 +389,12 @@
 
                 // load new messages every 10 seconds
                 setInterval(function () {
-                    self.messenger.simpleChatMessages('load', 'new');
+                    self.messenger.yiiSimpleChatMessages('load', 'new');
                 }, 10000);
 
                 // load new conversations every 15 seconds
                 setInterval(function () {
-                    self.conversations.simpleChatConversations('load', 'new');
+                    self.conversations.yiiSimpleChatConversations('load', 'new');
                 }, 15000);
             });
         }

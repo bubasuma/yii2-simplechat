@@ -10,13 +10,13 @@
  * @since 1.0
  */
 (function ($) {
-    $.fn.simpleChatConversations = function (method) {
+    $.fn.yiiSimpleChatConversations = function (method) {
         if (methods[method]) {
             return methods[method].apply(this, Array.prototype.slice.call(arguments, 1));
         } else if (typeof method === 'object' || !method) {
             return methods.init.apply(this, arguments);
         } else {
-            $.error('Method ' + method + ' does not exist on jQuery.simpleChatConversations');
+            $.error('Method ' + method + ' does not exist on jQuery.yiiSimpleChatConversations');
             return false;
         }
     };
@@ -52,10 +52,10 @@
         init: function (user, current, options) {
             return this.each(function () {
                 var $chat = $(this);
-                if ($chat.data('simpleChatConversations')) {
+                if ($chat.data('yiiSimpleChatConversations')) {
                     return;
                 }
-                $chat.data('simpleChatConversations', {
+                $chat.data('yiiSimpleChatConversations', {
                     settings: $.extend({}, defaults, options || {}),
                     user: user,
                     current: $.extend({}, {deleteUrl: null, unreadUrl: null, readUrl: null}, current || {}),
@@ -66,7 +66,7 @@
         },
         load: function (args) {
             var $chat = $(this);
-            var widget = $chat.data('simpleChatConversations');
+            var widget = $chat.data('yiiSimpleChatConversations');
             var data = {
                 type: loadTypes.down,
                 limit: widget.settings.limit
@@ -108,7 +108,7 @@
 
         unread: function (settings) {
             var $chat = $(this);
-            var widget = $chat.data('simpleChatConversations');
+            var widget = $chat.data('yiiSimpleChatConversations');
             $.ajax($.extend({}, {
                 dataType: 'JSON',
                 url: widget.current.unreadUrl,
@@ -118,7 +118,7 @@
 
         read: function (settings) {
             var $chat = $(this);
-            var widget = $chat.data('simpleChatConversations');
+            var widget = $chat.data('yiiSimpleChatConversations');
             $.ajax($.extend({}, {
                 dataType: 'JSON',
                 url: widget.current.readUrl,
@@ -128,7 +128,7 @@
 
         delete: function (settings) {
             var $chat = $(this);
-            var widget = $chat.data('simpleChatConversations');
+            var widget = $chat.data('yiiSimpleChatConversations');
             $.ajax($.extend({}, {
                 dataType: 'JSON',
                 url: widget.current.deleteUrl,
@@ -138,7 +138,7 @@
 
         append: function (data) {
             var $chat = $(this);
-            var widget = $chat.data('simpleChatConversations');
+            var widget = $chat.data('yiiSimpleChatConversations');
             if(typeof data == 'object'){
                 $chat.append(tmpl(widget.settings.templateUrl, data));
             }else{
@@ -148,7 +148,7 @@
 
         prepend: function (data) {
             var $chat = $(this);
-            var widget = $chat.data('simpleChatConversations');
+            var widget = $chat.data('yiiSimpleChatConversations');
             if(typeof data == 'object'){
                 $chat.prepend(tmpl(widget.settings.templateUrl, data));
             }else{
@@ -158,7 +158,7 @@
 
         insert: function (data, selector, before) {
             var $chat = $(this);
-            var widget = $chat.data('simpleChatConversations');
+            var widget = $chat.data('yiiSimpleChatConversations');
             var $elem = $chat.find(selector);
             var $conversation = null;
             if(typeof data == 'object'){
@@ -174,13 +174,13 @@
         },
 
         widget: function () {
-            return this.data('simpleChatConversations');
+            return this.data('yiiSimpleChatConversations');
         },
 
         destroy: function () {
             return this.each(function () {
                 var $chat = $(this);
-                $chat.removeData('simpleChatConversations');
+                $chat.removeData('yiiSimpleChatConversations');
             });
         },
 
@@ -193,7 +193,7 @@
 
 
     var find = function ($chat, id, dataAttr) {
-        var widget = $chat.data('simpleChatConversations');
+        var widget = $chat.data('yiiSimpleChatConversations');
         if(typeof id == 'number' || typeof dataAttr != 'undefined'){
             dataAttr = typeof dataAttr == 'undefined' ? 'key' : dataAttr;
             return $chat.find('[data-' + dataAttr +'=' + id + ']');

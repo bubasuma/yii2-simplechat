@@ -18,7 +18,7 @@ use yii\web\AssetBundle;
 class ConversationAsset extends AssetBundle
 {
     public $js = [
-        'js/conversations.js',
+        'js/yiiSimpleChatConversations.js',
     ];
 
     public function init()

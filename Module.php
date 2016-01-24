@@ -83,6 +83,12 @@ class Module extends \yii\base\Module implements BootstrapInterface
                 'chat/unread/conversation/<contactId:\d+>' => $this->id . '/default/mark-conversation-as-unread',
                 'chat/read/conversation/<contactId:\d+>' => $this->id . '/default/mark-conversation-as-read',
             ], false);
+            if(!isset($app->getView()->renderers['twig'])){
+                $app->getView()->renderers['twig'] = [
+                    'class' => 'yii\twig\ViewRenderer',
+                ];
+            }
+            $app->getView()->renderers['twig']['globals']['html'] = '\yii\helpers\Html';
         } elseif ($app instanceof Console) {
             $app->controllerMap[$this->id] = [
                 'class' => 'bubasuma\simplechat\console\DefaultController',

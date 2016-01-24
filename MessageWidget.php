@@ -81,7 +81,7 @@ class MessageWidget extends ListView
         $contact = Json::htmlEncode($this->contact);
         $view = $this->getView();
         MessageAsset::register($view);
-        $view->registerJs("jQuery('#$id').simpleChatMessages($user,$contact,$options);");
+        $view->registerJs("jQuery('#$id').yiiSimpleChatMessages($user,$contact,$options);");
     }
 
 

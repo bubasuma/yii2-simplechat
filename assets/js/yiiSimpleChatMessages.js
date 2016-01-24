@@ -10,13 +10,13 @@
  * @since 1.0
  */
 (function ($) {
-    $.fn.simpleChatMessages = function (method) {
+    $.fn.yiiSimpleChatMessages = function (method) {
         if (methods[method]) {
             return methods[method].apply(this, Array.prototype.slice.call(arguments, 1));
         } else if (typeof method === 'object' || !method) {
             return methods.init.apply(this, arguments);
         } else {
-            $.error('Method ' + method + ' does not exist on jQuery.simpleChatMessages');
+            $.error('Method ' + method + ' does not exist on jQuery.yiiSimpleChatMessages');
             return false;
         }
     };
@@ -58,18 +58,18 @@
         init: function (user,contact,options) {
             return this.each(function () {
                 var $chat = $(this);
-                if ($chat.data('simpleChatMessages')) {
+                if ($chat.data('yiiSimpleChatMessages')) {
                     return;
                 }
                 var settings = $.extend({}, defaults, options || {});
-                $chat.data('simpleChatMessages', {
+                $chat.data('yiiSimpleChatMessages', {
                     settings: settings,
                     user: user,
                     contact: contact,
                     status: 0  // status of the chat, 0: pending load, 1: loading
                 });
                 var $form = $(settings.form);
-                $form.on('submit.simpleChatMessages', function (e) {
+                $form.on('submit.yiiSimpleChatMessages', function (e) {
                     e.preventDefault();
                     methods.send.apply($chat);
                 });
@@ -87,7 +87,7 @@
 
         resetForm: function () {
             var $chat = $(this);
-            var widget = $chat.data('simpleChatMessages');
+            var widget = $chat.data('yiiSimpleChatMessages');
             var $form = $chat.find(widget.settings.form);
             $form.find('input, textarea, select').each(function () {
                 var $input = $(this);
@@ -97,7 +97,7 @@
 
         send: function () {
             var $chat = $(this);
-            var widget = $chat.data('simpleChatMessages');
+            var widget = $chat.data('yiiSimpleChatMessages');
             var $form = $chat.find(widget.settings.form);
             var url = $form.attr('action');
             $.ajax({
@@ -129,7 +129,7 @@
 
         load: function (args) {
             var $chat = $(this);
-            var widget = $chat.data('simpleChatMessages');
+            var widget = $chat.data('yiiSimpleChatMessages');
             var data = {
                 type: loadTypes.up,
                 limit: widget.settings.limit
@@ -175,14 +175,14 @@
 
         empty: function () {
             var $chat = $(this);
-            var widget = $chat.data('simpleChatMessages');
+            var widget = $chat.data('yiiSimpleChatMessages');
             var $container = $chat.find(widget.settings.container);
             $container.empty();
         },
 
         append: function (data) {
             var $chat = $(this);
-            var widget = $chat.data('simpleChatMessages');
+            var widget = $chat.data('yiiSimpleChatMessages');
             var $container = $chat.find(widget.settings.container);
             if(typeof data == 'object'){
                 $container.append(tmpl(widget.settings.templateUrl,data));
@@ -193,7 +193,7 @@
 
         prepend: function (data) {
             var $chat = $(this);
-            var widget = $chat.data('simpleChatMessages');
+            var widget = $chat.data('yiiSimpleChatMessages');
             var $container = $chat.find(widget.settings.container);
             if(typeof data == 'object'){
                 $container.prepend(tmpl(widget.settings.templateUrl,data));
@@ -204,7 +204,7 @@
 
         insert: function (data, selector, before) {
             var $chat = $(this);
-            var widget = $chat.data('simpleChatMessages');
+            var widget = $chat.data('yiiSimpleChatMessages');
             var $container = $chat.find(widget.settings.container);
             var $elem = $container.find(selector);
             var $message = null;
@@ -223,15 +223,15 @@
         destroy: function () {
             return this.each(function () {
                 var $chat = $(this);
-                var widget = $chat.data('simpleChatMessages');
+                var widget = $chat.data('yiiSimpleChatMessages');
                 var $form = $chat.find(widget.settings.form);
-                $form.off('.simpleChatMessages');
-                $chat.removeData('simpleChatMessages');
+                $form.off('.yiiSimpleChatMessages');
+                $chat.removeData('yiiSimpleChatMessages');
             });
         },
 
         widget: function () {
-            return this.data('simpleChatMessages');
+            return this.data('yiiSimpleChatMessages');
         },
 
         find: function (id) {
@@ -243,7 +243,7 @@
 
 
     var find = function ($chat, id) {
-        var widget = $chat.data('simpleChatMessages');
+        var widget = $chat.data('yiiSimpleChatMessages');
         var $container = $chat.find(widget.settings.container);
         if(typeof id == 'number'){
             return $container.find('[data-key=' + id + ']');
