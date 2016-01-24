@@ -83,20 +83,63 @@ yii simplechat/start
 
 Usage
 -----
+Create an ActiveRecord like follow:
 
+```php
+namespace common\models;
 
-Create a WEB or REST controller like follow:
+//...
+use bubasuma\simplechat\db\Model;
+use common\models\User
+use yii\db\ActiveQuery;
+//...
+
+class Message extends Model
+{
+    public function getContact()
+    {
+        return $this->hasOne(User::className(), ['id' => 'contact_id']);
+    }
+    
+    /**
+     * @inheritDoc
+     */
+    public static function conversations($userId)
+    {
+        return parent::conversations($userId)->with([
+            //...
+            'contact' => function ($contact) {
+                /**@var $contact ActiveQuery * */
+                $contact->with([
+                    //...
+                ])->select(['id', ]);
+            },
+            'newMessages' => function ($msg) use ($userId) {
+                /**@var $msg ActiveQuery * */
+                $msg->andOnCondition(['receiver_id' => $userId])->select(['sender_id', 'COUNT(*) AS count']);
+            },
+            //...
+        ]);
+    }
+}
+```
+
+Create a controller like follow:
 
 ```php
 namespace frontend\controllers;
+
 //...
 use yii\web\Controller;
-use frontend\models\Message;
+use yii\helpers\StringHelper;
+use common\models\Message;
 use bubasuma\simplechat\controllers\ControllerTrait;
 //...
-class DefaultController extends Controller
+
+class MessageController extends Controller
 {
     use ControllerTrait;
+    
     /**
      * @return string
      */
@@ -104,5 +147,26 @@ class DefaultController extends Controller
     {
         return Message::className();
     }
+    
+    /**
+     * @inheritDoc
+     */
+    public function formatMessage($model)
+    {
+        //...
+        return $model;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function formatConversation($model)
+    {
+        //...
+        $model['text'] = StringHelper::truncate($model['text'], 20);
+        //...
+        return $model;
+    }
 }
 ```
+If you are using this extension in your frontend application, you can configure widgets as follows: 
