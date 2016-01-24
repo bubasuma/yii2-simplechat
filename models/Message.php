@@ -36,9 +36,9 @@ class Message extends Model
             'contact' => function ($contact) {
                 /**@var $contact ActiveQuery * */
                 $contact->with([
-                    'profile' => function ($advanced) {
-                        /**@var $advanced ActiveQuery * */
-                        $advanced->select(['id', 'CONCAT_WS(\' \', first_name, last_name) AS name', 'avatar']);
+                    'profile' => function ($profile) {
+                        /**@var $profile ActiveQuery * */
+                        $profile->select(['id', 'CONCAT_WS(\' \', first_name, last_name) AS name', 'avatar']);
                     },
                 ])->select(['id']);
             },
