@@ -169,7 +169,7 @@ class MessageController extends Controller
 
 Yes. Given that, the default render in `yii2` is `php`, you must indicate explicitly the extension part in view names.
 
-**Can I use this extension in a RESTful APIs**
+**Can I use this extension in a RESTful APIs?**
 
 Yes, You can. 
 
