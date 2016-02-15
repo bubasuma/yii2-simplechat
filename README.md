@@ -1,9 +1,7 @@
-Yii2 Simple Chat
-================
+#Yii2 Simple Chat
 A simple chat for your yii2 application
 
-Installation
-------------
+##Installation
 
 The preferred way to install this extension is through [composer](http://getcomposer.org/download/).
 
@@ -21,8 +19,7 @@ or add
 
 to the require section of your `composer.json` file.
 
-Demo
------
+##Demo
 
 Once the extension is installed, simply modify your application configuration as follows:
 
@@ -81,8 +78,8 @@ yii simplechat/start
 ```
 >Note: the command above is accessible only if you have configured your console application as it is recommended above.
 
-Usage
------
+##Usage
+
 Create an ActiveRecord like follow:
 
 ```php
@@ -166,3 +163,13 @@ class MessageController extends Controller
 }
 ```
 >Note: If you are using this extension in your frontend application, you can find the usage of widgets  in `index.twig`.
+
+###FAQ
+####Does this extension work with any template engines other than `twig`?
+Yes. Given that, the default render in `yii2` is `php`, you must indicate explicitly the extension part in view names.
+####Can I use this extension in a RESTful APIs?
+Yes, You can. 
+####Can I use different template engines for rendering in server side and client side?
+Yes. But using the same template in both sides remains the best implementation.
+
+ 
