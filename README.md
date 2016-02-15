@@ -164,12 +164,17 @@ class MessageController extends Controller
 ```
 >Note: If you are using this extension in your frontend application, you can find the usage of widgets  in `index.twig`.
 
-###FAQ
-####Does this extension work with any template engines other than `twig`?
+##FAQ
+**Does this extension work with any template engines other than `twig`?**
+
 Yes. Given that, the default render in `yii2` is `php`, you must indicate explicitly the extension part in view names.
-####Can I use this extension in a RESTful APIs?
+
+**Can I use this extension in a RESTful APIs**
+
 Yes, You can. 
-####Can I use different template engines for rendering in server side and client side?
+
+**Can I use different template engines for rendering in server side and client side?**
+
 Yes. But using the same template in both sides remains the best implementation.
 
  
