@@ -45,7 +45,8 @@
         readMethod: 'PATCH',
         deleteMethod: 'DELETE',
         limit: 10,
-        templateUrl: ''
+        templateUrl: '',
+        itemCssClass:'conversation'
     };
 
     var methods = {
@@ -198,9 +199,9 @@
             dataAttr = typeof dataAttr == 'undefined' ? 'key' : dataAttr;
             return $chat.find('[data-' + dataAttr +'=' + id + ']');
         } else if(id == 'last') {
-            return $chat.find(widget.settings.selector).last();
+            return $chat.find('.' + widget.settings.itemCssClass).last();
         } else if(id == 'first') {
-            return $chat.find(widget.settings.selector).first();
+            return $chat.find('.' + widget.settings.itemCssClass).first();
         }else{
             return $chat.find(id);
         }

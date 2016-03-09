@@ -1,4 +1,4 @@
-<div class="media conversation {{ model.new_messages > 0 ? settings.unreadCssClass : '' }} {{ is_current ? settings.currentCssClass : '' }}"
+<div class="media {{ settings.itemCssClass }} {{ model.new_messages > 0 ? settings.unreadCssClass : '' }} {{ is_current ? settings.currentCssClass : '' }}"
      data-key="{{ key }}" data-contact="{{ model.contact.id }}" data-contactinfo="{{ model.contact|json_encode()|escape }}"
      data-unreadurl="{{ model.unreadUrl }}" data-readurl="{{ model.readUrl }}" data-deleteurl="{{ model.deleteUrl }}"
      data-loadurl="{{ model.loadUrl }}" data-sendurl="{{ model.sendUrl }}">

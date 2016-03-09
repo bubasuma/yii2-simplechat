@@ -43,10 +43,6 @@ class ConversationWidget extends ListView
     public function registerJs()
     {
         $id = $this->options['id'];
-        if (!isset($this->clientOptions['selector'])) {
-            $class = explode(' ', $this->itemOptions['class']);
-            $this->clientOptions['selector'] = '.' . $class[0];
-        }
         $options = Json::htmlEncode($this->clientOptions);
         $user = Json::htmlEncode($this->user);
         $current = Json::htmlEncode($this->current);
@@ -64,8 +60,8 @@ class ConversationWidget extends ListView
         if (!isset($this->options['id'])) {
             $this->options['id'] = $this->getId();
         }
-        if (!isset($this->itemOptions['class'])) {
-            $this->itemOptions['class'] = 'conversation-item';
+        if (!isset($this->clientOptions['itemCssClass'])) {
+            $this->clientOptions['itemCssClass'] = 'conversation';
         }
         $this->tag = ArrayHelper::remove($this->options, 'tag', 'div');
         echo Html::beginTag($this->tag, $this->options);
@@ -94,25 +90,7 @@ class ConversationWidget extends ListView
         } else {
             $content = call_user_func($this->itemView, $model, $key, $index, $this);
         }
-        $options = $this->itemOptions;
-        $tag = ArrayHelper::remove($options, 'tag', 'div');
-        if ($tag !== false) {
-            $options['data-key'] = is_array($key) ? json_encode($key, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE) : (string)$key;
-            $options['data-contact'] = $model['contact_id'];
-            if (isset($this->clientOptions['unreadCssClass'])) {
-                if ($model['new_messages'] > 0) {
-                    Html::addCssClass($options, $this->clientOptions['unreadCssClass']);
-                }
-            }
-            if (isset($this->clientOptions['currentCssClass'])) {
-                if ($model['contact_id'] == $this->current['contact']['id']) {
-                    Html::addCssClass($options, $this->clientOptions['currentCssClass']);
-                }
-            }
-            return Html::tag($tag, $content, $options);
-        } else {
-            return $content;
-        }
+        return $content;
     }
 
 

@@ -34,8 +34,6 @@ class MessageWidget extends ListView
 
     public $formParams = [];
 
-    public $formOptions = ['method' => 'post'];
-
     public $clientOptions = [];
 
     public $liveOptions = [];
@@ -45,25 +43,13 @@ class MessageWidget extends ListView
 
     public function renderForm()
     {
-        $action = ArrayHelper::remove($this->formOptions, 'action', '');
-        $method = ArrayHelper::remove($this->formOptions, 'method', 'post');
-
-        if (!isset($this->formOptions['id'])) {
-            $this->formOptions['id'] = 'message-form';
-        }
-
-        $content = Html::beginForm($action, $method, $this->formOptions);
-
         if (is_string($this->formView)) {
-            $content .= $this->getView()->renderFile($this->formView, array_merge([
+            $content = $this->getView()->renderFile($this->formView, array_merge([
                 'widget' => $this,
             ], $this->formParams));
         } else {
-            $content .= call_user_func($this->formView, $this);
+            $content = call_user_func($this->formView, $this);
         }
-
-        $content .= Html::endForm();
-
         return $content;
 
     }
@@ -71,11 +57,6 @@ class MessageWidget extends ListView
     public function registerJs()
     {
         $id = $this->options['id'];
-        if (!isset($this->clientOptions['selector'])) {
-            $class = explode(' ', $this->itemOptions['class']);
-            $this->clientOptions['selector'] = '.' . $class[0];
-        }
-        $this->clientOptions['form'] = '#' . $this->formOptions['id'];
         $options = Json::htmlEncode($this->clientOptions);
         $user = Json::htmlEncode($this->user);
         $contact = Json::htmlEncode($this->contact);
@@ -93,8 +74,8 @@ class MessageWidget extends ListView
         if (!isset($this->options['id'])) {
             $this->options['id'] = $this->getId();
         }
-        if (!isset($this->itemOptions['class'])) {
-            $this->itemOptions['class'] = 'message-item';
+        if (!isset($this->clientOptions['itemCssClass'])) {
+            $this->clientOptions['itemCssClass'] = 'msg';
         }
         $this->tag = ArrayHelper::remove($this->options, 'tag', 'div');
         echo Html::beginTag($this->tag, $this->options);
@@ -122,15 +103,7 @@ class MessageWidget extends ListView
         } else {
             $content = call_user_func($this->itemView, $model, $key, $index, $this);
         }
-        $options = $this->itemOptions;
-        $tag = ArrayHelper::remove($options, 'tag', 'div');
-        if ($tag !== false) {
-            $options['data-key'] = is_array($key) ? json_encode($key, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE) : (string)$key;
-
-            return Html::tag($tag, $content, $options);
-        } else {
-            return $content;
-        }
+        return $content;
     }
 
     public function renderItems()

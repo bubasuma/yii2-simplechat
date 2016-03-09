@@ -13,7 +13,7 @@
     var simpleChat = {
         init: function () {
             this.messenger = $('#messenger');
-            this.messages = this.messenger.find('#messages');
+            this.messages = this.messenger.find('#msg-container');
             this.conversations = $('#conversations');
             this.messages.get(0).scrollTop = this.messages.get(0).scrollHeight;
         },

@@ -15,10 +15,6 @@
             'class' : 'conversation-wrap col-lg-3',
             'id' : 'conversations',
         },
-        'itemOptions' : {
-            'tag' : false,
-            'class' : 'media conversation',
-        },
         'user' : {
             'id' : user.id,
             'name' : user.name,
@@ -39,6 +35,7 @@
             'loadUrl' : path(['conversations']),
             'baseUrl' : asset.baseUrl,
             'templateUrl' : asset.baseUrl ~ '/tmpl/conversation.twig',
+            'itemCssClass' : 'conversation',
             'currentCssClass' : 'current',
             'unreadCssClass' : 'unread',
         }
@@ -67,23 +64,19 @@
             'class' : 'message-wrap col-lg-8',
             'id' : 'messenger',
         },
-        'itemOptions' : {
-            'tag': false,
-            'class' : 'media msg',
-        },
-        'formOptions' : {
-            'action' : path('create-message', {'contactId' : contact.id}),
-            'method' : 'post',
-        },
         'clientOptions' : {
             'loadUrl' : path('messages', {'contactId' : contact.id}),
+            'sendUrl' : path('create-message', {'contactId' : contact.id}),
+            'sendMethod' : 'post',
             'templateUrl' : asset.baseUrl ~ '/tmpl/message.twig',
             'baseUrl' : asset.baseUrl,
-            'container' : '#messages',
+            'container' : '#msg-container',
+            'form' : '#msg-form',
+            'itemCssClass' : 'msg',
         }
     })
     %}
-    <div id="messages" class="msg-wrap">
+    <div id="msg-container" class="msg-wrap">
         <div id="messages-loader" style="display: none" class="text-center">
             <img alt="Loading..." src="{{ asset.baseUrl }}/img/inf-circle-loader.gif"/>
         </div>

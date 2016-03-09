@@ -49,7 +49,7 @@ trait ControllerTrait
         $userId = $this->user->getId();
         $callable = [$this->modelClass, 'loadConversations'];
         $formatter = [$this, 'formatConversation'];
-        $limit = \Yii::$app->request->isGet ?  \Yii::$app->request->get('limit') : \Yii::$app->request->post('limit');
+        $limit = \Yii::$app->request->get('limit', \Yii::$app->request->post('limit'));
         return call_user_func($callable, $userId, $formatter, $limit);
     }
 
@@ -58,7 +58,7 @@ trait ControllerTrait
         $userId = $this->user->getId();
         $callable = [$this->modelClass, 'loadMessages'];
         $formatter = [$this, 'formatMessage'];
-        $limit = \Yii::$app->request->isGet ?  \Yii::$app->request->get('limit') : \Yii::$app->request->post('limit');
+        $limit = \Yii::$app->request->get('limit', \Yii::$app->request->post('limit'));
         return call_user_func($callable, $userId, $contactId, $formatter, $limit);
     }
 

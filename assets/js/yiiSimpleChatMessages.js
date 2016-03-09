@@ -51,7 +51,8 @@
         sendUrl: false,
         sendMethod: false,
         limit: 10,
-        templateUrl: ''
+        templateUrl: '',
+        itemCssClass:'msg'
     };
 
     var methods = {
@@ -248,9 +249,9 @@
         if(typeof id == 'number'){
             return $container.find('[data-key=' + id + ']');
         } else if(id == 'last') {
-            return $container.find(widget.settings.selector).last();
+            return $container.find('.' + widget.settings.itemCssClass).last();
         } else if(id == 'first') {
-            return $container.find(widget.settings.selector).first();
+            return $container.find('.' + widget.settings.itemCssClass).first();
         }else{
             return $container.find(id);
         }
