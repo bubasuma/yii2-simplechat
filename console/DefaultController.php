@@ -33,23 +33,19 @@ class DefaultController extends Controller
     public $defaultAction = 'index';
 
     /**
-     * @var string the directory storing the migration classes. This can be either
-     * a path alias or a directory.
-     */
-    public $migrationPath = '@bubasuma/simplechat/migrations';
-
-    /**
      * @inheritdoc
      */
     public function beforeAction($action)
     {
         if (parent::beforeAction($action)) {
-            if (!strcmp($action->id, 'start') || !strcmp($action->id, 'stop')) {
-                $this->module->controllerMap['migrate'] = [
-                    'class' => 'bubasuma\simplechat\console\MigrateController',
-                    'migrationPath' => $this->migrationPath
-                ];
-            }
+            $this->module->controllerMap['migrate'] = [
+                'class' => MigrateController::className(),
+                'interactive' => $this->interactive,
+            ];
+            $this->module->controllerMap['fixture'] = [
+                'class' => FixtureController::className(),
+                'interactive' => $this->interactive,
+            ];
             $this->stdout("Yii2 SimpleChat Demo\n\n", Console::BOLD);
             return true;
         } else {
@@ -70,7 +66,7 @@ class DefaultController extends Controller
      */
     public function actionStart()
     {
-        $this->run("migrate/up");
+        $this->run('migrate/up');
     }
 
     /**
@@ -78,7 +74,23 @@ class DefaultController extends Controller
      */
     public function actionStop()
     {
-        $this->run("migrate/down");
+        $this->run('migrate/down');
+    }
+
+    /**
+     * @since 2.0
+     */
+    protected function loadFixtures()
+    {
+        $this->run('fixture/load-all');
+    }
+
+    /**
+     * @since 2.0
+     */
+    protected function generateFixtures()
+    {
+        $this->run('fixture/generate-all');
     }
 
     /**
