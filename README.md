@@ -64,7 +64,7 @@ http://localhost/path/to/index.php?r=messages/2
 or if you have enabled pretty URLs, you may use the following URL:
 
 ```
-http://localhost/path/to/index.php/messages2
+http://localhost/path/to/index.php/messages/2
 ```
 
 You should see the below:
