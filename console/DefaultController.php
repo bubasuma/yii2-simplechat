@@ -33,6 +33,16 @@ class DefaultController extends Controller
     public $defaultAction = 'index';
 
     /**
+     * @var int the count of users to generate
+     */
+    public $users = 20;
+
+    /**
+     * @var int the count of messages to generate
+     */
+    public $messages = 1000;
+
+    /**
      * @inheritdoc
      */
     public function beforeAction($action)
@@ -67,6 +77,8 @@ class DefaultController extends Controller
     public function actionStart()
     {
         $this->run('migrate/up');
+        $this->generateFixtures();
+        $this->loadFixtures();
     }
 
     /**
@@ -90,7 +102,8 @@ class DefaultController extends Controller
      */
     protected function generateFixtures()
     {
-        $this->run('fixture/generate-all');
+        $this->run('fixture/generate', ['user', 'profile','count' => $this->users]);
+        $this->run('fixture/generate', ['message','count' => $this->messages]);
     }
 
     /**

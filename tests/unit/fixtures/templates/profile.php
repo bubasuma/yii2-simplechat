@@ -4,12 +4,10 @@
  * @var $index integer
  */
 
-$gender = $faker->randomElement(['F', 'M']);
-$firstName = !strcmp('M', $gender) ? $faker->firstNameMale : $faker->firstNameMale;
-
+$avatarPath =  __DIR__ . '/../../../../assets/img/avatars';
 return [
-    'first_name' => $firstName,
+    'first_name' => $faker->firstNameMale,
     'last_name' => $faker->lastName,
-    'gender' => $gender,
-    'avatar' => $faker->imageUrl(64,64,'people'),
+    'gender' => 'M',
+    'avatar' => $faker->randomElement(\yii\helpers\FileHelper::findFiles($avatarPath)),
 ];
