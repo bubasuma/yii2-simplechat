@@ -44,6 +44,7 @@ class UserProfileFixture extends ActiveFixture
                 $row['id'] = $users[$index];
                 $primaryKeys = $this->db->schema->insert($table->fullName, $row);
                 $this->data[$alias] = array_merge($row, $primaryKeys);
+                $index++;
             }
         }
     }
