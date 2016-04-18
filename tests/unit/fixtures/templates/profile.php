@@ -9,5 +9,5 @@ return [
     'first_name' => $faker->firstNameMale,
     'last_name' => $faker->lastName,
     'gender' => 'M',
-    'avatar' => $faker->randomElement(\yii\helpers\FileHelper::findFiles($avatarPath)),
+    'avatar' => basename($faker->randomElement(\yii\helpers\FileHelper::findFiles($avatarPath))),
 ];

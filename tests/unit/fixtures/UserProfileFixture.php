@@ -38,7 +38,7 @@ class UserProfileFixture extends ActiveFixture
         if(count($users) > 0){
             $index = 0;
             foreach ($this->getData() as $alias => $row) {
-                if(isset($users[$index])){
+                if(!isset($users[$index])){
                     break;
                 }
                 $row['id'] = $users[$index];

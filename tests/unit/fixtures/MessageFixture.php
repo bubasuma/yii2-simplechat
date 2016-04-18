@@ -34,7 +34,7 @@ class MessageFixture extends ActiveFixture
             foreach ($data as $alias => $row) {
                 array_rand($users);
                 $row['sender_id'] = $users[0];
-                $row['created_at'] = $users[1];
+                $row['receiver_id'] = $users[1];
                 $row['created_at'] = date('Y-m-d H:i:s', $row['timestamp']);
                 unset($row['timestamp']);
                 $primaryKeys = $this->db->schema->insert($table->fullName, $row);
