@@ -1,3 +1,3 @@
-{{ html.beginForm('', 'post', { id : 'msg-form'}) }}
+{{ html.beginForm('', 'post', { id : 'msg-form'})|raw }}
 <textarea class="form-control send-message" name="text" rows="3" placeholder="Write a reply..."></textarea>
-{{ html.endForm() }}
+{{ html.endForm()|raw }}

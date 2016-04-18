@@ -32,7 +32,7 @@ class MessageFixture extends ActiveFixture
         if(count($users) >= 2) {
             ArrayHelper::multisort($data, 'timestamp', SORT_ASC, SORT_NUMERIC);
             foreach ($data as $alias => $row) {
-                array_rand($users);
+                shuffle($users);
                 $row['sender_id'] = $users[0];
                 $row['receiver_id'] = $users[1];
                 $row['created_at'] = date('Y-m-d H:i:s', $row['timestamp']);
