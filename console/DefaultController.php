@@ -39,14 +39,24 @@ class DefaultController extends Controller
     public $users = 20;
 
     /**
+     * @var int the count of messages to generate
+     */
+    public $messages = 1000;
+
+    /**
      * @var string Language to use when generating fixtures data.
      */
     public $language;
 
     /**
-     * @var int the count of messages to generate
+     * @inheritdoc
      */
-    public $messages = 1000;
+    public function options($actionID)
+    {
+        return array_merge(parent::options($actionID), [
+            'users', 'comments', 'language'
+        ]);
+    }
 
     /**
      * @inheritdoc
