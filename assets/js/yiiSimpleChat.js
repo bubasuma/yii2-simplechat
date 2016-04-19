@@ -384,7 +384,7 @@
                 $('#msg-send').click(function (e) {
                     e.preventDefault();
                     // submit message form
-                    $('#message-form').trigger('submit');
+                    $('#msg-form').trigger('submit');
                 });
 
                 // load new messages every 10 seconds
