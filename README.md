@@ -69,7 +69,7 @@ http://localhost/path/to/index.php/messages/2
 
 You should see the below:
 
-![yii simple chat demo page](http://i.imgur.com/mB0CsET.png "yii simple chat demo page")
+![yii simple chat demo page](http://i.imgur.com/1YZdjN8.png "yii simple chat demo page")
 
 If not, please check if demo migration has been successfully applied against your database. You can check it by running the following command:
 
