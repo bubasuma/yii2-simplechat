@@ -22,6 +22,7 @@ use yii\helpers\Console;
  */
 class DefaultController extends Controller
 {
+    public $interactive = false;
     /**
      * @var Module
      */
@@ -82,6 +83,20 @@ class DefaultController extends Controller
     }
 
     /**
+     * Unload fixtures
+     */
+    public function actionClean()
+    {
+        $this->unloadFixtures();
+    }
+
+    public function actionReset()
+    {
+        $this->unloadFixtures();
+        $this->loadFixtures();
+    }
+
+    /**
      * Clear database from demo data and tables
      */
     public function actionStop()
@@ -94,7 +109,15 @@ class DefaultController extends Controller
      */
     protected function loadFixtures()
     {
-        $this->run('fixture/load-all');
+        $this->run('fixture/load', ['*']);
+    }
+
+    /**
+     * @since 2.0
+     */
+    protected function unloadFixtures()
+    {
+        $this->run('fixture/unload', ['*']);
     }
 
     /**

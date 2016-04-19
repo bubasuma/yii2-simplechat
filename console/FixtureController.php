@@ -45,19 +45,8 @@ class FixtureController extends \yii\faker\FixtureController
         if(null === $this->fixtureDataPath){
             $this->fixtureDataPath = "@runtime/{$this->module->id}";
         }
-        \Yii::$container->set(UserFixture::classname(), [
-            'dataFile' => Yii::getAlias("$this->fixtureDataPath/user.php")
-        ]);
-        \Yii::$container->set(UserProfileFixture::classname(), [
-            'dataFile' => Yii::getAlias("$this->fixtureDataPath/profile.php")
-        ]);
-        \Yii::$container->set(MessageFixture::classname(), [
-            'dataFile' => Yii::getAlias("$this->fixtureDataPath/message.php")
-        ]);
-    }
-
-    public function actionLoadAll()
-    {
-        $this->run('load', ['*']);
+        \Yii::$container->set(UserFixture::classname(), ['dataFile' => Yii::getAlias("$this->fixtureDataPath/user.php")])
+            ->set(UserProfileFixture::classname(), ['dataFile' => Yii::getAlias("$this->fixtureDataPath/profile.php")])
+            ->set(MessageFixture::classname(), ['dataFile' => Yii::getAlias("$this->fixtureDataPath/message.php")]);
     }
 }

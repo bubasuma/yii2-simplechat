@@ -1,12 +1,19 @@
 <?php
+/**
+ * @link https://github.com/bubasuma/yii2-simplechat
+ * @copyright Copyright (c) 2015 bubasuma
+ * @license http://opensource.org/licenses/BSD-3-Clause
+ */
+
 namespace bubasuma\simplechat\tests\unit\fixtures;
 use yii\test\ActiveFixture;
 
 /**
- * Created by PhpStorm.
- * User: Buba Suma
- * Date: 4/17/16
- * Time: 4:57 PM
+ * Class UserFixture
+ * @package bubasuma\simplechat\tests\unit\fixtures
+ *
+ * @author Buba Suma <bubasuma@gmail.com>
+ * @since 2.0
  */
 class UserFixture extends ActiveFixture
 {

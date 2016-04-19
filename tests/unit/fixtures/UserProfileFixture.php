@@ -1,9 +1,8 @@
 <?php
 /**
- * Created by PhpStorm.
- * User: Buba Suma
- * Date: 4/17/16
- * Time: 5:18 PM
+ * @link https://github.com/bubasuma/yii2-simplechat
+ * @copyright Copyright (c) 2015 bubasuma
+ * @license http://opensource.org/licenses/BSD-3-Clause
  */
 
 namespace bubasuma\simplechat\tests\unit\fixtures;
@@ -12,6 +11,13 @@ namespace bubasuma\simplechat\tests\unit\fixtures;
 use bubasuma\simplechat\models\User;
 use yii\test\ActiveFixture;
 
+/**
+ * Class UserProfileFixture
+ * @package bubasuma\simplechat\tests\unit\fixtures
+ *
+ * @author Buba Suma <bubasuma@gmail.com>
+ * @since 2.0
+ */
 class UserProfileFixture extends ActiveFixture
 {
     public $modelClass = 'bubasuma\simplechat\models\UserProfile';
