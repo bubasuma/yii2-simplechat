@@ -39,6 +39,11 @@ class DefaultController extends Controller
     public $users = 20;
 
     /**
+     * @var string Language to use when generating fixtures data.
+     */
+    public $language;
+
+    /**
      * @var int the count of messages to generate
      */
     public $messages = 1000;
@@ -56,6 +61,7 @@ class DefaultController extends Controller
             $this->module->controllerMap['fixture'] = [
                 'class' => FixtureController::className(),
                 'interactive' => $this->interactive,
+                'language' => $this->language,
             ];
             $this->stdout("Yii2 SimpleChat Demo\n\n", Console::BOLD);
             return true;
@@ -73,7 +79,7 @@ class DefaultController extends Controller
     }
 
     /**
-     * Apply migration for demo chat by creating tables and data
+     * Create test tables, generates and load fixtures
      */
     public function actionStart()
     {
@@ -84,12 +90,17 @@ class DefaultController extends Controller
 
     /**
      * Unload fixtures
+     * @since 2.0
      */
     public function actionClean()
     {
         $this->unloadFixtures();
     }
 
+    /**
+     * Unload fixtures and load them again
+     * @since 2.0
+     */
     public function actionReset()
     {
         $this->unloadFixtures();
@@ -97,7 +108,7 @@ class DefaultController extends Controller
     }
 
     /**
-     * Clear database from demo data and tables
+     * Unload fixtures and drop test tables
      */
     public function actionStop()
     {

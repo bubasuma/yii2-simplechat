@@ -45,14 +45,33 @@ You can access Simple Chat via command line as follows:
 # change path to your application's base path
 cd path/to/AppBasePath
 
-# show help information about Simple Chat
-yii simplechat
+# show available commands
+php yii simplechat
 
-# Apply migration for demo chat by running the following command:
-yii simplechat/start
+# create test tables, generates and load fixtures
+php yii simplechat/start
 
-# You can clear your database from demo data and tables by running the following command:
-yii simplechat/stop
+# unload fixtures
+php yii simplechat/clean
+
+# unload fixtures and load them again
+php yii simplechat/reset
+
+# unload fixtures and drop test tables
+php yii simplechat/stop
+```
+
+You can specify different options of the `start` and `reset` command:
+
+```
+# You can specify how many fixtures per user and message you need by the --users and --messages options
+php yii simplechat/start --users=50 --messages=10000
+php yii simplechat/reset --users=20 --messages=5000
+
+# You can specify in what language to generate fixtures by the --language option. Thanks to yii2-faker
+php yii simplechat/start --language="ru_RU"
+php yii simplechat/reset --language="fr_FR"
+
 ```
 
 You can then access Simple Chat through the following URL:
@@ -74,7 +93,7 @@ You should see the below:
 If not, please check if demo migration has been successfully applied against your database. You can check it by running the following command:
 
 ```
-yii simplechat/start
+php yii simplechat/start
 ```
 >Note: the command above is accessible only if you have configured your console application as it is recommended above.
 
