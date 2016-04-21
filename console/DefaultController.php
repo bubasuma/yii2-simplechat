@@ -54,7 +54,7 @@ class DefaultController extends Controller
     public function options($actionID)
     {
         return array_merge(parent::options($actionID), [
-            'users', 'comments', 'language'
+            'users', 'messages', 'language'
         ]);
     }
 

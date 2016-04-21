@@ -24,6 +24,13 @@ use Yii;
 class FixtureController extends \yii\faker\FixtureController
 {
     /**
+     * @var array Additional data providers that can be created by user and will be added to the Faker generator.
+     * More info in [Faker](https://github.com/fzaninotto/Faker.) library docs.
+     */
+    public $providers = [
+        'bubasuma\simplechat\tests\unit\fixtures\providers\Avatar',
+    ];
+    /**
      * @var string default namespace to search fixtures in
      */
     public $namespace = 'bubasuma\simplechat\tests\unit\fixtures';
