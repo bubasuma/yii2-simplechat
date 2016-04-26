@@ -9,6 +9,7 @@ namespace bubasuma\simplechat\models;
 
 use bubasuma\simplechat\db\Model;
 use yii\db\ActiveQuery;
+use yii\db\Expression;
 
 
 /**
@@ -38,13 +39,18 @@ class Message extends Model
                 $contact->with([
                     'profile' => function ($profile) {
                         /**@var $profile ActiveQuery * */
-                        $profile->select(['id', 'CONCAT_WS(\' \', first_name, last_name) AS name', 'avatar']);
+                        $profile->select([
+                            'id',
+                            'name' => new Expression('CONCAT_WS(\' \', first_name, last_name)'),
+                            'avatar'
+                        ]);
                     },
                 ])->select(['id']);
             },
             'newMessages' => function ($msg) use ($userId) {
                 /**@var $msg ActiveQuery * */
-                $msg->andOnCondition(['receiver_id' => $userId])->select(['sender_id', 'COUNT(*) AS count']);
+                $msg->andOnCondition(['receiver_id' => $userId])
+                    ->select(['sender_id', 'count' => new Expression('COUNT(*)')]);
             }
         ]);
     }

@@ -139,21 +139,12 @@ class Model extends ActiveRecord
                 'is_deleted_by_sender' => new Expression('IF([[sender_id]] =:userId, 1, is_deleted_by_sender)'),
                 'is_deleted_by_receiver' => new Expression('IF([[receiver_id]] =:userId, 1, is_deleted_by_receiver)')
             ],
-            ['or',
-                [
-                    'receiver_id' => $userId,
-                    'sender_id' => $contactId,
-                    'is_deleted_by_receiver' => 0
-                ],
-                [
-                    'sender_id' => $userId,
-                    'receiver_id' => $contactId,
-                    'is_deleted_by_sender' => 0
-                ],
-            ],
             [
-                ':userId' => $userId
-            ]
+                'or',
+                ['receiver_id' => $userId, 'sender_id' => $contactId, 'is_deleted_by_receiver' => 0],
+                ['sender_id' => $userId, 'receiver_id' => $contactId, 'is_deleted_by_sender' => 0],
+            ],
+            [':userId' => $userId]
         );
         return compact('count');
     }
