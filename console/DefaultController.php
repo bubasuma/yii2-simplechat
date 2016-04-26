@@ -114,6 +114,7 @@ class DefaultController extends Controller
     public function actionReset()
     {
         $this->unloadFixtures();
+        $this->generateFixtures();
         $this->loadFixtures();
     }
 
