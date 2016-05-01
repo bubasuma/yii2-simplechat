@@ -18,8 +18,8 @@ class m151121_105453_message_table extends Migration
     {
         $this->createTable(self::TABLE_MESSAGE, [
             'id' => $this->bigPrimaryKey()->unsigned(),
-            'sender_id' => $this->integer()->notNull(),
-            'receiver_id' => $this->integer()->notNull(),
+            'sender_id' => $this->integer()->unsigned()->notNull(),
+            'receiver_id' => $this->integer()->unsigned()->notNull(),
             'text' => $this->string(1020)->notNull(),
             'is_new' => $this->boolean()->defaultValue(true),
             'is_deleted_by_sender' => $this->boolean()->defaultValue(false),
