@@ -17,11 +17,10 @@ class m151121_105406_user_profile_table extends Migration
     public function up()
     {
         $this->createTable(self::TABLE_USER_PROFILE, [
-            'id' => 'BIGINT UNSIGNED PRIMARY KEY',
-            'first_name' => 'VARCHAR(31) DEFAULT NULL',
-            'last_name' => 'VARCHAR(31) DEFAULT NULL',
-            'gender' => 'CHAR(1) DEFAULT NULL',
-            'avatar' => 'VARCHAR(63) DEFAULT NULL',
+            'id' => $this->primaryKey()->unsigned(),
+            'first_name' => $this->string(31)->notNull(),
+            'last_name' => $this->string(31)->notNull(),
+            'avatar' => $this->string(63)->notNull(),
         ], $this->tableOptions);
         $tableName = $this->db->getSchema()->getRawTableName(self::TABLE_USER_PROFILE);
         $this->addForeignKey("fk-$tableName-id", self::TABLE_USER_PROFILE, 'id', self::TABLE_USER, 'id', 'CASCADE', 'CASCADE');
