@@ -216,7 +216,7 @@
                         // check whether we load history or new conversations
                         if (type == 'history') {
                             // set loaded attribute to true if all history is loaded
-                            if (data['count'] <= data['models'].length) {
+                            if (data['totalCount'] == data['models'].length) {
                                 self.conversations.data('loaded', true);
                             }
                             // loop through data.models
@@ -298,7 +298,7 @@
                                 when = _top_when_text = _top_when.find('strong').text();
                             }
                             // set loaded attribute to true if all history is loaded
-                            if (data['count'] <= data['models'].length) {
+                            if (data['totalCount'] == data['models'].length) {
                                 self.messenger.data('loaded', true);
                             }
                             // loop trough data.models object
