@@ -8,6 +8,5 @@
 return [
     'first_name' => $faker->firstNameMale,
     'last_name' => $faker->lastName,
-    'gender' => 'M',
     'avatar' => $faker->avatar,
 ];

@@ -16,7 +16,6 @@ use yii\db\ActiveRecord;
  * @property string id
  * @property string first_name
  * @property string last_name
- * @property string gender
  * @property string avatar
  *
  * @author Buba Suma <bubasuma@gmail.com>
