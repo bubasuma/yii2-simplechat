@@ -51,36 +51,15 @@ class DataProvider extends ActiveDataProvider implements Arrayable
     /**
      * @inheritdoc
      */
-    protected function prepareTotalCount()
-    {
-        $query = clone $this->query;
-        return (int)$query->limit(-1)->offset(-1)->orderBy([])->count('*', $this->db);
-    }
-
-    /**
-     * @inheritdoc
-     */
     protected function prepareModels()
     {
-        $query = clone $this->query;
-        if (($pagination = $this->getPagination()) !== false) {
-            $pagination->totalCount = $this->getTotalCount();
-            $query->limit($pagination->getLimit())->offset($pagination->getOffset());
-        }
-        if (($sort = $this->getSort()) !== false) {
-            $query->addOrderBy($sort->getOrders());
-        }
-
-        if ($this->formatter !== null) {
-            $models = [];
-            foreach ($query->all($this->db) as $index => $model) {
+        $models = parent::prepareModels();
+        if (null !== $this->formatter) {
+            foreach ($models as $index => $model) {
                 $models[$index] = call_user_func($this->formatter, $model);
             }
-            return $models;
-        } else {
-            return $query->all($this->db);
         }
-
+        return $models;
     }
 
     /**
@@ -89,7 +68,7 @@ class DataProvider extends ActiveDataProvider implements Arrayable
     public function fields()
     {
         return [
-            'count' => 'totalCount',
+            'totalCount',
             'keys',
             'models',
         ];
