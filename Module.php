@@ -30,10 +30,10 @@ use yii\console\Application as Console;
  *     id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
  *     sender_id BIGINT UNSIGNED NOT NULL,
  *     receiver_id BIGINT UNSIGNED NOT NULL,
- *     text VARCHAR(1000) NOT NULL
- *     is_new BOOLEAN DEFAULT 1,
- *     is_deleted_by_sender BOOLEAN DEFAULT 0,
- *     is_deleted_by_receiver BOOLEAN DEFAULT 0,
+ *     text VARCHAR(1020) NOT NULL
+ *     is_new BOOLEAN DEFAULT TRUE,
+ *     is_deleted_by_sender BOOLEAN DEFAULT FALSE,
+ *     is_deleted_by_receiver BOOLEAN DEFAULT FALSE,
  *     created_at DATETIME NOT NULL,
  *     CONSTRAINT fk_message_sender_id FOREIGN KEY (id)
  *         REFERENCES user (id) ON DELETE NO ACTION ON UPDATE CASCADE,
