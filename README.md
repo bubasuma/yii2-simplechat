@@ -77,13 +77,13 @@ php yii simplechat/reset --language="fr_FR"
 You can then access Simple Chat through the following URL:
 
 ```
-http://localhost/path/to/index.php?r=messages/2
+http://localhost/path/to/index.php?r=messages
 ```
 
 or if you have enabled pretty URLs, you may use the following URL:
 
 ```
-http://localhost/path/to/index.php/messages/2
+http://localhost/path/to/index.php/messages
 ```
 
 You should see the below:

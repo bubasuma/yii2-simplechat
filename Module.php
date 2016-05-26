@@ -75,6 +75,8 @@ class Module extends \yii\base\Module implements BootstrapInterface
         if ($app instanceof Web) {
             $app->getUrlManager()->addRules([
                 'messages/<contactId:\d+>' => $this->id . '/default/index',
+                'messages' => $this->id . '/default/index',
+                'login-as/<userId:\d+>' => $this->id . '/default/login-as',
                 'chat/get/messages/<contactId:\d+>' => $this->id . '/default/messages',
                 'chat/get/conversations' => $this->id . '/default/conversations',
                 'chat/delete/message/<id:\d+>' => $this->id . '/default/delete-message',

@@ -49,54 +49,60 @@ class DefaultController extends Controller
             [
                 'class' => 'yii\filters\VerbFilter',
                 'actions' => [
-                    'index' => ['get', 'post'],
+                    'index' => ['get'],
+                    'login-as' => ['post'],
                     'messages' => ['get'],
                     'conversations' => ['get'],
                     'create-message' => ['post'],
                     'delete-conversation' => ['delete'],
-                    'mark-conversation-as-read' => ['patch'],
-                    'mark-conversation-as-unread' => ['patch'],
+                    'mark-conversation-as-read' => ['patch', 'put'],
+                    'mark-conversation-as-unread' => ['patch', 'put'],
                 ],
             ]
         ]);
     }
 
-    public function actionIndex($contactId)
+    public function actionIndex($contactId = null)
     {
-        if (\Yii::$app->request->isPost) {
-            $this->setUser(\Yii::$app->request->get('userId'));
-            return \Yii::$app->getResponse()->redirect(Url::current(['userId' => null]));
-        }
         $user = $this->user;
         if ($contactId == $user->id) {
             throw new ForbiddenHttpException('You cannot open this conversation');
         }
-        $current = new Conversation(['contact_id' => $contactId]);
+        /** @var $conversationClass Conversation */
+        $conversationClass = $this->conversationClass;
+        if (null === $contactId) {
+            $current = $conversationClass::recent($user->id);
+            if (null === $current) {
+                throw new NotFoundHttpException('You have no active conversations');
+            }
+            $contactId = $current->contact_id;
+        }
+        if (!isset($current)) {
+            $current = new Conversation(['contact_id' => $contactId]);
+        }
+
         $contact = $current->contact;
         if (empty($contact)) {
             throw new NotFoundHttpException();
         }
         $this->view->title = $contact->name;
-        /** @var $conversationClass Conversation */
-        $conversationClass = $this->conversationClass;
+
         $conversationDataProvider = $conversationClass::get($user->id, 8);
         /** @var $messageClass Message */
         $messageClass = $this->messageClass;
         $messageDataProvider = $messageClass::get($user->id, $contact->id, 10);
-        $users = [];
-        foreach (User::getAll() as $userItem) {
-            $users[] = [
-                'label' => $userItem->name,
-                'url' => Url::current(['userId' => $userItem->id]),
-                'options' => ['class' => in_array($userItem->id, [$user->id, $contact->id]) ? 'disabled' : ''],
-                'linkOptions' => ['data-method' => 'post'],
-            ];
-        }
+        $users = $this->getUsers([$user->id, $contact->id]);
         return $this->render(
             'index.twig',
             compact('conversationDataProvider', 'messageDataProvider', 'users', 'user', 'contact', 'current')
         );
 
+    }
+
+    public function actionLoginAs($userId)
+    {
+        $this->setUser($userId);
+        return $this->goBack();
     }
 
     /**
@@ -129,5 +135,19 @@ class DefaultController extends Controller
     public function setUser($userId)
     {
         \Yii::$app->session->set($this->module->id . '_user', $userId);
+    }
+
+    public function getUsers(array $except = [])
+    {
+        $users = [];
+        foreach (User::getAll() as $userItem) {
+            $users[] = [
+                'label' => $userItem->name,
+                'url' => Url::to(['login-as', 'userId' => $userItem->id]),
+                'options' => ['class' => in_array($userItem->id, $except) ? 'disabled' : ''],
+                'linkOptions' => ['data-method' => 'post'],
+            ];
+        }
+        return $users;
     }
 }

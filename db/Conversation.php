@@ -69,6 +69,15 @@ class Conversation extends ActiveRecord
 
     /**
      * @param int $userId
+     * @return static
+     */
+    public static function recent($userId)
+    {
+        return static::baseQuery($userId)->one();
+    }
+
+    /**
+     * @param int $userId
      * @return ConversationQuery
      */
     protected static function baseQuery($userId)
@@ -183,5 +192,30 @@ class Conversation extends ActiveRecord
     public static function find()
     {
         return Yii::createObject(ConversationQuery::className(), [get_called_class()]);
+    }
+
+    public function getLoadUrl()
+    {
+        return '';
+    }
+
+    public function getSendUrl()
+    {
+        return '';
+    }
+
+    public function getDeleteUrl()
+    {
+        return '';
+    }
+
+    public function getReadUrl()
+    {
+        return '';
+    }
+
+    public function getUnreadUrl()
+    {
+        return '';
     }
 }

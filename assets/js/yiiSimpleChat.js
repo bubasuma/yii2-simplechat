@@ -25,17 +25,20 @@
                 var conversationsLoader = $('#conversations-loader');
 
                 var tempHandler4 = function () {
-                    var widget = self.conversations.yiiSimpleChatConversations('widget');
-                    // read all messages in the current conversation
-                    var $conversation = self.conversations.yiiSimpleChatConversations('find', widget.current.contact.id, 'contact');
-                    if($conversation.length){
-                        // check whether the current conversation has unread messages
-                        if ($conversation.is('.unread')) {
-                            // read all messages in this conversation
+                    var current = self.conversations.yiiSimpleChatConversations('widget').current;
+                    // check whether the current conversation has unread messages
+                    if( current.newMessages.count){
+                        var $conversation = self.conversations.yiiSimpleChatConversations('find', current.contact.id, 'contact');
+                        if($conversation.length){
                             $conversation.find('.fa-circle').trigger('click');
+                        }else{
+                            self.conversations.yiiSimpleChatConversations('read');
                         }
-                    }else{
-                        self.conversations.yiiSimpleChatConversations('read');
+                    }
+                    var re = /\/(\s*\d+\s*)$/;
+                    if (!location.href.match(re)) {
+                        var url = location.href + '/' + current.contact.id;
+                        window.history.replaceState(null, document.title, url);
                     }
                     self.messenger.off('initialized', tempHandler4)
                 };
