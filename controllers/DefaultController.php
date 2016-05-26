@@ -102,7 +102,7 @@ class DefaultController extends Controller
     public function actionLoginAs($userId)
     {
         $this->setUser($userId);
-        return $this->goBack();
+        return $this->redirect(['index']);
     }
 
     /**
