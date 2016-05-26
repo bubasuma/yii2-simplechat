@@ -15,22 +15,8 @@
             'class' : 'conversation-wrap col-lg-3',
             'id' : 'conversations',
         },
-        'user' : {
-            'id' : user.id,
-            'name' : user.name,
-        },
-        'current' : {
-            'contact' : {
-                'id' : contact.id,
-                'name' : contact.name,
-                'avatar' : contact.avatar,
-            },
-            'deleteUrl': path('delete-conversation', {'contactId' : contact.id}),
-            'readUrl': path('mark-conversation-as-read', {'contactId' : contact.id}),
-            'unreadUrl': path('mark-conversation-as-unread', {'contactId' : contact.id}),
-            'loadUrl' : path('messages', {'contactId' : contact.id}),
-            'sendUrl' : path('create-message', {'contactId' : contact.id}),
-        },
+        'user' : user,
+        'current' : current,
         'clientOptions' : {
             'loadUrl' : path(['conversations']),
             'baseUrl' : asset.baseUrl,
@@ -50,23 +36,15 @@
         'dataProvider' : messageDataProvider,
         'itemView' : asset.sourcePath ~ '/tmpl/message.twig',
         'formView' : this.context.viewPath ~ '/form.twig',
-        'user' : {
-            'id' : user.id,
-            'name' : user.name,
-            'avatar' : user.avatar,
-        },
-        'contact' : {
-            'id' : contact.id,
-            'name' : contact.name,
-            'avatar' : contact.avatar,
-        },
+        'user' : user,
+        'contact' : contact,
         'options' : {
             'class' : 'message-wrap col-lg-8',
             'id' : 'messenger',
         },
         'clientOptions' : {
-            'loadUrl' : path('messages', {'contactId' : contact.id}),
-            'sendUrl' : path('create-message', {'contactId' : contact.id}),
+            'loadUrl' : current.loadUrl,
+            'sendUrl' : current.sendUrl,
             'sendMethod' : 'post',
             'templateUrl' : asset.baseUrl ~ '/tmpl/message.twig',
             'baseUrl' : asset.baseUrl,

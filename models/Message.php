@@ -7,53 +7,49 @@
 
 namespace bubasuma\simplechat\models;
 
-use bubasuma\simplechat\db\Model;
-use yii\db\ActiveQuery;
-use yii\db\Expression;
-
-
 /**
  * Class Message
  * @package bubasuma\simplechat\models
  *
- * @property-read User contact
- *
  * @author Buba Suma <bubasuma@gmail.com>
  * @since 1.0
  */
-class Message extends Model
+class Message extends \bubasuma\simplechat\db\Message
 {
-    public function getContact()
-    {
-        return $this->hasOne(User::className(), ['id' => 'contact_id']);
-    }
-
     /**
      * @inheritDoc
      */
-    public static function conversations($userId)
+    public function fields()
     {
-        return parent::conversations($userId)->with([
-            'contact' => function ($contact) {
-                /**@var $contact ActiveQuery * */
-                $contact->with([
-                    'profile' => function ($profile) {
-                        /**@var $profile ActiveQuery * */
-                        $profile->select([
-                            'id',
-                            'name' => new Expression('CONCAT_WS(\' \', first_name, last_name)'),
-                            'avatar'
-                        ]);
-                    },
-                ])->select(['id']);
+        return [
+            'senderId' => 'sender_id',
+            'text',
+            'date' => function($model){
+                return static::formatDate($model['created_at'])[1];
             },
-            'newMessages' => function ($msg) use ($userId) {
-                /**@var $msg ActiveQuery * */
-                $msg->andOnCondition(['receiver_id' => $userId])
-                    ->select(['sender_id', 'count' => new Expression('COUNT(*)')]);
-            }
-        ]);
+            'when' => function($model){
+                return static::formatDate($model['created_at'])[1];
+            },
+        ];
     }
 
+    public static function formatDate($value)
+    {
+        $today = date_create()->setTime(0, 0, 0);
+        $date = date_create($value)->setTime(0, 0, 0);
+        if ($today == $date) {
+            $label = 'Today';
+        } else if ($today->getTimestamp() - $date->getTimestamp() == 24 * 60 * 60) {
+            $label = 'Yesterday';
+        } else if ($today->format('W') == $date->format('W') && $today->format('Y') == $date->format('Y')) {
+            $label = \Yii::$app->formatter->asDate($value, 'php:l');
+        } else if ($today->format('Y') == $date->format('Y')) {
+            $label = \Yii::$app->formatter->asDate($value, 'php:d F');
+        } else {
+            $label = \Yii::$app->formatter->asDate($value, 'medium');
+        }
+        $formatted = \Yii::$app->formatter->asTime($value, 'short');
 
+        return [$label, $formatted];
+    }
 }

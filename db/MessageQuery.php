@@ -7,7 +7,6 @@
 namespace bubasuma\simplechat\db;
 
 use yii\db\ActiveQuery;
-use yii\db\ActiveRecord;
 
 /**
  * Class MessageQuery
@@ -18,21 +17,24 @@ use yii\db\ActiveRecord;
  */
 class MessageQuery extends ActiveQuery
 {
-    public $userId;
-    public $contactId;
-
     public function init()
     {
         parent::init();
-        $this->alias('m')
-            ->select(['m.id', 'm.text', 'm.created_at', 'm.is_new', 'm.sender_id'])
-            ->where([
-                'or',
-                ['sender_id' => $this->contactId, 'receiver_id' => $this->userId, 'is_deleted_by_receiver' => 0],
-                ['sender_id' => $this->userId, 'receiver_id' => $this->contactId, 'is_deleted_by_sender' => 0],
-            ])
-            ->orderBy(['m.id' => SORT_DESC])
-            ->asArray();
+        $this->alias('m');
+    }
+
+    /**
+     * @param int $userId
+     * @param int $contactId
+     * @return $this
+     * @since 2.0
+     */
+    public function between($userId, $contactId)
+    {
+        return $this->andWhere(['or',
+            ['sender_id' => $contactId, 'receiver_id' => $userId, 'is_deleted_by_receiver' => false],
+            ['sender_id' => $userId, 'receiver_id' => $contactId, 'is_deleted_by_sender' => false],
+        ]);
     }
 
 }

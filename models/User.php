@@ -34,6 +34,8 @@ use yii\web\IdentityInterface;
  */
 class User extends ActiveRecord implements IdentityInterface
 {
+    private $_name;
+
     /**
      * @inheritDoc
      */
@@ -50,6 +52,14 @@ class User extends ActiveRecord implements IdentityInterface
         return [
             [$this->attributes(), 'safe']
         ];
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function fields()
+    {
+        return ['id', 'name', 'avatar'];
     }
 
 
@@ -75,7 +85,18 @@ class User extends ActiveRecord implements IdentityInterface
      */
     public function getName()
     {
-        return $this->profile->first_name . ' ' . $this->profile->last_name;
+        if(null === $this->_name){
+            $this->_name = $this->profile->first_name . ' ' . $this->profile->last_name;
+        }
+        return $this->_name;
+    }
+
+    /**
+     * @param string $name
+     */
+    public function setName($name)
+    {
+        $this->_name = $name;
     }
 
     /**

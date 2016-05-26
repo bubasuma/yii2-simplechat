@@ -111,7 +111,7 @@
                                 $conversation.find('.fa-circle').trigger('click');
                             }
                             // update the window state
-                            document.title = current.contact.profile.name;
+                            document.title = current.contact.name;
                             var re = /\/(\s*\d+\s*)/;
                             var url = location.href.replace(re, '/' + current.contact.id);
                             window.history.replaceState(null, document.title, url);
@@ -227,7 +227,7 @@
                                     key: data['keys'][index],
                                     index: index,
                                     user: widget.user,
-                                    is_current: widget.current.contact.id == data['models'][index]['contact']['id'],
+                                    isCurrent: widget.current.contact.id == data['models'][index]['contact']['id'],
                                     settings: widget.settings
                                 };
                                 //prepend conversation
@@ -242,7 +242,7 @@
                                     key: data['keys'][index],
                                     index: index,
                                     user: widget.user,
-                                    is_current: widget.current.contact.id == data['models'][index]['contact']['id'],
+                                    isCurrent: widget.current.contact.id == data['models'][index]['contact']['id'],
                                     settings: widget.settings
                                 };
                                 // remove conversation if it existed before
@@ -315,7 +315,8 @@
                                     model: data['models'][index],
                                     key: data['keys'][index],
                                     index: index,
-                                    sender: data['models'][index]['sender_id'] == options.user.id ? options.user : options.contact,
+                                    user: options.user,
+                                    sender: data['models'][index]['senderId'] == options.user.id ? options.user : options.contact,
                                     settings: options.settings
                                 };
 
@@ -352,6 +353,7 @@
                                     model: data['models'][index],
                                     key: data['keys'][index],
                                     index: index,
+                                    user: options.user,
                                     sender: data['models'][index]['sender_id'] == options.user.id ? options.user : options.contact,
                                     settings: options.settings
                                 };

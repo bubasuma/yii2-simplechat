@@ -97,7 +97,8 @@ class MessageWidget extends ListView
                 'model' => $model,
                 'key' => $key,
                 'index' => $index,
-                'sender' => $model['sender_id'] == $this->user['id'] ? $this->user : $this->contact,
+                'user' => $this->user,
+                'sender' => $model['senderId'] == $this->user['id'] ? $this->user : $this->contact,
                 'settings' => $this->clientOptions,
             ], $this->viewParams));
         } else {
@@ -131,7 +132,7 @@ class MessageWidget extends ListView
         }
     }
 
-    public function getId()
+    public function getId($autoGenerate = true)
     {
         $users = [$this->user['id'], $this->contact['id']];
         sort($users);

@@ -6,8 +6,11 @@
  */
 namespace bubasuma\simplechat\controllers;
 
-use bubasuma\simplechat\db\Model;
+use bubasuma\simplechat\DataProvider;
+use bubasuma\simplechat\db\Conversation;
+use bubasuma\simplechat\db\Message;
 use yii\base\NotSupportedException;
+use yii\filters\ContentNegotiator;
 use yii\web\IdentityInterface;
 use yii\web\Response;
 use yii\web\ForbiddenHttpException;
@@ -20,7 +23,8 @@ use yii\web\ForbiddenHttpException;
  * @since 2.0
  *
  * @property-read IdentityInterface user
- * @property-read string modelClass
+ * @property-read string messageClass
+ * @property-read string conversationClass
  */
 trait ControllerTrait
 {
@@ -28,7 +32,7 @@ trait ControllerTrait
     {
         return [
             [
-                'class' => 'yii\filters\ContentNegotiator',
+                'class' => ContentNegotiator::className(),
                 'only' => [
                     'messages',
                     'create-message',
@@ -44,22 +48,40 @@ trait ControllerTrait
         ];
     }
 
+    /**
+     * @inheritdoc
+     */
+    public function afterAction($action, $result)
+    {
+        $result = parent::afterAction($action, $result);
+        if ($result instanceof DataProvider) {
+            return $result->toArray();
+        }
+        return $result;
+    }
+
     public function actionConversations()
     {
         $userId = $this->user->getId();
-        $callable = [$this->modelClass, 'loadConversations'];
-        $formatter = [$this, 'formatConversation'];
-        $limit = \Yii::$app->request->get('limit', \Yii::$app->request->post('limit'));
-        return call_user_func($callable, $userId, $formatter, $limit);
+        $request = \Yii::$app->request;
+        $limit = $request->get('limit', $request->post('limit'));
+        $key = $request->get('key', $request->post('key'));
+        $history = strcmp('new', $request->get('type', $request->post('type')));
+        /** @var $conversationClass Conversation */
+        $conversationClass = $this->conversationClass;
+        return $conversationClass::get($userId, $limit, $history, $key);
     }
 
     public function actionMessages($contactId)
     {
         $userId = $this->user->getId();
-        $callable = [$this->modelClass, 'loadMessages'];
-        $formatter = [$this, 'formatMessage'];
-        $limit = \Yii::$app->request->get('limit', \Yii::$app->request->post('limit'));
-        return call_user_func($callable, $userId, $contactId, $formatter, $limit);
+        $request = \Yii::$app->request;
+        $limit = $request->get('limit', $request->post('limit'));
+        $key = $request->get('key', $request->post('key'));
+        $history = strcmp('new', $request->get('type', $request->post('type')));
+        /** @var $messageClass Message */
+        $messageClass = $this->messageClass;
+        return $messageClass::get($userId, $contactId, $limit, $history, $key);
     }
 
     public function actionCreateMessage($contactId)
@@ -69,7 +91,9 @@ trait ControllerTrait
             throw new ForbiddenHttpException('You cannot send a message in this conversation');
         }
         $text = \Yii::$app->request->post('text');
-        return call_user_func([$this->modelClass, 'create'], $userId, $contactId, $text);
+        /** @var $messageClass Message */
+        $messageClass = $this->messageClass;
+        return $messageClass::create($userId, $contactId, $text);
     }
 
     public function actionDeleteMessage($id)
@@ -80,22 +104,25 @@ trait ControllerTrait
     public function actionDeleteConversation($contactId)
     {
         $userId = $this->user->getId();
-        $callable = [$this->modelClass, 'deleteConversation'];
-        return call_user_func($callable, $userId, $contactId);
+        /** @var $conversationClass Conversation */
+        $conversationClass = $this->conversationClass;
+        return $conversationClass::remove($userId, $contactId);
     }
 
     public function actionMarkConversationAsRead($contactId)
     {
         $userId = $this->user->getId();
-        $callable = [$this->modelClass, 'markConversationAsRead'];
-        return call_user_func($callable, $userId, $contactId);
+        /** @var $conversationClass Conversation */
+        $conversationClass = $this->conversationClass;
+        return $conversationClass::read($userId, $contactId);
     }
 
     public function actionMarkConversationAsUnread($contactId)
     {
         $userId = $this->user->getId();
-        $callable = [$this->modelClass, 'markConversationAsUnRead'];
-        return call_user_func($callable, $userId, $contactId);
+        /** @var $conversationClass Conversation */
+        $conversationClass = $this->conversationClass;
+        return $conversationClass::unread($userId, $contactId);
     }
 
     /**
@@ -109,20 +136,16 @@ trait ControllerTrait
     /**
      * @return string
      */
-    public function getModelClass()
+    public function getMessageClass()
     {
-        return Model::className();
+        return Message::className();
     }
 
     /**
-     * @param array|Model $model
-     * @return array|Model
+     * @return string
      */
-    abstract protected function formatMessage($model);
-
-    /**
-     * @param array $model
-     * @return array
-     */
-    abstract protected function formatConversation($model);
+    public function getConversationClass()
+    {
+        return Conversation::className();
+    }
 }

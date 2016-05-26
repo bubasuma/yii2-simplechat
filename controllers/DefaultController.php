@@ -6,12 +6,11 @@
  */
 namespace bubasuma\simplechat\controllers;
 
+use bubasuma\simplechat\models\Conversation;
 use bubasuma\simplechat\models\Message;
 use bubasuma\simplechat\models\User;
-use bubasuma\simplechat\helpers\DateHelper;
 use bubasuma\simplechat\Module;
 use yii\helpers\ArrayHelper;
-use yii\helpers\StringHelper;
 use yii\helpers\Url;
 use yii\web\Controller;
 use yii\web\ForbiddenHttpException;
@@ -62,7 +61,6 @@ class DefaultController extends Controller
         ]);
     }
 
-
     public function actionIndex($contactId)
     {
         if(\Yii::$app->request->isPost){
@@ -73,16 +71,18 @@ class DefaultController extends Controller
         if($contactId == $user->id){
             throw new ForbiddenHttpException('You cannot open this conversation');
         }
-        $contact = User::findIdentity(['id' => $contactId]);
+        $current = new Conversation(['contact_id' => $contactId]);
+        $contact = $current->contact;
         if (empty($contact)) {
             throw new NotFoundHttpException();
         }
         $this->view->title = $contact->name;
-        $conversationDataProvider = call_user_func([$this->modelClass, 'loadConversations'],
-            $user->id, [$this, 'formatConversation'], 8);
-
-        $messageDataProvider = call_user_func([$this->modelClass, 'loadMessages'],
-            $user->id, $contact->id, [$this, 'formatMessage'], 10);
+        /** @var $conversationClass Conversation */
+        $conversationClass = $this->conversationClass;
+        $conversationDataProvider = $conversationClass::get($user->id, 8);
+        /** @var $messageClass Message */
+        $messageClass = $this->messageClass;
+        $messageDataProvider = $messageClass::get($user->id, $contact->id, 10);
         $users = [];
         foreach (User::getAll() as $userItem) {
             $users[] = [
@@ -92,44 +92,24 @@ class DefaultController extends Controller
                 'linkOptions' => ['data-method' => 'post'],
             ];
         }
-        return $this->render('index.twig', compact('conversationDataProvider', 'messageDataProvider', 'users', 'user', 'contact'));
+        return $this->render('index.twig', compact('conversationDataProvider', 'messageDataProvider', 'users', 'user', 'contact', 'current'));
 
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function formatMessage($model)
-    {
-        list($model['when'], $model['date']) = DateHelper::formatMessageDate($model['created_at']);
-        return $model;
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function formatConversation($model)
-    {
-        $model['date'] = DateHelper::formatConversationDate($model['created_at']);
-        $model['text'] = StringHelper::truncate($model['text'], 20);
-        $model['new_messages'] = ArrayHelper::getValue($model, 'newMessages.count', 0);
-        $model['contact'] = ArrayHelper::merge($model['contact'], $model['contact']['profile']);
-        $model['deleteUrl'] = Url::to(['/' . $this->uniqueId . '/delete-conversation','contactId' => $model['contact']['id']]);
-        $model['readUrl'] = Url::to(['/' . $this->uniqueId . '/mark-conversation-as-read','contactId' => $model['contact']['id']]);
-        $model['unreadUrl'] = Url::to(['/' . $this->uniqueId . '/mark-conversation-as-unread','contactId' => $model['contact']['id']]);
-        $model['loadUrl'] = Url::to(['/' . $this->uniqueId . '/messages','contactId' => $model['contact']['id']]);
-        $model['sendUrl'] = Url::to(['/' . $this->uniqueId . '/create-message','contactId' => $model['contact']['id']]);
-        ArrayHelper::remove($model, 'contact.profile');
-        ArrayHelper::remove($model, 'newMessages');
-        return $model;
     }
 
     /**
      * @return string
      */
-    public function getModelClass()
+    public function getMessageClass()
     {
         return Message::className();
+    }
+
+    /**
+     * @return string
+     */
+    public function getConversationClass()
+    {
+        return Conversation::className();
     }
 
     /**

@@ -84,7 +84,7 @@ class ConversationWidget extends ListView
                 'key' => $key,
                 'index' => $index,
                 'user' => $this->user,
-                'is_current' => $model['contact_id'] == $this->current['contact']['id'],
+                'is_current' => $model['contact']['id'] == $this->current['contact']['id'],
                 'settings' => $this->clientOptions,
             ], $this->viewParams));
         } else {
