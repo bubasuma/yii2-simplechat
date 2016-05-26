@@ -6,6 +6,7 @@
  */
 
 namespace bubasuma\simplechat\console;
+
 use bubasuma\simplechat\tests\unit\fixtures\MessageFixture;
 use bubasuma\simplechat\tests\unit\fixtures\UserFixture;
 use bubasuma\simplechat\tests\unit\fixtures\UserProfileFixture;
@@ -49,10 +50,11 @@ class FixtureController extends \yii\faker\FixtureController
     public function init()
     {
         parent::init();
-        if(null === $this->fixtureDataPath){
+        if (null === $this->fixtureDataPath) {
             $this->fixtureDataPath = "@runtime/{$this->module->id}";
         }
-        \Yii::$container->set(UserFixture::classname(), ['dataFile' => Yii::getAlias("$this->fixtureDataPath/user.php")])
+        \Yii::$container
+            ->set(UserFixture::classname(), ['dataFile' => Yii::getAlias("$this->fixtureDataPath/user.php")])
             ->set(UserProfileFixture::classname(), ['dataFile' => Yii::getAlias("$this->fixtureDataPath/profile.php")])
             ->set(MessageFixture::classname(), ['dataFile' => Yii::getAlias("$this->fixtureDataPath/message.php")]);
     }

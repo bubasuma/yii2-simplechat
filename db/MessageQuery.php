@@ -36,5 +36,4 @@ class MessageQuery extends ActiveQuery
             ['sender_id' => $userId, 'receiver_id' => $contactId, 'is_deleted_by_sender' => false],
         ]);
     }
-
 }

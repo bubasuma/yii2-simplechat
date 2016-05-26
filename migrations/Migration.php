@@ -5,6 +5,7 @@
  * @license http://opensource.org/licenses/BSD-3-Clause
  */
 namespace bubasuma\simplechat\migrations;
+
 /**
  * Class Migration
  * @package bubasuma\simplechat\migrations

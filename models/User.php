@@ -7,7 +7,6 @@
 
 namespace bubasuma\simplechat\models;
 
-
 use bubasuma\simplechat\migrations\Migration;
 use yii\base\NotSupportedException;
 use yii\db\ActiveRecord;
@@ -85,7 +84,7 @@ class User extends ActiveRecord implements IdentityInterface
      */
     public function getName()
     {
-        if(null === $this->_name){
+        if (null === $this->_name) {
             $this->_name = $this->profile->first_name . ' ' . $this->profile->last_name;
         }
         return $this->_name;

@@ -40,5 +40,4 @@ class UserProfile extends ActiveRecord
             [$this->attributes(), 'safe']
         ];
     }
-
 }

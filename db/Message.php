@@ -77,7 +77,8 @@ class Message extends ActiveRecord
      * @param int $contactId
      * @return MessageQuery
      */
-    protected static function baseQuery($userId, $contactId){
+    protected static function baseQuery($userId, $contactId)
+    {
         return static::find()
             ->between($userId, $contactId)
             ->orderBy(['id' => SORT_DESC]);
@@ -109,5 +110,4 @@ class Message extends ActiveRecord
     {
         return Yii::createObject(MessageQuery::className(), [get_called_class()]);
     }
-
 }

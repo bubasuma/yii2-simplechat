@@ -83,7 +83,7 @@ class Module extends \yii\base\Module implements BootstrapInterface
                 'chat/unread/conversation/<contactId:\d+>' => $this->id . '/default/mark-conversation-as-unread',
                 'chat/read/conversation/<contactId:\d+>' => $this->id . '/default/mark-conversation-as-read',
             ], false);
-            if(!isset($app->getView()->renderers['twig'])){
+            if (!isset($app->getView()->renderers['twig'])) {
                 $app->getView()->renderers['twig'] = [
                     'class' => 'yii\twig\ViewRenderer',
                 ];
@@ -102,12 +102,10 @@ class Module extends \yii\base\Module implements BootstrapInterface
      */
     public function beforeAction($action)
     {
-        if(!parent::beforeAction($action)){
+        if (!parent::beforeAction($action)) {
             return false;
         }
         $this->db->tablePrefix = $this->id . '_';
         return true;
     }
-
-
 }

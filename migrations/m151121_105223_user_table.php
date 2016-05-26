@@ -27,5 +27,4 @@ class m151121_105223_user_table extends Migration
     {
         $this->dropTable(self::TABLE_USER);
     }
-
 }

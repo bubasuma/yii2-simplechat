@@ -24,11 +24,11 @@ class Message extends \bubasuma\simplechat\db\Message
         return [
             'senderId' => 'sender_id',
             'text',
-            'date' => function($model){
+            'date' => function ($model) {
                 return static::formatDate($model['created_at'])[1];
             },
-            'when' => function($model){
-                return static::formatDate($model['created_at'])[1];
+            'when' => function ($model) {
+                return static::formatDate($model['created_at'])[0];
             },
         ];
     }
@@ -39,17 +39,16 @@ class Message extends \bubasuma\simplechat\db\Message
         $date = date_create($value)->setTime(0, 0, 0);
         if ($today == $date) {
             $label = 'Today';
-        } else if ($today->getTimestamp() - $date->getTimestamp() == 24 * 60 * 60) {
+        } elseif ($today->getTimestamp() - $date->getTimestamp() == 24 * 60 * 60) {
             $label = 'Yesterday';
-        } else if ($today->format('W') == $date->format('W') && $today->format('Y') == $date->format('Y')) {
+        } elseif ($today->format('W') == $date->format('W') && $today->format('Y') == $date->format('Y')) {
             $label = \Yii::$app->formatter->asDate($value, 'php:l');
-        } else if ($today->format('Y') == $date->format('Y')) {
+        } elseif ($today->format('Y') == $date->format('Y')) {
             $label = \Yii::$app->formatter->asDate($value, 'php:d F');
         } else {
             $label = \Yii::$app->formatter->asDate($value, 'medium');
         }
         $formatted = \Yii::$app->formatter->asTime($value, 'short');
-
         return [$label, $formatted];
     }
 }

@@ -103,5 +103,4 @@ class ConversationWidget extends ListView
                 return false;
         }
     }
-
 }

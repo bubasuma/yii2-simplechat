@@ -38,8 +38,8 @@ class ConversationQuery extends ActiveQuery
      * @return $this
      * @since 2.0
      */
-    public function forUser($userId){
+    public function forUser($userId)
+    {
         return $this->addParams(['userId' => $userId]);
     }
-
 }

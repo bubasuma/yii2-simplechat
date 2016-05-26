@@ -17,9 +17,9 @@ class Avatar extends Base
     public function avatar()
     {
         $path = __DIR__ . '/../../../../assets/img/avatars';
-        if(null === $this->_container){
+        if (null === $this->_container) {
             $this->_container = array_map(
-                function($file){
+                function ($file) {
                     return basename($file);
                 },
                 FileHelper::findFiles($path)

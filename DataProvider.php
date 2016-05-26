@@ -39,6 +39,6 @@ class DataProvider extends ActiveDataProvider implements Arrayable
      */
     public function getModels()
     {
-       return ArrayHelper::toArray(parent::getModels());
+        return ArrayHelper::toArray(parent::getModels());
     }
 }

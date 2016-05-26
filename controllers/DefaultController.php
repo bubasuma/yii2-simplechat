@@ -63,12 +63,12 @@ class DefaultController extends Controller
 
     public function actionIndex($contactId)
     {
-        if(\Yii::$app->request->isPost){
+        if (\Yii::$app->request->isPost) {
             $this->setUser(\Yii::$app->request->get('userId'));
             return \Yii::$app->getResponse()->redirect(Url::current(['userId' => null]));
         }
         $user = $this->user;
-        if($contactId == $user->id){
+        if ($contactId == $user->id) {
             throw new ForbiddenHttpException('You cannot open this conversation');
         }
         $current = new Conversation(['contact_id' => $contactId]);
@@ -92,7 +92,10 @@ class DefaultController extends Controller
                 'linkOptions' => ['data-method' => 'post'],
             ];
         }
-        return $this->render('index.twig', compact('conversationDataProvider', 'messageDataProvider', 'users', 'user', 'contact', 'current'));
+        return $this->render(
+            'index.twig',
+            compact('conversationDataProvider', 'messageDataProvider', 'users', 'user', 'contact', 'current')
+        );
 
     }
 
@@ -117,7 +120,7 @@ class DefaultController extends Controller
      */
     public function getUser()
     {
-        if(null === $this->_user){
+        if (null === $this->_user) {
             $this->_user = User::findIdentity(\Yii::$app->session->get($this->module->id . '_user', 1));
         }
         return $this->_user;
@@ -127,5 +130,4 @@ class DefaultController extends Controller
     {
         \Yii::$app->session->set($this->module->id . '_user', $userId);
     }
-
 }

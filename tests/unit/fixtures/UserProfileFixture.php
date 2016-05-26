@@ -7,7 +7,6 @@
 
 namespace bubasuma\simplechat\tests\unit\fixtures;
 
-
 use bubasuma\simplechat\models\User;
 use yii\test\ActiveFixture;
 
@@ -41,10 +40,10 @@ class UserProfileFixture extends ActiveFixture
         $this->data = [];
         $table = $this->getTableSchema();
         $users = User::find()->select(['id'])->column();
-        if(count($users) > 0){
+        if (count($users) > 0) {
             $index = 0;
             foreach ($this->getData() as $alias => $row) {
-                if(!isset($users[$index])){
+                if (!isset($users[$index])) {
                     break;
                 }
                 $row['id'] = $users[$index];

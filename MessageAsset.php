@@ -26,5 +26,4 @@ class MessageAsset extends AssetBundle
         parent::init();
         $this->sourcePath = __DIR__ . '/assets';
     }
-
 }

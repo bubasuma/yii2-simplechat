@@ -6,6 +6,7 @@
  */
 
 namespace bubasuma\simplechat\tests\unit\fixtures;
+
 use yii\test\ActiveFixture;
 
 /**

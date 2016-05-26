@@ -27,8 +27,24 @@ class m151121_105453_message_table extends Migration
             'created_at' => $this->dateTime()->notNull(),
         ], $this->tableOptions);
         $tableName = $this->db->getSchema()->getRawTableName(self::TABLE_MESSAGE);
-        $this->addForeignKey("fk-$tableName-sender_id", self::TABLE_MESSAGE, 'sender_id', self::TABLE_USER, 'id', 'NO ACTION', 'CASCADE');
-        $this->addForeignKey("fk-$tableName-receiver_id", self::TABLE_MESSAGE, 'receiver_id', self::TABLE_USER, 'id', 'NO ACTION', 'CASCADE');
+        $this->addForeignKey(
+            "fk-$tableName-sender_id",
+            self::TABLE_MESSAGE,
+            'sender_id',
+            self::TABLE_USER,
+            'id',
+            'NO ACTION',
+            'CASCADE'
+        );
+        $this->addForeignKey(
+            "fk-$tableName-receiver_id",
+            self::TABLE_MESSAGE,
+            'receiver_id',
+            self::TABLE_USER,
+            'id',
+            'NO ACTION',
+            'CASCADE'
+        );
     }
 
     public function down()

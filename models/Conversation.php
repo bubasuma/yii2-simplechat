@@ -12,7 +12,6 @@ use yii\db\Expression;
 use yii\helpers\StringHelper;
 use yii\helpers\Url;
 
-
 /**
  * Class Conversation
  * @package bubasuma\simplechat\models
@@ -38,19 +37,19 @@ class Conversation extends \bubasuma\simplechat\db\Conversation
     public function fields()
     {
         return [
-            'lastMessage' => function($model){
+            'lastMessage' => function ($model) {
                 return [
                     'text' => StringHelper::truncate($model['lastMessage']['text'], 20),
                     'date' => static::formatDate($model['lastMessage']['created_at']),
                     'sender_id' => $model['lastMessage']['sender_id']
                 ];
             },
-            'newMessages' => function($model){
+            'newMessages' => function ($model) {
                 return [
                     'count' => empty($model['newMessages']) ? 0 :$model['newMessages']['count']
                 ];
             },
-            'contact' => function($model){
+            'contact' => function ($model) {
                 return $model['contact'];
             },
             'loadUrl',
@@ -64,7 +63,8 @@ class Conversation extends \bubasuma\simplechat\db\Conversation
     /**
      * @inheritDoc
      */
-    protected static function baseQuery($userId){
+    protected static function baseQuery($userId)
+    {
         return parent::baseQuery($userId)->with([
             'contact.profile',
             'newMessages' => function ($msg) use ($userId) {
@@ -81,11 +81,11 @@ class Conversation extends \bubasuma\simplechat\db\Conversation
         $date = date_create($value)->setTime(0, 0, 0);
         if ($today == $date) {
             $formatted = \Yii::$app->formatter->asTime($value, 'short');
-        } else if ($today->getTimestamp() - $date->getTimestamp() == 24 * 60 * 60) {
+        } elseif ($today->getTimestamp() - $date->getTimestamp() == 24 * 60 * 60) {
             $formatted = 'Yesterday';
-        } else if ($today->format('W') == $date->format('W') && $today->format('Y') == $date->format('Y')) {
+        } elseif ($today->format('W') == $date->format('W') && $today->format('Y') == $date->format('Y')) {
             $formatted = \Yii::$app->formatter->asDate($value, 'php:l');
-        } else if ($today->format('Y') == $date->format('Y')) {
+        } elseif ($today->format('Y') == $date->format('Y')) {
             $formatted = \Yii::$app->formatter->asDate($value, 'php:d F');
         } else {
             $formatted = \Yii::$app->formatter->asDate($value, 'medium');

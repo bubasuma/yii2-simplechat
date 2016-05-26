@@ -40,6 +40,4 @@ class MigrateController extends \yii\console\controllers\MigrateController
         }
         return $ret;
     }
-
-
 }

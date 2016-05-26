@@ -33,7 +33,7 @@ class Conversation extends ActiveRecord
      */
     public function getLastMessage()
     {
-        return $this->hasOne(Message::className(),['id' => 'last_message_id']);
+        return $this->hasOne(Message::className(), ['id' => 'last_message_id']);
     }
 
     /**
@@ -71,7 +71,8 @@ class Conversation extends ActiveRecord
      * @param int $userId
      * @return ConversationQuery
      */
-    protected static function baseQuery($userId){
+    protected static function baseQuery($userId)
+    {
         return static::find()
             ->forUser($userId)
             ->orderBy(['last_message_id' => SORT_DESC]);
@@ -85,15 +86,14 @@ class Conversation extends ActiveRecord
     public static function remove($userId, $contactId)
     {
         $count = static::updateAll([
-                'is_deleted_by_sender' => new Expression('IF([[sender_id]] = :userId, TRUE, is_deleted_by_sender)'),
-                'is_deleted_by_receiver' => new Expression('IF([[receiver_id]] = :userId, TRUE, is_deleted_by_receiver)')
-            ], ['or',
-                ['receiver_id' => new Expression(':userId'), 'sender_id' => $contactId, 'is_deleted_by_receiver' => false],
-                ['sender_id' => new Expression(':userId'), 'receiver_id' => $contactId, 'is_deleted_by_sender' => false],
-            ], [
-                'userId' => $userId
-            ]
-        );
+            'is_deleted_by_sender' => new Expression('IF([[sender_id]] = :userId, TRUE, is_deleted_by_sender)'),
+            'is_deleted_by_receiver' => new Expression('IF([[receiver_id]] = :userId, TRUE, is_deleted_by_receiver)')
+        ], ['or',
+            ['receiver_id' => new Expression(':userId'), 'sender_id' => $contactId, 'is_deleted_by_receiver' => false],
+            ['sender_id' => new Expression(':userId'), 'receiver_id' => $contactId, 'is_deleted_by_sender' => false],
+        ], [
+            'userId' => $userId
+        ]);
         return compact('count');
     }
 
@@ -110,8 +110,7 @@ class Conversation extends ActiveRecord
                 'receiver_id' => $userId,
                 'sender_id' => $contactId,
                 'is_new' => true
-            ]
-        );
+            ]);
         return compact('count');
     }
 
@@ -185,5 +184,4 @@ class Conversation extends ActiveRecord
     {
         return Yii::createObject(ConversationQuery::className(), [get_called_class()]);
     }
-
 }

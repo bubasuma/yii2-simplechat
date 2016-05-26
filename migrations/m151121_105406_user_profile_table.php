@@ -23,7 +23,15 @@ class m151121_105406_user_profile_table extends Migration
             'avatar' => $this->string(63)->notNull(),
         ], $this->tableOptions);
         $tableName = $this->db->getSchema()->getRawTableName(self::TABLE_USER_PROFILE);
-        $this->addForeignKey("fk-$tableName-id", self::TABLE_USER_PROFILE, 'id', self::TABLE_USER, 'id', 'CASCADE', 'CASCADE');
+        $this->addForeignKey(
+            "fk-$tableName-id",
+            self::TABLE_USER_PROFILE,
+            'id',
+            self::TABLE_USER,
+            'id',
+            'CASCADE',
+            'CASCADE'
+        );
     }
 
     public function down()

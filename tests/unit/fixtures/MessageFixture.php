@@ -7,7 +7,6 @@
 
 namespace bubasuma\simplechat\tests\unit\fixtures;
 
-
 use bubasuma\simplechat\models\User;
 use yii\helpers\ArrayHelper;
 use yii\test\ActiveFixture;
@@ -35,7 +34,7 @@ class MessageFixture extends ActiveFixture
         $table = $this->getTableSchema();
         $data = $this->getData();
         $users = User::find()->select(['id'])->column();
-        if(count($users) >= 2) {
+        if (count($users) >= 2) {
             ArrayHelper::multisort($data, 'timestamp', SORT_ASC, SORT_NUMERIC);
             foreach ($data as $alias => $row) {
                 shuffle($users);
@@ -57,5 +56,4 @@ class MessageFixture extends ActiveFixture
         parent::unload();
         $this->resetTable();
     }
-
 }
