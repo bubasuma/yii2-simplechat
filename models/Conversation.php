@@ -46,7 +46,7 @@ class Conversation extends \bubasuma\simplechat\db\Conversation
             },
             'newMessages' => function ($model) {
                 return [
-                    'count' => empty($model['newMessages']) ? 0 :$model['newMessages']['count']
+                    'count' => count($model['newMessages'])
                 ];
             },
             'contact' => function ($model) {
@@ -65,14 +65,7 @@ class Conversation extends \bubasuma\simplechat\db\Conversation
      */
     protected static function baseQuery($userId)
     {
-        return parent::baseQuery($userId)->with([
-            'contact.profile',
-            'newMessages' => function ($msg) use ($userId) {
-                /**@var $msg ActiveQuery * */
-                $msg->andOnCondition(['receiver_id' => $userId])
-                    ->select(['sender_id', 'count' => new Expression('COUNT(*)')])
-                    ->groupBy(['sender_id']);
-            }]);
+        return parent::baseQuery($userId) ->with(['newMessages', 'contact.profile']);
     }
 
     public static function formatDate($value)

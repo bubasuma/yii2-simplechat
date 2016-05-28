@@ -68,8 +68,11 @@ class DefaultController extends Controller
         if ($contactId == $user->id) {
             throw new ForbiddenHttpException('You cannot open this conversation');
         }
+
         /** @var $conversationClass Conversation */
         $conversationClass = $this->conversationClass;
+        $conversationDataProvider = $conversationClass::get($user->id, 8);
+
         if (null === $contactId) {
             $current = $conversationClass::recent($user->id);
             if (null === $current) {
@@ -78,7 +81,7 @@ class DefaultController extends Controller
             $contactId = $current->contact_id;
         }
         if (!isset($current)) {
-            $current = new Conversation(['contact_id' => $contactId]);
+            $current = new Conversation(['user_id' => $user->id, 'contact_id' => $contactId]);
         }
 
         $contact = $current->contact;
@@ -86,8 +89,6 @@ class DefaultController extends Controller
             throw new NotFoundHttpException();
         }
         $this->view->title = $contact->name;
-
-        $conversationDataProvider = $conversationClass::get($user->id, 8);
         /** @var $messageClass Message */
         $messageClass = $this->messageClass;
         $messageDataProvider = $messageClass::get($user->id, $contact->id, 10);

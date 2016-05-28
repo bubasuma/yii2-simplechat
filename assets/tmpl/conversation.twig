@@ -9,7 +9,7 @@
         <small class="pull-right time"> {{ model.lastMessage.date }}</small>
         <h5 class="media-heading">{{ model.contact.name }}</h5>
         <small>{{ model.contact.id != model.lastMessage.senderId ? '<i class="fa fa-reply"></i>' : '' }} {{ model.lastMessage.text|raw }}</small>
-        <span class="badge pull-right msg-new">{{ model.newMessages.count > 0 ? model.newMessages.coun : '' }}</span>
+        <span class="badge pull-right msg-new">{{ model.newMessages.count > 0 ? model.newMessages.count : '' }}</span>
         <ul class="pull-right list-inline">
             <li><a class="close" title="Mark as {{ model.newMessages.count > 0 ? 'read' : 'unread' }}"><small class="small-icon" aria-hidden="true"><i class="fa fa-circle{{ model.newMessages.count > 0 ? '' : '-o' }}"></i></small></a></li>
             <li><a class="close" title="Archive"><small class="small-icon" aria-hidden="true"><i class="fa fa-times"></i></small></a></li>

@@ -17,6 +17,7 @@ use yii\db\Expression;
  * Class Conversation
  * @package bubasuma\simplechat\db
  *
+ * @property int $user_id
  * @property int contact_id
  * @property int last_message_id
  *
@@ -41,7 +42,8 @@ class Conversation extends ActiveRecord
      */
     public function getNewMessages()
     {
-        return $this->hasOne(Message::className(), ['sender_id' => 'contact_id'])->andOnCondition(['is_new' => 1]);
+        return $this->hasMany(Message::className(), ['sender_id' => 'contact_id', 'receiver_id' => 'user_id'])
+            ->andOnCondition(['is_new' => true]);
     }
 
     /**
@@ -84,6 +86,8 @@ class Conversation extends ActiveRecord
     {
         return static::find()
             ->forUser($userId)
+            ->addSelect(['user_id' => new Expression(':userId')])
+            ->with('lastMessage')
             ->orderBy(['last_message_id' => SORT_DESC]);
     }
 
@@ -182,7 +186,20 @@ class Conversation extends ActiveRecord
      */
     public function attributes()
     {
-        return ['contact_id', 'last_message_id'];
+        return ['user_id', 'contact_id', 'last_message_id'];
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public static function populateRecord($record, $row)
+    {
+        foreach (['user_id', 'contact_id'] as $name) {
+            if (isset($row[$name])) {
+                $row[$name] = intval($row[$name]);
+            }
+        }
+        parent::populateRecord($record, $row);
     }
 
     /**
