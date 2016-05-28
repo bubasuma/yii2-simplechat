@@ -40,7 +40,7 @@ class Conversation extends \bubasuma\simplechat\db\Conversation
                 return [
                     'text' => StringHelper::truncate($model['lastMessage']['text'], 20),
                     'date' => static::formatDate($model['lastMessage']['created_at']),
-                    'sender_id' => $model['lastMessage']['sender_id']
+                    'senderId' => $model['lastMessage']['sender_id']
                 ];
             },
             'newMessages' => function ($model) {
