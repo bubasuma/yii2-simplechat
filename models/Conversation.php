@@ -8,7 +8,6 @@
 namespace bubasuma\simplechat\models;
 
 use yii\db\ActiveQuery;
-use yii\db\Expression;
 use yii\helpers\StringHelper;
 use yii\helpers\Url;
 

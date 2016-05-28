@@ -69,22 +69,22 @@ class DefaultController extends Controller
             throw new ForbiddenHttpException('You cannot open this conversation');
         }
 
+        if (isset($contactId)) {
+            $current = new Conversation(['user_id' => $user->id, 'contact_id' => $contactId]);
+        }
+
         /** @var $conversationClass Conversation */
         $conversationClass = $this->conversationClass;
         $conversationDataProvider = $conversationClass::get($user->id, 8);
 
-        if (null === $contactId) {
-            $current = $conversationClass::recent($user->id);
-            if (null === $current) {
+        if (!isset($current)) {
+            if (0 == $conversationDataProvider->getTotalCount()) {
                 throw new NotFoundHttpException('You have no active conversations');
             }
-            $contactId = $current->contact_id;
-        }
-        if (!isset($current)) {
-            $current = new Conversation(['user_id' => $user->id, 'contact_id' => $contactId]);
+            $current = current($conversationDataProvider->getModels());
         }
 
-        $contact = $current->contact;
+        $contact = $current['contact'];
         if (empty($contact)) {
             throw new NotFoundHttpException();
         }
