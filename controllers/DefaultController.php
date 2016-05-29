@@ -88,11 +88,11 @@ class DefaultController extends Controller
         if (empty($contact)) {
             throw new NotFoundHttpException();
         }
-        $this->view->title = $contact->name;
+        $this->view->title = $contact['name'];
         /** @var $messageClass Message */
         $messageClass = $this->messageClass;
-        $messageDataProvider = $messageClass::get($user->id, $contact->id, 10);
-        $users = $this->getUsers([$user->id, $contact->id]);
+        $messageDataProvider = $messageClass::get($user->id, $contact['id'], 10);
+        $users = $this->getUsers([$user->id, $contact['id']]);
         return $this->render(
             'index.twig',
             compact('conversationDataProvider', 'messageDataProvider', 'users', 'user', 'contact', 'current')
