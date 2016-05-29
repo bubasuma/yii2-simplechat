@@ -99,18 +99,15 @@ php yii simplechat/start
 
 ##Usage
 
-Create an ActiveRecord like follow:
+Extend the main `conversation` class like follow:
 
 ```php
 namespace common\models;
 
-//...
-use bubasuma\simplechat\db\Model;
 use common\models\User;
-use yii\db\ActiveQuery;
 //...
 
-class Message extends Model
+class Conversation extends \bubasuma\simplechat\db\Conversation
 {
     public function getContact()
     {
@@ -120,18 +117,50 @@ class Message extends Model
     /**
      * @inheritDoc
      */
-    public static function conversations($userId)
+    protected static function baseQuery($userId)
     {
-        return parent::conversations($userId)->with([
+        return parent::baseQuery($userId) ->with(['contact.profile']);
+    }
+    
+    /**
+     * @inheritDoc
+     */
+    public function fields()
+    {
+        return [
             //...
-            'contact' => function ($contact) {
-                /**@var $contact ActiveQuery * */
-                $contact->with([
-                    //...
-                ])->select(['id', ]);
+            'contact' => function ($model) {
+                return $model['contact'];
             },
+            'deleteUrl',
+            'readUrl',
+            'unreadUrl',
             //...
-        ]);
+        ];
+    }
+}
+```
+
+Extend the main `message` class like follow:
+
+```php
+namespace common\models;
+
+//...
+
+class Message extends \bubasuma\simplechat\db\Message
+{
+    /**
+     * @inheritDoc
+     */
+    public function fields()
+    {
+        return [
+            //...
+            'text',
+            'date' => 'created_at',
+            //...
+        ];
     }
 }
 ```
@@ -143,7 +172,7 @@ namespace frontend\controllers;
 
 //...
 use yii\web\Controller;
-use yii\helpers\StringHelper;
+use common\models\Conversation;
 use common\models\Message;
 use bubasuma\simplechat\controllers\ControllerTrait;
 //...
@@ -155,29 +184,17 @@ class MessageController extends Controller
     /**
      * @return string
      */
-    public function getModelClass()
+    public function getMessageClass()
     {
         return Message::className();
     }
-    
-    /**
-     * @inheritDoc
-     */
-    public function formatMessage($model)
-    {
-        //...
-        return $model;
-    }
 
     /**
-     * @inheritDoc
+     * @return string
      */
-    public function formatConversation($model)
+    public function getConversationClass()
     {
-        //...
-        $model['text'] = StringHelper::truncate($model['text'], 20);
-        //...
-        return $model;
+        return Conversation::className();
     }
 }
 ```
