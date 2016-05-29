@@ -43,13 +43,9 @@ class UserProfileFixture extends ActiveFixture
         if (count($users) > 0) {
             $index = 0;
             foreach ($this->getData() as $alias => $row) {
-                if (!isset($users[$index])) {
-                    break;
-                }
-                $row['id'] = $users[$index];
-                $primaryKeys = $this->db->schema->insert($table->fullName, $row);
-                $this->data[$alias] = array_merge($row, $primaryKeys);
-                $index++;
+                $row['id'] = $users[$index++];
+                $this->db->schema->insert($table->fullName, $row);
+                $this->data[$alias] = $row;
             }
         }
     }
