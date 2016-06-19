@@ -14,7 +14,7 @@ php composer.phar require --prefer-dist bubasuma/yii2-simplechat
 or add
 
 ```
-"bubasuma/yii2-simplechat": "~2.0.0"
+"bubasuma/yii2-simplechat": "*"
 ```
 
 to the require section of your `composer.json` file.
