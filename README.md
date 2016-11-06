@@ -213,4 +213,8 @@ Yes, You can.
 
 Yes. But using the same template in both sides remains the best implementation.
 
+##Wiki
+[Using twig as template engine](https://github.com/bubasuma/yii2-simplechat/wiki/Using-twig-as-template-engine)
+[Pusher integration](https://github.com/bubasuma/yii2-simplechat/wiki/Pusher-integration)
+
  
