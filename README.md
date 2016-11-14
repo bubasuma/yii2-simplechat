@@ -74,6 +74,17 @@ php yii simplechat/reset --language="fr_FR"
 
 ```
 
+##Migrate Tables
+
+You can add table in your database using below command
+
+>Note: First check your existing table or backup your database and then migrate table.
+
+```
+php yii migrate/up --migrationPath=@vendor/bubasuma/yii2-simplechat/migrations
+```
+
+
 You can then access Simple Chat through the following URL:
 
 ```
