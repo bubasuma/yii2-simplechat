@@ -357,7 +357,7 @@
                                     key: data['keys'][index],
                                     index: index,
                                     user: options.user,
-                                    sender: data['models'][index]['sender_id'] == options.user.id ? options.user : options.contact,
+                                    sender: data['models'][index]['senderId'] == options.user.id ? options.user : options.contact,
                                     settings: options.settings
                                 };
                                 // append the message
