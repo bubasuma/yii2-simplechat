@@ -357,7 +357,7 @@
                                     key: data['keys'][index],
                                     index: index,
                                     user: options.user,
-                                    sender: data['models'][index]['sender_id'] == options.user.id ? options.user : options.contact,
+                                    sender: data['models'][index]['senderId'] == options.user.id ? options.user : options.contact,
                                     settings: options.settings
                                 };
                                 // append the message
@@ -393,14 +393,14 @@
                 });
 
                 // load new messages every 10 seconds
-                setInterval(function () {
-                    self.messenger.yiiSimpleChatMessages('load', 'new');
-                }, 10000);
+                // setInterval(function () {
+                //     self.messenger.yiiSimpleChatMessages('load', 'new');
+                // }, 10000);
 
                 // load new conversations every 15 seconds
-                setInterval(function () {
-                    self.conversations.yiiSimpleChatConversations('load', 'new');
-                }, 15000);
+                // setInterval(function () {
+                //     self.conversations.yiiSimpleChatConversations('load', 'new');
+                // }, 15000);
             });
         }
     };
